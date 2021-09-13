@@ -4,9 +4,7 @@
   "main": "dist/dreams-web-sdk.cjs.js",
   "module": "dist/dreams-web-sdk.esm.js",
   "browser": "dist/dreams-web-sdk.umd.js",
-  "dependencies": {
-    "ms": "^2.1.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
