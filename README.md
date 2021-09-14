@@ -8,6 +8,12 @@ To install dependecies run
 yarn install
 ```
 
+## Testing
+
+```
+yarn test
+```
+We use [jest](https://jestjs.io/) for testing.
 ## Building
 
 To build distros run
