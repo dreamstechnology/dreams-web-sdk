@@ -37,7 +37,8 @@ export default {
     { file: pkg.main, format: 'cjs' },
     { file: pkg.module, format: 'es' },
     // https://rollupjs.org/guide/en/#outputglobals
-    { file: pkg.browser, format: 'umd', name }
+    { file: pkg.browser, format: 'umd', name },
+    { file: pkg.iife, format: 'iife', name }
   ],
 };
 

@@ -1,24 +1,29 @@
-const messages = {
-  accountProvisioned: 'accountProvisioned',
-  updateToken: 'updateToken'
+enum messages {
+  accountProvisioned = 'accountProvisioned',
+  updateToken = 'updateToken'
 }
 
-type EventMessage = {
+type Message = {
   message: {
     requestId: string;
+    idToken?: string;
   }
 }
 
-type IdTokenDidExpireEvent =  EventMessage & {
-  name: 'onIdTokenDidExpire';
+type MessageEvent = Message & {
+  event: messages;
+}
+
+type IdTokenDidExpireEvent =  Message & {
+  event: 'onIdTokenDidExpire';
 };
 
-type AccountProvisionRequestedEvent =  EventMessage & {
-  name: 'onAccountProvisionRequested';
+type AccountProvisionRequestedEvent =  Message & {
+  event: 'onAccountProvisionRequested';
 };
 
 type ExitRequestedEvent = {
-  name: 'onExitRequested';
+  event: 'onExitRequested';
 };
 
 type DreamsEvent = IdTokenDidExpireEvent |
@@ -30,5 +35,6 @@ export {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
   ExitRequestedEvent,
-  DreamsEvent
+  DreamsEvent,
+  MessageEvent
 }

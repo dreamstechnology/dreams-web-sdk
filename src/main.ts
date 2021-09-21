@@ -1,15 +1,35 @@
-import DreamsMessageHandler from "./messageHandler";
+import MessageHandler, { ClientCallbacks } from "./messageHandler";
+import { createForm, createIFrame, iframeName } from './util';
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log('------dom content loaded')
-  const dreamsIframe = document.querySelector("iframe[dreams-data-id=dreams-iframe]") as HTMLIFrameElement;
-  console.log("dreams iframe found: ", dreamsIframe);
-  const messageHandler = new DreamsMessageHandler(dreamsIframe);
-  console.log("registering addevent")
-  window.addEventListener("message", messageHandler.onMessage)
+const setup = (id: string, verifyTokenUrl: string, token: string) => {
+  const containerId = id || "dreams-web-sdk-container";
+  const dreamdDiv = document.getElementById(containerId);
 
-  const dreamsForm = document.querySelector("input[dreams-data-id=dreams-messages-form]") as HTMLFormElement;
+  if (!dreamdDiv) {
+    throw "can't find dreams web sdk container";
+  }
 
-  if (dreamsForm) dreamsForm.submit();
-});
+  const form = createForm(verifyTokenUrl, token);
+  const iframe = createIFrame();
 
+  dreamdDiv.appendChild(form);
+  dreamdDiv.appendChild(iframe);
+
+  form.submit();
+}
+
+const getMessageHandler = (
+  dreamsApiUrl: string,
+  exitDreamsUrl: string,
+  callbacks: ClientCallbacks
+): MessageHandler => {
+  const iframe = document.getElementsByName(iframeName)[0] as HTMLIFrameElement;
+
+  return new MessageHandler(iframe, callbacks, dreamsApiUrl, exitDreamsUrl);
+}
+
+export default {
+  getMessageHandler,
+  MessageHandler,
+  setup,
+}
