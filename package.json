@@ -4,7 +4,7 @@
   "main": "dist/dreams-web-sdk.cjs.js",
   "module": "dist/dreams-web-sdk.esm.js",
   "browser": "dist/dreams-web-sdk.umd.js",
-  "iife": "dist/dreams-web-sdk.min.js",
+  "iife": "dist/dreams-web-sdk.iife.js",
   "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.15.4",

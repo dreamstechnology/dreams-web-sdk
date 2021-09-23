@@ -28,34 +28,33 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
 
 ## Usage
 
-To use it
 ```html
+<div id="dreams-web-sdk-container"></div>
 
-  <div id="dreams-web-sdk-container"></div>
-  <script src="path/to/js/file">
-    DreamsWebSDK.setup(
-    // this has to be the same as the id of the div
-    "dreams-web-sdk-container",
-    // endpoint that we are going to call to verify users' token
-    "http://dev.dreams.test:3030/users/verify_token",
-    // user's jwk token
-    "token");
+<script src="path/to/dreams/sdk/js/file">
+  var callbacks = {
+    // this callback has to return a string value (which is a token)
+    onIdTokenDidExpire: async () => {
+      const resp = await fetch('/token-expired-endpoint');
+      const data = await resp.json();
 
-    var messageHandler = DreamsWebSDK.getMessageHandler(
-      // dreams api endpoint
-      "http://dev.dreams.test:3030/",
-      // if we provide this value, we'll get redirected once the user decides to exit the dreams app.
-      "http://dev-partner-api.dreams-demo.test:3000/webapp",
-      // those two callbacks have to exist
-      {
-        onIdTokenDidExpire: () => {},
-        onAccountProvisionRequested: () => {}
-      }
-    );
+      return data.token;
+    },
+    // this callback may but doesn't have to return anything
+    onAccountProvisionRequested: () => {
+      await fetch('/provision-account-enpoint')
+    },
+    // this callback doesn't have to return anything
+    onExitRequested: () => {
+      window.location.href = "http://dev.dreams-demo.test:3000/webapp"
+    }
+  }
 
-    // internally this adds an event listener on the window
-    messageHandler.listen();
-  <scirpt>
+  var sdk = new DreamsWebSDK('https://dreams.api.endpoint');
+
+  sdk.setup(user_jwk_token_value, 'dreams-web-sdk-container');
+  sdk.start(callbacks);
+</script>
 ```
 ## License
 

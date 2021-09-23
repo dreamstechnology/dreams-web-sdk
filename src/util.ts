@@ -1,6 +1,12 @@
 export const iframeName = 'dreams-web-sdk-iframe';
 
-export const createForm = (endpoint, token): HTMLFormElement => {
+export const createForm = (
+  endpoint: string,
+  tokenProps = { type: 'hidden', name: 'token', value: undefined },
+  localeProps = { type: 'hidden', name: 'locale', value: 'en' }
+): HTMLFormElement => {
+  if (!tokenProps.value) throw 'must provide token value for input';
+
   const form = document.createElement('form');
 
   form.setAttribute('target', iframeName);
@@ -8,20 +14,20 @@ export const createForm = (endpoint, token): HTMLFormElement => {
   form.setAttribute('action', endpoint);
   form.setAttribute('class', 'hidden');
 
-  const inputLocale = document.createElement('input');
+  const formInputLocale = document.createElement('input');
 
-  inputLocale.setAttribute('type', 'hidden');
-  inputLocale.setAttribute('name', 'locale');
-  inputLocale.setAttribute('value', 'en');
+  formInputLocale.setAttribute('type', localeProps.type);
+  formInputLocale.setAttribute('name', localeProps.name);
+  formInputLocale.setAttribute('value', localeProps.value);
 
-  const inputToken = document.createElement('input');
+  const formInputToken = document.createElement('input');
 
-  inputToken.setAttribute('type', 'hidden');
-  inputToken.setAttribute('name', 'token');
-  inputToken.setAttribute('value', token);
+  formInputToken.setAttribute('type', tokenProps.type);
+  formInputToken.setAttribute('name', tokenProps.name);
+  formInputToken.setAttribute('value', tokenProps.value);
 
-  form.appendChild(inputLocale);
-  form.appendChild(inputToken);
+  form.appendChild(formInputLocale);
+  form.appendChild(formInputToken);
 
   return form;
 }
@@ -30,7 +36,7 @@ export const createIFrame = (): HTMLIFrameElement => {
   const iframe = document.createElement('iframe');
 
   iframe.setAttribute('name', iframeName);
-  iframe.setAttribute('class', 'h-full w-full overflow-hidden');
+  iframe.setAttribute('class', 'overflow-hidden');
 
   return iframe;
 }

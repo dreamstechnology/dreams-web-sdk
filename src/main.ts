@@ -1,35 +1,46 @@
 import MessageHandler, { ClientCallbacks } from "./messageHandler";
-import { createForm, createIFrame, iframeName } from './util';
+import { createForm, createIFrame } from './util';
 
-const setup = (id: string, verifyTokenUrl: string, token: string) => {
-  const containerId = id || "dreams-web-sdk-container";
-  const dreamdDiv = document.getElementById(containerId);
+class DreamsSDK {
+  apiUrl: string;
+  form: HTMLFormElement;
+  iframe: HTMLIFrameElement;
+  messageHandler: MessageHandler;
 
-  if (!dreamdDiv) {
-    throw "can't find dreams web sdk container";
+  constructor(apiUrl: string) {
+    this.apiUrl = apiUrl;
   }
 
-  const form = createForm(verifyTokenUrl, token);
-  const iframe = createIFrame();
+  setup(token: string, containerId: string = "dreams-web-sdk-container", locale: string = 'en') {
+    const dreamdDiv = document.getElementById(containerId);
 
-  dreamdDiv.appendChild(form);
-  dreamdDiv.appendChild(iframe);
+    if (!dreamdDiv) throw "can't find dreams web sdk container";
 
-  form.submit();
+    const tokenInputProps = { type: 'hidden', name: 'token', value: token };
+    const localeInputProps = { type: 'hidden', name: 'locale', value: locale };
+    const formTargetUrl = `${this.apiUrl}/users/verify_token`;
+
+    this.form = createForm(formTargetUrl, tokenInputProps, localeInputProps);
+    this.iframe = createIFrame();
+
+    dreamdDiv.appendChild(this.form);
+    dreamdDiv.appendChild(this.iframe);
+  }
+
+  start(callbacks: ClientCallbacks, accountProvisionDelay: 3000) {
+    if (!this.iframe) throw 'there is no iframe specified!';
+    if (!this.form) throw 'there is no form specified!';
+    if (!this.apiUrl) throw 'there is no api url specified!';
+
+    this.messageHandler = new MessageHandler(this.iframe, this.apiUrl, callbacks, accountProvisionDelay);
+
+    this.messageHandler.listen();
+    this.form.submit();
+  }
 }
 
-const getMessageHandler = (
-  dreamsApiUrl: string,
-  exitDreamsUrl: string,
-  callbacks: ClientCallbacks
-): MessageHandler => {
-  const iframe = document.getElementsByName(iframeName)[0] as HTMLIFrameElement;
+export default DreamsSDK
 
-  return new MessageHandler(iframe, callbacks, dreamsApiUrl, exitDreamsUrl);
-}
-
-export default {
-  getMessageHandler,
+export {
   MessageHandler,
-  setup,
 }

@@ -1,54 +1,32 @@
-import messages, { MessageEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
+import messages, { IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
 
 export type ClientCallbacks = {
   onIdTokenDidExpire: Function;
   onAccountProvisionRequested: Function;
-  onExitRequested?: Function;
+  onExitRequested: Function;
+  onShare: Function;
 }
 class MessageHandler {
   iframe: HTMLIFrameElement;
-  dreamsApiEndpoint: string;
-  dreamsExitEndpoint: string;
+  apiUrl: string;
   callbacks: ClientCallbacks;
   accountProvisionDelay: number;
 
-  constructor(
-    iframe: HTMLIFrameElement,
-    callbacks: ClientCallbacks,
-    dreamsApiEndpoint: string,
-    dreamsExitEndpoint: string,
-    accountProvisionDelay: number = 3000
-  ) {
-    this.validateParams(callbacks, dreamsApiEndpoint, dreamsExitEndpoint)
+  constructor(iframe: HTMLIFrameElement, apiUrl: string, callbacks: ClientCallbacks, accountProvisionDelay: number = 3000) {
+    this.validateParams(apiUrl);
     this.iframe = iframe;
-    this.dreamsApiEndpoint = dreamsApiEndpoint;
+    this.apiUrl = apiUrl;
     this.callbacks = callbacks;
-    this.dreamsExitEndpoint = dreamsExitEndpoint;
     this.accountProvisionDelay = accountProvisionDelay;
   }
 
-  validateParams(callbacks: ClientCallbacks, dreamsApiEndpoint: string, dreamsExitEndpoint: string) {
-    if (!dreamsApiEndpoint) {
-      console.error("dreamsApiEndpoint must be specified")
-      throw "Invalid parameters passed to the constructor"
-    }
+  listen = () => window.addEventListener('message', this.onMessage);
 
-    if (!(callbacks.onExitRequested || dreamsExitEndpoint)) {
-      console.error("Either onExitRequested or dreamsExitEndpoint must be specified")
-      throw "Invalid parameters passed to the constructor"
-    }
-  }
+  onMessage = async (message: any) => {
+    console.debug("onMessage: ", message);
+    const event = this.parseEvent(message);
 
-  async onMessage(message: any) {
-    let event: DreamsEvent;
-
-    try {
-      event = JSON.parse(message.data);
-    } catch (error) {
-      console.error("received: ", message);
-      console.error(error);
-      return;
-    }
+    if (!event) return;
 
     switch (event.event) {
       case 'onIdTokenDidExpire':
@@ -58,65 +36,77 @@ class MessageHandler {
         this.onAccountProvisionRequested(event);
         break;
       case 'onExitRequested':
-        this.onExitRequested(event);
+        this.callbacks.onExitRequested(event);
         break;
+      case 'onShare':
+        this.callbacks.onShare(event);
       default:
-        console.warn('unknown event type:', event);
+        console.warn('Unknown event type:', event);
     }
   }
 
-  async onIdTokenDidExpire(event: IdTokenDidExpireEvent) {
-    console.debug('onIdTokenDidExpire', event);
-
-    const token: string = await this.callbacks.onIdTokenDidExpire(event);
-    const message = this.buildMessage(messages.updateToken, event.message.requestId, token)
+  postUpdateToken = (requestId: string, token: string) => {
+    const message = this.buildMessage(messages.updateToken, requestId, token);
 
     this.postMessage(message);
   }
 
-  async onAccountProvisionRequested(event: AccountProvisionRequestedEvent) {
-    console.debug('onAccountProvisionRequested', event);
-
-    // 1. Make dreams-enterprise aware that account provisioning has started
-    const message = this.buildMessage(messages.accountProvisioned, event.message.requestId)
+  postAccountProvisionInitiated = (requestId: string) => {
+    const message = this.buildMessage(messages.accountProvisioned, requestId);
 
     this.postMessage(message);
+  }
+
+  // it's not implemented in des-enterprise. Treat it as something that can change
+  navigateTo = (type: string, identifier: string) => {
+    const message = { event: messages.navigateTo, message: { type, identifier } }
+
+    this.postMessage(message);
+  }
+
+  private onIdTokenDidExpire = async (event: IdTokenDidExpireEvent) => {
+    const token: string = await this.callbacks.onIdTokenDidExpire(event);
+
+    this.postUpdateToken(event.message.requestId, token);
+  }
+
+  private onAccountProvisionRequested = (event: AccountProvisionRequestedEvent) => {
+    // 1. Make dreams-enterprise aware that account provisioning has started
+    this.postAccountProvisionInitiated(event.message.requestId);
 
     // 2. Automatically provision the account
     // NOTE: dreams-enterprise must be aware that account provisioning has started
     // before it accepts the backend call that the account was successfully provisioned.
     // So this is a bit prone to race-conditions, but wait 3 seconds before initiating the backend call.
-    setTimeout(
-      async () => {
-        const resp = await this.callbacks.onAccountProvisionRequested(event);
-        console.log(resp);
-      },
-      this.accountProvisionDelay
-    );
-  }
-
-  async onExitRequested(event: ExitRequestedEvent) {
-    console.debug('onExitRequested', event)
-
-    if (this.callbacks.onExitRequested) {
-      this.callbacks.onExitRequested(event);
-    } else if (this.dreamsExitEndpoint) {
-      window.location.href = this.dreamsExitEndpoint;
+    const callback = async () => {
+      const resp = await this.callbacks.onAccountProvisionRequested(event);
+      console.debug(resp);
     }
+
+    setTimeout(callback, this.accountProvisionDelay);
   }
 
-  buildMessage = (event: messages, requestId: string, idToken: string = undefined): MessageEvent => ({
+  private postMessage = (message: any) => {
+    console.debug('postMessage', message);
+
+    this.iframe.contentWindow.postMessage(JSON.stringify(message), this.apiUrl);
+  }
+
+  private buildMessage = (event: messages, requestId: string, idToken: string = undefined) => ({
     event, message: { requestId, idToken }
   });
 
-  postMessage(message: any) {
-    console.debug('postMessage', message);
-
-    this.iframe.contentWindow.postMessage(JSON.stringify(message), this.dreamsApiEndpoint);
+  private parseEvent = (message: any): DreamsEvent | null => {
+    try {
+      return JSON.parse(message.data);
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 
-  listen() {
-    window.addEventListener('message', this.onMessage);
+  private validateParams = (apiUrl: string) => {
+    if (!apiUrl) throw "Invalid parameters: dreamsApiEndpoint must be specified";
   }
 }
 
