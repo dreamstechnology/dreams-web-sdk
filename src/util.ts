@@ -32,11 +32,10 @@ export const createForm = (
   return form;
 }
 
-export const createIFrame = (): HTMLIFrameElement => {
+export const createIFrame = (className = 'dreams-web-sdk-iframe'): HTMLIFrameElement => {
   const iframe = document.createElement('iframe');
-
   iframe.setAttribute('name', iframeName);
-  iframe.setAttribute('class', 'overflow-hidden');
+  iframe.setAttribute('class', className);
 
   return iframe;
 }

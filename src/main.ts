@@ -11,7 +11,7 @@ class DreamsSDK {
     this.apiUrl = apiUrl;
   }
 
-  setup(token: string, containerId: string = "dreams-web-sdk-container", locale: string = 'en') {
+  setup(token: string, containerId: string = "dreams-web-sdk-container", iframeClassName: string = 'dreams-web-sdk-iframe', locale: string = 'en') {
     const dreamdDiv = document.getElementById(containerId);
 
     if (!dreamdDiv) throw "can't find dreams web sdk container";
@@ -21,7 +21,7 @@ class DreamsSDK {
     const formTargetUrl = `${this.apiUrl}/users/verify_token`;
 
     this.form = createForm(formTargetUrl, tokenInputProps, localeInputProps);
-    this.iframe = createIFrame();
+    this.iframe = createIFrame(iframeClassName);
 
     dreamdDiv.appendChild(this.form);
     dreamdDiv.appendChild(this.iframe);
