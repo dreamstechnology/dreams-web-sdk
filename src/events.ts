@@ -1,4 +1,7 @@
 enum messages {
+  // It's really unfortunate that we call this event "accountProvisioned",
+  // when what we mean is "accountProvisionInitiated". But that's the current
+  // name that is being used by the dreams backend
   accountProvisioned = 'accountProvisioned',
   updateToken = 'updateToken',
   navigateTo = 'navigateTo'

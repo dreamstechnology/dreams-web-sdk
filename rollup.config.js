@@ -36,39 +36,7 @@ export default {
   output: [
     { file: pkg.main, format: 'cjs' },
     { file: pkg.module, format: 'es' },
-    // https://rollupjs.org/guide/en/#outputglobals
     { file: pkg.browser, format: 'umd', name },
     { file: pkg.iife, format: 'iife', name }
   ],
 };
-
-// export default [
-//   {
-//     input: 'src/main.ts',
-//     output: [
-//       { name: 'DreamsWebSDK', file: pkg.browser, format: 'umd' },
-//       { file: pkg.main, format: 'cjs' },
-//       { file: pkg.module, format: 'es' }
-//     ],
-//     plugins: [
-//       resolve(),
-//       commonjs(),
-//       babel(babelConfig)
-//     ]
-//   },
-
-//   // CommonJS (for Node) and ES module (for bundlers) build.
-//   // (We could have three entries in the configuration array
-//   // instead of two, but it's quicker to generate multiple
-//   // builds from a single configuration where possible, using
-//   // an array for the `output` option, where we can specify
-//   // `file` and `format` for each target)
-//   // {
-//   //   input: 'src/main.js',
-//   //   external: [],
-//   //   output: [
-//   //     { file: pkg.main, format: 'cjs' },
-//   //     { file: pkg.module, format: 'es' }
-//   //   ]
-//   // }
-// ];
