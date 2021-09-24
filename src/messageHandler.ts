@@ -58,8 +58,8 @@ class MessageHandler {
   }
 
   // it's not implemented in des-enterprise. Treat it as something that can change
-  navigateTo = (type: string, identifier: string) => {
-    const message = { event: messages.navigateTo, message: { type, identifier } }
+  navigateTo = (location: string) => {
+    const message = { event: messages.navigateTo, message: { location } }
 
     this.postMessage(message);
   }

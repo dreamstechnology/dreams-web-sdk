@@ -106,3 +106,15 @@ describe('#listen', () => {
     expect(spy).toHaveBeenCalled();
   });
 });
+
+describe('#navigateTo', () => {
+  test("posts appropriate message", () => {
+    const iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/', {});
+    const spy = jest.spyOn(iframe.contentWindow, 'postMessage');
+
+    handler.navigateTo('/example-url');
+    expect(spy).toHaveBeenCalled();
+  });
+});
