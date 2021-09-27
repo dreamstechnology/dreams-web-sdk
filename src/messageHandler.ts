@@ -1,8 +1,8 @@
 import messages, { IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
 
 export type ClientCallbacks = {
-  onIdTokenDidExpire: Function;
-  onAccountProvisionRequested: Function;
+  onIdTokenDidExpire?: Function;
+  onAccountProvisionRequested?: Function;
   onExitRequested: Function;
   onShare: Function;
 }
@@ -10,14 +10,12 @@ class MessageHandler {
   iframe: HTMLIFrameElement;
   apiUrl: string;
   callbacks: ClientCallbacks;
-  accountProvisionDelay: number;
 
   constructor(iframe: HTMLIFrameElement, apiUrl: string, callbacks: ClientCallbacks, accountProvisionDelay: number = 3000) {
     this.validateParams(apiUrl);
     this.iframe = iframe;
     this.apiUrl = apiUrl;
     this.callbacks = callbacks;
-    this.accountProvisionDelay = accountProvisionDelay;
   }
 
   listen = () => window.addEventListener('message', this.onMessage);
@@ -30,10 +28,14 @@ class MessageHandler {
 
     switch (event.event) {
       case 'onIdTokenDidExpire':
-        this.onIdTokenDidExpire(event);
+        if (this.callbacks.onIdTokenDidExpire) {
+          this.onIdTokenDidExpire(event);
+        }
         break;
       case 'onAccountProvisionRequested':
-        this.onAccountProvisionRequested(event);
+        if (this.callbacks.onAccountProvisionRequested) {
+          this.onAccountProvisionRequested(event);
+        }
         break;
       case 'onExitRequested':
         this.callbacks.onExitRequested(event);
@@ -57,7 +59,6 @@ class MessageHandler {
     this.postMessage(message);
   }
 
-  // it's not implemented in des-enterprise. Treat it as something that can change
   navigateTo = (location: string) => {
     const message = { event: messages.navigateTo, message: { location } }
 
@@ -65,25 +66,21 @@ class MessageHandler {
   }
 
   private onIdTokenDidExpire = async (event: IdTokenDidExpireEvent) => {
-    const token: string = await this.callbacks.onIdTokenDidExpire(event);
-
-    this.postUpdateToken(event.message.requestId, token);
+    try {
+      const token: string = await this.callbacks.onIdTokenDidExpire(event);
+      this.postUpdateToken(event.message.requestId, token);
+    } catch(err) {
+      console.error('onIdTokenDidExpire error: ', err);
+    }
   }
 
-  private onAccountProvisionRequested = (event: AccountProvisionRequestedEvent) => {
-    // 1. Make dreams-enterprise aware that account provisioning has started
-    this.postAccountProvisionInitiated(event.message.requestId);
-
-    // 2. Automatically provision the account
-    // NOTE: dreams-enterprise must be aware that account provisioning has started
-    // before it accepts the backend call that the account was successfully provisioned.
-    // So this is a bit prone to race-conditions, but wait 3 seconds before initiating the backend call.
-    const callback = async () => {
-      const resp = await this.callbacks.onAccountProvisionRequested(event);
-      console.debug(resp);
+  private onAccountProvisionRequested = async (event: AccountProvisionRequestedEvent) => {
+    try {
+      await this.callbacks.onAccountProvisionRequested(event);
+      this.postAccountProvisionInitiated(event.message.requestId);
+    } catch(err) {
+      console.error('onAccountProvisionRequested error: ', err);
     }
-
-    setTimeout(callback, this.accountProvisionDelay);
   }
 
   private postMessage = (message: any) => {

@@ -2,11 +2,9 @@ export const iframeName = 'dreams-web-sdk-iframe';
 
 export const createForm = (
   endpoint: string,
-  tokenProps = { type: 'hidden', name: 'token', value: undefined },
+  tokenProps = { type: 'hidden', name: 'token', value: '' },
   localeProps = { type: 'hidden', name: 'locale', value: 'en' }
 ): HTMLFormElement => {
-  if (!tokenProps.value) throw 'must provide token value for input';
-
   const form = document.createElement('form');
 
   form.setAttribute('target', iframeName);

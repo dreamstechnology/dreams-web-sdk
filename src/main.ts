@@ -11,28 +11,41 @@ class DreamsSDK {
     this.apiUrl = apiUrl;
   }
 
-  setup(token: string, containerId: string = "dreams-web-sdk-container", iframeClassName: string = 'dreams-web-sdk-iframe', locale: string = 'en') {
+  setup(
+    callbacks: ClientCallbacks,
+    containerId: string = "dreams-web-sdk-container",
+    iframeClassName: string = 'dreams-web-sdk-iframe') {
+    if (!this.apiUrl) throw 'there is no api url specified!';
+
     const dreamdDiv = document.getElementById(containerId);
 
     if (!dreamdDiv) throw "can't find dreams web sdk container";
 
-    const tokenInputProps = { type: 'hidden', name: 'token', value: token };
-    const localeInputProps = { type: 'hidden', name: 'locale', value: locale };
     const formTargetUrl = `${this.apiUrl}/users/verify_token`;
 
-    this.form = createForm(formTargetUrl, tokenInputProps, localeInputProps);
+    this.form = createForm(formTargetUrl);
     this.iframe = createIFrame(iframeClassName);
 
     dreamdDiv.appendChild(this.form);
     dreamdDiv.appendChild(this.iframe);
+
+    this.messageHandler = new MessageHandler(this.iframe, this.apiUrl, callbacks);
+
+    return this.messageHandler;
   }
 
-  start(callbacks: ClientCallbacks, accountProvisionDelay: 3000) {
+  start(token: string, locale: string = null) {
     if (!this.iframe) throw 'there is no iframe specified!';
     if (!this.form) throw 'there is no form specified!';
-    if (!this.apiUrl) throw 'there is no api url specified!';
+    if (!this.messageHandler) throw 'there is no message handler specified!';
 
-    this.messageHandler = new MessageHandler(this.iframe, this.apiUrl, callbacks, accountProvisionDelay);
+    const tokenInput: HTMLInputElement = this.form.querySelector("input[name='token']");
+    tokenInput.setAttribute('value', token);
+
+    if (locale) {
+      const localeInput: HTMLInputElement = this.form.querySelector("input[name='locale']");
+      localeInput.setAttribute('value', locale);
+    }
 
     this.messageHandler.listen();
     this.form.submit();

@@ -56,27 +56,74 @@ describe('#onMessage', () => {
     });
 
     describe("onIdTokenDidExpire", () => {
-      test("behaves correctly", async () => {
-        const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
-        const message = buildMessage('onIdTokenDidExpire');
+      describe("when callback was passed", () => {
+        describe("callback promise resolves", () => {
+          test("behaves correctly", async () => {
+            const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
+            const message = buildMessage('onIdTokenDidExpire');
 
-        await handler.onMessage(message);
+            await handler.onMessage(message);
 
-        expect(onIdTokenDidExpire).toHaveBeenCalled();
-        expect(onAccountProvisionRequested).not.toHaveBeenCalled();
-        expect(postMessageSpy).toHaveBeenCalled();
+            expect(onIdTokenDidExpire).toHaveBeenCalled();
+            expect(onAccountProvisionRequested).not.toHaveBeenCalled();
+            expect(postMessageSpy).toHaveBeenCalled();
+          });
+        });
+
+        describe("callback promise rejects", () => {
+          test("behaves correctly", async () => {
+            onIdTokenDidExpire = jest.fn(() => Promise.reject("nope!"));
+            const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onIdTokenDidExpire });
+            const message = buildMessage('onIdTokenDidExpire');
+            const spy = jest.spyOn(global.console, 'error');
+
+            await handler.onMessage(message);
+
+            expect(onIdTokenDidExpire).toHaveBeenCalled();
+            expect(spy).toHaveBeenCalledWith('onIdTokenDidExpire error: ', 'nope!');
+          });
+        });
+      });
+
+      describe("when callback was not passed", () => {
+        test("behaves correctly", async () => {
+          const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onIdTokenDidExpire: undefined });
+          const message = buildMessage('onIdTokenDidExpire');
+
+          await handler.onMessage(message);
+
+          expect(onIdTokenDidExpire).not.toHaveBeenCalled();
+          expect(onAccountProvisionRequested).not.toHaveBeenCalled();
+          expect(postMessageSpy).not.toHaveBeenCalled();
+        });
       });
     });
 
     describe("onAccountProvisionRequested", () => {
-      test("behaves correctly", async () => {
-        const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
-        const message = buildMessage('onAccountProvisionRequested');
+      describe("callback promise fulfills", () => {
+        test("behaves correctly", async () => {
+          const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
+          const message = buildMessage('onAccountProvisionRequested');
 
-        await handler.onMessage(message);
+          await handler.onMessage(message);
 
-        expect(onIdTokenDidExpire).not.toHaveBeenCalled();
-        expect(postMessageSpy).toHaveBeenCalled();
+          expect(onIdTokenDidExpire).not.toHaveBeenCalled();
+          expect(postMessageSpy).toHaveBeenCalled();
+        });
+      })
+
+      describe("callback promise rejects", () => {
+        test("behaves correctly", async () => {
+          onAccountProvisionRequested = jest.fn(() => Promise.reject("nope!"));
+          const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onAccountProvisionRequested });
+          const message = buildMessage('onAccountProvisionRequested');
+          const spy = jest.spyOn(global.console, 'error');
+
+          await handler.onMessage(message);
+
+          expect(onAccountProvisionRequested).toHaveBeenCalled();
+          expect(spy).toHaveBeenCalledWith('onAccountProvisionRequested error: ', 'nope!');
+        });
       });
     });
 
