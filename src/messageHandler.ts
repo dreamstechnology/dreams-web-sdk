@@ -1,11 +1,12 @@
-import messages, { IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
+import messages, { OnShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
 
 export type ClientCallbacks = {
-  onIdTokenDidExpire?: Function;
-  onAccountProvisionRequested?: Function;
-  onExitRequested: Function;
-  onShare: Function;
-}
+  onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
+  onAccountProvisionRequested?: (event: AccountProvisionRequestedEvent) => Promise<any>;
+  onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
+  onShare: (event: OnShareEvent) => Promise<any>;
+};
+
 class MessageHandler {
   iframe: HTMLIFrameElement;
   apiUrl: string;
@@ -21,27 +22,24 @@ class MessageHandler {
   listen = () => window.addEventListener('message', this.onMessage);
 
   onMessage = async (message: any) => {
-    console.debug("onMessage: ", message);
+    console.debug('onMessage: ', message);
     const event = this.parseEvent(message);
 
     if (!event) return;
 
     switch (event.event) {
       case 'onIdTokenDidExpire':
-        if (this.callbacks.onIdTokenDidExpire) {
-          this.onIdTokenDidExpire(event);
-        }
+        this.onIdTokenDidExpire(event);
         break;
       case 'onAccountProvisionRequested':
-        if (this.callbacks.onAccountProvisionRequested) {
           this.onAccountProvisionRequested(event);
-        }
         break;
       case 'onExitRequested':
         this.callbacks.onExitRequested(event);
         break;
       case 'onShare':
-        this.callbacks.onShare(event);
+        this.onShare(event);
+        break;
       default:
         console.warn('Unknown event type:', event);
     }
@@ -60,12 +58,14 @@ class MessageHandler {
   }
 
   navigateTo = (location: string) => {
-    const message = { event: messages.navigateTo, message: { location } }
+    const message = { event: messages.navigateTo, message: { location } };
 
     this.postMessage(message);
   }
 
   private onIdTokenDidExpire = async (event: IdTokenDidExpireEvent) => {
+    if (!this.callbacks.onIdTokenDidExpire) return;
+
     try {
       const token: string = await this.callbacks.onIdTokenDidExpire(event);
       this.postUpdateToken(event.message.requestId, token);
@@ -75,12 +75,18 @@ class MessageHandler {
   }
 
   private onAccountProvisionRequested = async (event: AccountProvisionRequestedEvent) => {
+    if (!this.callbacks.onAccountProvisionRequested) return;
+
     try {
       await this.callbacks.onAccountProvisionRequested(event);
       this.postAccountProvisionInitiated(event.message.requestId);
     } catch(err) {
       console.error('onAccountProvisionRequested error: ', err);
     }
+  }
+
+  private onShare = async (event: OnShareEvent) => {
+    if (this.callbacks.onShare) await this.callbacks.onShare(event);
   }
 
   private postMessage = (message: any) => {
@@ -91,7 +97,7 @@ class MessageHandler {
 
   private buildMessage = (event: messages, requestId: string, idToken: string = undefined) => ({
     event, message: { requestId, idToken }
-  });
+  })
 
   private parseEvent = (message: any): DreamsEvent | null => {
     try {
@@ -103,7 +109,7 @@ class MessageHandler {
   }
 
   private validateParams = (apiUrl: string) => {
-    if (!apiUrl) throw "Invalid parameters: dreamsApiEndpoint must be specified";
+    if (!apiUrl) throw Error('Invalid parameters: dreamsApiEndpoint must be specified');
   }
 }
 

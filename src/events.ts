@@ -34,7 +34,7 @@ type AccountProvisionRequestedEvent =  Message & {
   event: 'onAccountProvisionRequested';
 };
 
-type ShareEvent = ShareMessage & {
+type OnShareEvent = ShareMessage & {
   event: 'onShare'
 }
 
@@ -52,7 +52,7 @@ export {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
   ExitRequestedEvent,
-  ShareEvent,
+  OnShareEvent,
   DreamsEvent,
   MessageEvent
 }

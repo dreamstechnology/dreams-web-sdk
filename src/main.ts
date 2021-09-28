@@ -1,4 +1,4 @@
-import MessageHandler, { ClientCallbacks } from "./messageHandler";
+import MessageHandler, { ClientCallbacks } from './messageHandler';
 import { createForm, createIFrame } from './util';
 
 class DreamsSDK {
@@ -13,13 +13,13 @@ class DreamsSDK {
 
   setup(
     callbacks: ClientCallbacks,
-    containerId: string = "dreams-web-sdk-container",
+    containerId: string = 'dreams-web-sdk-container',
     iframeClassName: string = 'dreams-web-sdk-iframe') {
-    if (!this.apiUrl) throw 'there is no api url specified!';
+    if (!this.apiUrl) throw Error('there is no api url specified!');
 
     const dreamdDiv = document.getElementById(containerId);
 
-    if (!dreamdDiv) throw "can't find dreams web sdk container";
+    if (!dreamdDiv) throw Error("can't find dreams web sdk container");
 
     const formTargetUrl = `${this.apiUrl}/users/verify_token`;
 
@@ -35,9 +35,9 @@ class DreamsSDK {
   }
 
   start(token: string, locale: string = null) {
-    if (!this.iframe) throw 'there is no iframe specified!';
-    if (!this.form) throw 'there is no form specified!';
-    if (!this.messageHandler) throw 'there is no message handler specified!';
+    if (!this.iframe) throw Error('there is no iframe specified!');
+    if (!this.form) throw Error('there is no form specified!');
+    if (!this.messageHandler) throw Error('there is no message handler specified!');
 
     const tokenInput: HTMLInputElement = this.form.querySelector("input[name='token']");
     tokenInput.setAttribute('value', token);
