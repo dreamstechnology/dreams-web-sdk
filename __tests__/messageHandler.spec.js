@@ -43,6 +43,7 @@ describe('#onMessage', () => {
     let onIdTokenDidExpire;
     let onAccountProvisionRequested;
     let onExitRequested;
+    let onShare;
     let callbacks;
 
     beforeEach(() => {
@@ -52,7 +53,8 @@ describe('#onMessage', () => {
       onIdTokenDidExpire = jest.fn(() => Promise.resolve("token"));
       onAccountProvisionRequested = jest.fn(() => Promise.resolve());
       onExitRequested = jest.fn(() => Promise.resolve());
-      callbacks = { onAccountProvisionRequested, onIdTokenDidExpire, onExitRequested }
+      onShare = jest.fn(() => Promise.resolve());
+      callbacks = { onAccountProvisionRequested, onIdTokenDidExpire, onExitRequested, onShare }
     });
 
     describe("onIdTokenDidExpire", () => {
@@ -138,6 +140,18 @@ describe('#onMessage', () => {
         expect(onIdTokenDidExpire).not.toHaveBeenCalled();
         expect(postMessageSpy).not.toHaveBeenCalled();
         expect(onIdTokenDidExpire).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("onShare", () => {
+      test("behaves correctly", async () => {
+        const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
+        const message = buildMessage('onShare');
+
+        await handler.onMessage(message);
+
+        expect(onShare).toHaveBeenCalled();
+        expect(postMessageSpy).not.toHaveBeenCalled();
       });
     });
   });

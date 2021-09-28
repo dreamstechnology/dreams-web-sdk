@@ -34,7 +34,7 @@ class DreamsSDK {
     return this.messageHandler;
   }
 
-  start(token: string, locale: string = null) {
+  start(token: string, locale: string) {
     if (!this.iframe) throw Error('there is no iframe specified!');
     if (!this.form) throw Error('there is no form specified!');
     if (!this.messageHandler) throw Error('there is no message handler specified!');
@@ -42,10 +42,8 @@ class DreamsSDK {
     const tokenInput: HTMLInputElement = this.form.querySelector("input[name='token']");
     tokenInput.setAttribute('value', token);
 
-    if (locale) {
-      const localeInput: HTMLInputElement = this.form.querySelector("input[name='locale']");
-      localeInput.setAttribute('value', locale);
-    }
+    const localeInput: HTMLInputElement = this.form.querySelector("input[name='locale']");
+    localeInput.setAttribute('value', locale);
 
     this.messageHandler.listen();
     this.form.submit();

@@ -50,7 +50,7 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
   var sdk = new DreamsWebSDK('https://dreams.api.endpoint');
 
   sdk.setup(callbacks);
-  sdk.start(user_jwk_token_value);
+  sdk.start(user_jwk_token_value, 'en');
 </script>
 ```
 ## License
