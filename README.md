@@ -1,8 +1,8 @@
 # Dreams Web SDK
 
-## Dependecies
+## Dependencies
 
-To install dependecies run
+To install dependencies run
 
 ```
 yarn install
@@ -33,27 +33,24 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
 
 <script src="path/to/dreams/sdk/js/file">
   var callbacks = {
-    // this callback has to return a string value (which is a token)
     onIdTokenDidExpire: async () => {
       const resp = await fetch('/token-expired-endpoint');
       const data = await resp.json();
 
       return data.token;
     },
-    // this callback may but doesn't have to return anything
     onAccountProvisionRequested: () => {
       await fetch('/provision-account-enpoint')
     },
-    // this callback doesn't have to return anything
     onExitRequested: () => {
-      window.location.href = "http://dev.dreams-demo.test:3000/webapp"
+      window.location.href = "http://example.com/some/path"
     }
   }
 
   var sdk = new DreamsWebSDK('https://dreams.api.endpoint');
 
-  sdk.setup(user_jwk_token_value, 'dreams-web-sdk-container');
-  sdk.start(callbacks);
+  sdk.setup(callbacks);
+  sdk.start(user_jwk_token_value);
 </script>
 ```
 ## License
