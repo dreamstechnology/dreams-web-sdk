@@ -1,5 +1,5 @@
 import MessageHandler, { ClientCallbacks } from './messageHandler';
-import { createForm, createIFrame } from './util';
+import { createForm, createIFrame, iframeName } from './util';
 
 class DreamsSDK {
   apiUrl: string;
@@ -14,7 +14,7 @@ class DreamsSDK {
   setup(
     callbacks: ClientCallbacks,
     containerId: string = 'dreams-web-sdk-container',
-    iframeClassName: string = 'dreams-web-sdk-iframe') {
+    iframeClassName: string = iframeName) {
     if (!this.apiUrl) throw Error('there is no api url specified!');
 
     const dreamdDiv = document.getElementById(containerId);
@@ -52,8 +52,8 @@ class DreamsSDK {
   }
 }
 
-export default DreamsSDK
+export default DreamsSDK;
 
 export {
   MessageHandler,
-}
+};

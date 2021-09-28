@@ -11,7 +11,7 @@ type Message = {
   message: {
     requestId: string;
     idToken?: string;
-  }
+  };
 }
 
 type ShareMessage = {
@@ -19,7 +19,7 @@ type ShareMessage = {
     url: string;
     text: string;
     title: string;
-  }
+  };
 }
 
 type MessageEvent = Message & {
@@ -28,19 +28,19 @@ type MessageEvent = Message & {
 
 type IdTokenDidExpireEvent =  Message & {
   event: 'onIdTokenDidExpire';
-};
+}
 
 type AccountProvisionRequestedEvent =  Message & {
   event: 'onAccountProvisionRequested';
-};
-
-type OnShareEvent = ShareMessage & {
-  event: 'onShare'
 }
+
+type ShareEvent = ShareMessage & {
+  event: 'onShare';
+};
 
 type ExitRequestedEvent = {
   event: 'onExitRequested';
-};
+}
 
 type DreamsEvent = IdTokenDidExpireEvent |
                    AccountProvisionRequestedEvent |
@@ -52,7 +52,7 @@ export {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
   ExitRequestedEvent,
-  OnShareEvent,
+  ShareEvent,
   DreamsEvent,
-  MessageEvent
+  MessageEvent,
 }

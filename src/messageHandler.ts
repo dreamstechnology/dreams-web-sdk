@@ -1,10 +1,10 @@
-import messages, { OnShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
+import messages, { ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
 
 export type ClientCallbacks = {
   onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
   onAccountProvisionRequested?: (event: AccountProvisionRequestedEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
-  onShare: (event: OnShareEvent) => Promise<any>;
+  onShare: (event: ShareEvent) => Promise<any>;
 };
 
 class MessageHandler {
@@ -32,10 +32,10 @@ class MessageHandler {
         this.onIdTokenDidExpire(event);
         break;
       case 'onAccountProvisionRequested':
-          this.onAccountProvisionRequested(event);
+        this.onAccountProvisionRequested(event);
         break;
       case 'onExitRequested':
-        this.callbacks.onExitRequested(event);
+        await this.callbacks.onExitRequested(event);
         break;
       case 'onShare':
         this.onShare(event);
@@ -85,7 +85,7 @@ class MessageHandler {
     }
   }
 
-  private onShare = async (event: OnShareEvent) => {
+  private onShare = async (event: ShareEvent) => {
     if (this.callbacks.onShare) await this.callbacks.onShare(event);
   }
 

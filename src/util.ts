@@ -28,7 +28,7 @@ export const createForm = (
   form.appendChild(formInputToken);
 
   return form;
-}
+};
 
 export const createIFrame = (className = 'dreams-web-sdk-iframe'): HTMLIFrameElement => {
   const iframe = document.createElement('iframe');
@@ -36,10 +36,10 @@ export const createIFrame = (className = 'dreams-web-sdk-iframe'): HTMLIFrameEle
   iframe.setAttribute('class', className);
 
   return iframe;
-}
+};
 
 export default {
   createForm,
   createIFrame,
-  iframeName
-}
+  iframeName,
+};
