@@ -53,6 +53,14 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
   sdk.start(user_jwk_token_value, 'en');
 </script>
 ```
+## Contributing
+
+### Commit naming
+
+We use commitlint to make sure commit messages adhere to certain rules. You can find them [here](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification) and [here](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum)
+
+Semantic release takse care of automatically bumping release verions provided that we name commits correctly.
+[Here](https://github.com/semantic-release/semantic-release#commit-message-format) you can find what constitutes a patch/feature/breaking release.
 ## License
 
 [Mozilla Public License Version 2.0](LICENSE)
