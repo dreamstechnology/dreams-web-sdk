@@ -8,6 +8,7 @@ To install dependencies run
 yarn install
 ```
 
+We use [lefthook](https://github.com/evilmartians/lefthook). Refer to their github page for installation instructions.
 ## Testing
 
 ```
@@ -53,6 +54,17 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
   sdk.start(user_jwk_token_value, 'en');
 </script>
 ```
+## Contributing
+
+### Commit naming
+
+We use commitlint to make sure commit messages adhere to certain rules. These are:
+- [Anglar Contribution Rules](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type)
+- [Conventional Commit Rules](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification)
+- [Commitlint Rules](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum)
+
+Semantic release takes care of automatically bumping release verions provided that we name commits correctly.
+[Here](https://github.com/semantic-release/semantic-release#commit-message-format) you can find what constitutes a patch/feature/breaking release.
 ## License
 
 [Mozilla Public License Version 2.0](LICENSE)
