@@ -3,3 +3,9 @@ commit-msg:
     lint-commit-msg:
       run: npx commitlint --edit
 
+pre-merge-commit:
+  commands:
+    lint-commit:
+      run: |
+        git fetch --all
+        npx commitlint --from=HEAD~1 -V

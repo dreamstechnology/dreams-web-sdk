@@ -25,8 +25,6 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
 
-      - name: Lefthook
-        run: yarn lefthook
       - name: Run tests
         run: yarn test
 
