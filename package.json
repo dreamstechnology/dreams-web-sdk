@@ -41,6 +41,6 @@
     "url": "https://github.com/getdreams/dreams-web-sdk.git"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }
