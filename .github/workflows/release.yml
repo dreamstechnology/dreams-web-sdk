@@ -7,7 +7,6 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-  GITHUB_NPM_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   release:
@@ -28,5 +27,10 @@ jobs:
       - name: Run tests
         run: yarn test
 
+      - name: Build
+        run:  yarn build
+
       - name: Release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
         run: yarn semantic-release

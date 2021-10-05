@@ -34,9 +34,8 @@ export default {
   ],
 
   output: [
-    { file: pkg.main, format: 'cjs' },
+    { file: pkg.main, format: 'umd', name },
     { file: pkg.module, format: 'es' },
-    { file: pkg.browser, format: 'umd', name },
-    { file: pkg.iife, format: 'iife', name }
+    { file: pkg.browser, format: 'iife', name }
   ],
 };
