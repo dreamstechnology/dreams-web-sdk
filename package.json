@@ -1,7 +1,7 @@
 {
   "name": "dreams-web-sdk",
   "version": "0.0.0-development",
-  "main": "dist/umd/dreams-web-sdk.js",
+  "main": "dist/cjs/dreams-web-sdk.js",
   "module": "dist/esm/dreams-web-sdk.js",
   "browser": "dist/iife/dreams-web-sdk.js",
   "dependencies": {},
@@ -41,6 +41,6 @@
     "url": "https://github.com/getdreams/dreams-web-sdk.git"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }
