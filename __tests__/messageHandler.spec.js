@@ -1,4 +1,4 @@
-import DreamsMessageHandler from '../src/messageHandler';
+import { MessageHandler } from '../src/messageHandler';
 
 const buildMessage = (event, requestId = '123', idToken = undefined) => ({
   data: JSON.stringify({ event, message: { requestId, idToken } })
@@ -8,7 +8,7 @@ describe('#constructor', () => {
   test('dreams api endpoint not provided', () => {
     const iframe = document.createElement('iframe');
     const throwable = () => {
-      new DreamsMessageHandler(iframe, undefined, {}, '123')
+      new MessageHandler(iframe, undefined, {}, '123')
     }
     expect(throwable).toThrow();
   });
@@ -18,7 +18,7 @@ describe('#onMessage', () => {
   describe("when message is unreadable", () => {
     test("behaves correctly", () => {
       const iframe = document.createElement('iframe');
-      const handler = new DreamsMessageHandler(iframe, 'www.example.com/123', {});
+      const handler = new MessageHandler(iframe, 'www.example.com/123', {});
       const spy = jest.spyOn(global.console, 'error');
       const message = "";
       handler.onMessage(message)
@@ -29,7 +29,7 @@ describe('#onMessage', () => {
   describe("when message is not of expected type", () => {
     test("behaves correctly", () => {
       const iframe = document.createElement('iframe');
-      const handler = new DreamsMessageHandler(iframe, 'www.example.com/123', {});
+      const handler = new MessageHandler(iframe, 'www.example.com/123', {});
       const spy = jest.spyOn(global.console, 'warn');
       const message = { data: JSON.stringify({ foo: 'bar' }) };
       handler.onMessage(message)
@@ -61,7 +61,7 @@ describe('#onMessage', () => {
       describe("when callback was passed", () => {
         describe("callback promise resolves", () => {
           test("behaves correctly", async () => {
-            const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
+            const handler = new MessageHandler(iframe, 'http://www.example.com/123', callbacks);
             const message = buildMessage('onIdTokenDidExpire');
 
             await handler.onMessage(message);
@@ -75,7 +75,7 @@ describe('#onMessage', () => {
         describe("callback promise rejects", () => {
           test("behaves correctly", async () => {
             onIdTokenDidExpire = jest.fn(() => Promise.reject("nope!"));
-            const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onIdTokenDidExpire });
+            const handler = new MessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onIdTokenDidExpire });
             const message = buildMessage('onIdTokenDidExpire');
             const spy = jest.spyOn(global.console, 'error');
 
@@ -89,7 +89,7 @@ describe('#onMessage', () => {
 
       describe("when callback was not passed", () => {
         test("behaves correctly", async () => {
-          const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onIdTokenDidExpire: undefined });
+          const handler = new MessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onIdTokenDidExpire: undefined });
           const message = buildMessage('onIdTokenDidExpire');
 
           await handler.onMessage(message);
@@ -104,7 +104,7 @@ describe('#onMessage', () => {
     describe("onAccountProvisionRequested", () => {
       describe("callback promise fulfills", () => {
         test("behaves correctly", async () => {
-          const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
+          const handler = new MessageHandler(iframe, 'http://www.example.com/123', callbacks);
           const message = buildMessage('onAccountProvisionRequested');
 
           await handler.onMessage(message);
@@ -117,7 +117,7 @@ describe('#onMessage', () => {
       describe("callback promise rejects", () => {
         test("behaves correctly", async () => {
           onAccountProvisionRequested = jest.fn(() => Promise.reject("nope!"));
-          const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onAccountProvisionRequested });
+          const handler = new MessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onAccountProvisionRequested });
           const message = buildMessage('onAccountProvisionRequested');
           const spy = jest.spyOn(global.console, 'error');
 
@@ -131,7 +131,7 @@ describe('#onMessage', () => {
 
     describe("onExitRequested", () => {
       test("behaves correctly", async () => {
-        const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
+        const handler = new MessageHandler(iframe, 'http://www.example.com/123', callbacks);
         const message = buildMessage('onExitRequested');
 
         await handler.onMessage(message);
@@ -145,7 +145,7 @@ describe('#onMessage', () => {
 
     describe("onShare", () => {
       test("behaves correctly", async () => {
-        const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/123', callbacks);
+        const handler = new MessageHandler(iframe, 'http://www.example.com/123', callbacks);
         const message = buildMessage('onShare');
 
         await handler.onMessage(message);
@@ -160,7 +160,7 @@ describe('#onMessage', () => {
 describe('#listen', () => {
   test("adds proper event listener", () => {
     const iframe = document.createElement('iframe');
-    const handler = new DreamsMessageHandler(iframe, '123', {});
+    const handler = new MessageHandler(iframe, '123', {});
     const spy = jest.spyOn(window, 'addEventListener');
 
     handler.listen();
@@ -172,7 +172,7 @@ describe('#navigateTo', () => {
   test("posts appropriate message", () => {
     const iframe = document.createElement('iframe');
     document.body.appendChild(iframe);
-    const handler = new DreamsMessageHandler(iframe, 'http://www.example.com/', {});
+    const handler = new MessageHandler(iframe, 'http://www.example.com/', {});
     const spy = jest.spyOn(iframe.contentWindow, 'postMessage');
 
     handler.navigateTo('/example-url');

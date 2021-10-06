@@ -1,4 +1,4 @@
-import DreamsSDK from '../src/main';
+import { DreamsSDK } from '../src/main';
 
 afterEach(() => {
   document.getElementsByTagName('html')[0].innerHTML = '';
@@ -6,6 +6,7 @@ afterEach(() => {
 
 describe('#setup', () => {
   test('creates elements', () => {
+    console.log("DREAMS SDK: ", DreamsSDK);
     const sdk = new DreamsSDK('http://www.example.com');
     const div = document.createElement('div');
     const callbacks = {};
