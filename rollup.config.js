@@ -10,7 +10,12 @@ const extensions = ['.js', '.ts'];
 const babelConfig = {
   babelHelpers: 'bundled',
   include: ['src/**/*'],
-  extensions
+  extensions,
+  targets: "defaults",
+  sourceMaps: true,
+  presets: [
+    ["@babel/preset-env", { useBuiltIns: "entry" }]
+  ]
 }
 
 export default {

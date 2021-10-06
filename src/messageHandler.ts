@@ -7,7 +7,7 @@ export type ClientCallbacks = {
   onShare: (event: ShareEvent) => Promise<any>;
 };
 
-class MessageHandler {
+export class MessageHandler {
   iframe: HTMLIFrameElement;
   apiUrl: string;
   callbacks: ClientCallbacks;
@@ -112,5 +112,3 @@ class MessageHandler {
     if (!apiUrl) throw Error('Invalid parameters: dreamsApiEndpoint must be specified');
   }
 }
-
-export default MessageHandler;

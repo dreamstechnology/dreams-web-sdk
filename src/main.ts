@@ -1,7 +1,7 @@
-import MessageHandler, { ClientCallbacks } from './messageHandler';
+import { MessageHandler, ClientCallbacks } from './messageHandler';
 import { createForm, createIFrame, iframeName } from './util';
 
-class DreamsSDK {
+export class DreamsSDK {
   apiUrl: string;
   form: HTMLFormElement;
   iframe: HTMLIFrameElement;
@@ -50,8 +50,4 @@ class DreamsSDK {
   }
 }
 
-export default DreamsSDK;
-
-export {
-  MessageHandler,
-};
+export { MessageHandler };
