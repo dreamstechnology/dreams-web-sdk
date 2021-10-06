@@ -40,6 +40,6 @@ export default {
     // { file: pkg.main, format: 'umd', name },
     { file: pkg.main, format: 'cjs', name },
     { file: pkg.module, format: 'es' },
-    { file: pkg.browser, format: 'umd', name }
+    { file: pkg.browser, format: 'iife', name }
   ],
 };
