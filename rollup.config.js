@@ -10,7 +10,12 @@ const extensions = ['.js', '.ts'];
 const babelConfig = {
   babelHelpers: 'bundled',
   include: ['src/**/*'],
-  extensions
+  extensions,
+  targets: "defaults",
+  sourceMaps: true,
+  presets: [
+    ["@babel/preset-env", { useBuiltIns: "entry" }]
+  ]
 }
 
 export default {
@@ -35,6 +40,6 @@ export default {
     // { file: pkg.main, format: 'umd', name },
     { file: pkg.main, format: 'cjs', name },
     { file: pkg.module, format: 'es' },
-    { file: pkg.browser, format: 'iife', name }
+    { file: pkg.browser, format: 'umd', name }
   ],
 };
