@@ -1,4 +1,4 @@
-import DreamSDK from '../src/main';
+import DreamsSDK from '../src/main';
 
 afterEach(() => {
   document.getElementsByTagName('html')[0].innerHTML = '';
@@ -6,13 +6,13 @@ afterEach(() => {
 
 describe('#setup', () => {
   test('creates elements', () => {
-    const dreamSdk = new DreamSDK('http://www.example.com');
+    const sdk = new DreamsSDK('http://www.example.com');
     const div = document.createElement('div');
     const callbacks = {};
     div.setAttribute('id', 'id');
     document.body.appendChild(div);
 
-    dreamSdk.setup(callbacks, 'id');
+    sdk.setup(callbacks, 'id');
 
     const form = div.firstChild;
     const formInputLocale = form.firstChild;
@@ -28,25 +28,25 @@ describe('#setup', () => {
     expect(formInputToken.type).toBe('hidden');
     expect(formInputToken.name).toBe('token');
     expect(formInputToken.value).toBe('');
-    expect(dreamSdk.messageHandler).not.toBe(null);
+    expect(sdk.messageHandler).not.toBe(null);
   });
 });
 
 describe('#start', () => {
   test('submits the form and listens for events', () => {
-    const dreamSdk = new DreamSDK('url');
+    const sdk = new DreamsSDK('url');
     const div = document.createElement('div');
 
     div.setAttribute('id', 'id');
     document.body.appendChild(div);
-    dreamSdk.setup('token', 'id');
+    sdk.setup('token', 'id');
 
     const form = div.firstChild;
     const formSpy = jest.spyOn(form, 'submit')
                     .mockImplementation(() => {});
     const windowSpy = jest.spyOn(window, 'addEventListener');
 
-    dreamSdk.start('token', 'fr');
+    sdk.start('token', 'fr');
 
     const formInputLocale = form.firstChild;
     const formInputToken = form.lastChild;
@@ -61,8 +61,8 @@ describe('#start', () => {
   describe('prerequisites validation', () => {
     test('iframe presence', () => {
       const throwable = () => {
-        const dreamSdk = new DreamSDK('url');
-        dreamSdk.start('token');
+        const sdk = new DreamsSDK('url');
+        sdk.start('token');
       }
 
       expect(throwable).toThrow();
@@ -73,9 +73,9 @@ describe('#start', () => {
       document.body.appendChild(iframe)
 
       const throwable = () => {
-        const dreamSdk = new DreamSDK('url');
-        dreamSdk.iframe = iframe;
-        dreamSdk.start('token');
+        const sdk = new DreamsSDK('url');
+        sdk.iframe = iframe;
+        sdk.start('token');
       }
 
       expect(throwable).toThrow();
