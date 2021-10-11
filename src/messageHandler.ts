@@ -45,18 +45,27 @@ export class MessageHandler {
     }
   }
 
+  /**
+  * You can use this method if you have a need to manually update the token.
+  */
   postUpdateToken = (requestId: string, token: string) => {
     const message = this.buildMessage(messages.updateToken, requestId, token);
 
     this.postMessage(message);
   }
 
+  /**
+  * You can use this method if you have a need to manually inform the dreams app that account provision has initiated.
+  */
   postAccountProvisionInitiated = (requestId: string) => {
     const message = this.buildMessage(messages.accountProvisioned, requestId);
 
     this.postMessage(message);
   }
 
+  /**
+   * @param location the part of the dreams app where you want to take the user. You need to only pass the path.
+   */
   navigateTo = (location: string) => {
     const message = { event: messages.navigateTo, message: { location } };
 
@@ -92,10 +101,14 @@ export class MessageHandler {
   private postMessage = (message: any) => {
     console.debug('postMessage', message);
 
-    this.iframe.contentWindow.postMessage(JSON.stringify(message), this.apiUrl);
+    if (this.iframe.contentWindow) {
+      this.iframe.contentWindow.postMessage(JSON.stringify(message), this.apiUrl);
+    } else {
+      console.error('iframe has no content window!', this.iframe);
+    }
   }
 
-  private buildMessage = (event: messages, requestId: string, idToken: string = undefined) => ({
+  private buildMessage = (event: messages, requestId: string, idToken: string | undefined = undefined) => ({
     event, message: { requestId, idToken }
   })
 
