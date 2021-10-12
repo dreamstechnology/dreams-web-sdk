@@ -13,9 +13,9 @@ import { createForm, createIFrame, iframeName } from './util';
  */
 export class DreamsSDK {
   apiUrl: string;
-  form: HTMLFormElement | undefined;
-  iframe: HTMLIFrameElement | undefined;
-  messageHandler: MessageHandler | undefined;
+  form?: HTMLFormElement;
+  iframe?: HTMLIFrameElement;
+  messageHandler?: MessageHandler;
 
   constructor(apiUrl: string) {
     this.apiUrl = apiUrl;

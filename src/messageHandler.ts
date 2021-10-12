@@ -108,7 +108,7 @@ export class MessageHandler {
     }
   }
 
-  private buildMessage = (event: messages, requestId: string, idToken: string | undefined = undefined) => ({
+  private buildMessage = (event: messages, requestId: string, idToken?: string) => ({
     event, message: { requestId, idToken }
   })
 
