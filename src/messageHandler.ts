@@ -46,7 +46,7 @@ export class MessageHandler {
   }
 
   /**
-  * You can use this method if you have a need to manually update the token.
+  * You can use this method if you need to manually update the token.
   */
   postUpdateToken = (requestId: string, token: string) => {
     const message = this.buildMessage(messages.updateToken, requestId, token);
@@ -55,7 +55,7 @@ export class MessageHandler {
   }
 
   /**
-  * You can use this method if you have a need to manually inform the dreams app that account provision has initiated.
+  * You can use this method if you need to manually inform the dreams app that account provision has been initiated.
   */
   postAccountProvisionInitiated = (requestId: string) => {
     const message = this.buildMessage(messages.accountProvisioned, requestId);
@@ -64,7 +64,7 @@ export class MessageHandler {
   }
 
   /**
-   * @param location the part of the dreams app where you want to take the user. You need to only pass the path.
+   * @param location the part of the dreams app where you want to take the user. You have to only pass the path.
    */
   navigateTo = (location: string) => {
     const message = { event: messages.navigateTo, message: { location } };

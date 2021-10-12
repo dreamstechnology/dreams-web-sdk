@@ -22,9 +22,9 @@ export class DreamsSDK {
   }
 
   /**
-   * @param callbacks as time goes this object might contain more keys than right now. Think about that when writing your code.
-   * @param containerId you are free to specify your own value if that's needed. OTherwise leave the default.
-   * @param iframeClassName if you want the iframe to have a specific class, you can do it vie this param.
+   * @param callbacks as time goes this object might contain more keys. Think about that when writing your code.
+   * @param containerId you are free to specify your value if that's needed. Otherwise, leave the default.
+   * @param iframeClassName if you want the iframe to have a specific class, you can do it via this param.
    */
   setup(
     callbacks: ClientCallbacks,
@@ -51,7 +51,7 @@ export class DreamsSDK {
 
   /**
    * @param token  jwk token for the user
-   * @param locale this param partly determines which internationalisation will be used. Essentialy what language will be used when displaying texts in the iframe.
+   * @param locale determines the localisation configuration that will be applied.
    */
   start(token: string, locale: string) {
     if (!this.iframe) throw Error('there is no iframe specified!');
