@@ -1,7 +1,7 @@
 const commitAnalyzer = ["@semantic-release/commit-analyzer", {
   "preset": "angular",
   "releaseRules": [
-    {"type": "docs", "scope":"README", "release": "patch"},
+    {"type": "docs", "scope":"readme", "release": "patch"},
     {"type": "refactor", "release": "patch"},
     {"type": "style", "release": "patch"},
     {"type": "build", "release": "patch"}
