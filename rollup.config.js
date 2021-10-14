@@ -13,9 +13,6 @@ const babelConfig = {
   extensions,
   targets: "defaults",
   sourceMaps: true,
-  presets: [
-    ["@babel/preset-env", { useBuiltIns: "entry" }]
-  ]
 }
 
 export default {

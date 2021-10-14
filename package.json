@@ -23,6 +23,7 @@
     "@semantic-release/npm": "^8.0.0",
     "@semantic-release/release-notes-generator": "^10.0.2",
     "babel-jest": "^27.2.0",
+    "core-js": "3",
     "jest": "^27.2.0",
     "rollup": "^2.56.3",
     "semantic-release": "^18.0.0",
@@ -34,7 +35,7 @@
     "dev": "rollup -c -w",
     "test": "jest",
     "semantic-release": "semantic-release",
-    "semantic-release-test":  "semantic-release --dry-run --debug"
+    "semantic-release-test": "semantic-release --dry-run --debug"
   },
   "files": [
     "dist"
