@@ -1,0 +1,56 @@
+<!DOCTYPE html><html class="default no-js"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>dreams-web-sdk</title><meta name="description" content="Documentation for dreams-web-sdk"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">dreams-web-sdk</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1> dreams-web-sdk</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#dreams-web-sdk" id="dreams-web-sdk" style="color: inherit; text-decoration: none;">
+  <h1>Dreams Web SDK</h1>
+</a>
+
+<a href="#dependencies" id="dependencies" style="color: inherit; text-decoration: none;">
+  <h2>Dependencies</h2>
+</a>
+<p>To install dependencies run</p>
+<pre><code><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-0">install</span>
+</code></pre>
+<p>We use <a href="https://github.com/evilmartians/lefthook">lefthook</a>. Refer to their github page for installation instructions.</p>
+
+<a href="#testing" id="testing" style="color: inherit; text-decoration: none;">
+  <h2>Testing</h2>
+</a>
+<pre><code><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-0">test</span>
+</code></pre>
+<p>We use <a href="https://jestjs.io/">jest</a> for testing.</p>
+
+<a href="#building" id="building" style="color: inherit; text-decoration: none;">
+  <h2>Building</h2>
+</a>
+<p>To build distros run</p>
+<pre><code><span class="hl-0">yarn</span><span class="hl-1"> </span><span class="hl-0">run</span><span class="hl-1"> </span><span class="hl-0">build</span>
+</code></pre>
+<p>New distros are going to be created in the <code>dist</code> folder.</p>
+<p>For more info about building packages refer to <a href="https://rollupjs.org/guide/en/#overview">rollup webpage</a>.</p>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<pre><code class="language-html"><span class="hl-2">&lt;</span><span class="hl-3">div</span><span class="hl-1"> </span><span class="hl-4">id</span><span class="hl-1">=</span><span class="hl-5">&quot;dreams-web-sdk-container&quot;</span><span class="hl-2">&gt;&lt;/</span><span class="hl-3">div</span><span class="hl-2">&gt;</span><br/><br/><span class="hl-2">&lt;</span><span class="hl-3">script</span><span class="hl-6"> </span><span class="hl-4">src</span><span class="hl-6">=</span><span class="hl-5">&quot;path/to/dreams/sdk/js/file&quot;</span><span class="hl-2">&gt;</span><br/><span class="hl-6">  </span><span class="hl-7">var</span><span class="hl-6"> </span><span class="hl-0">callbacks</span><span class="hl-6"> </span><span class="hl-1">=</span><span class="hl-6"> {</span><br/><span class="hl-6">    </span><span class="hl-8">onIdTokenDidExpire</span><span class="hl-0">:</span><span class="hl-6"> </span><span class="hl-7">async</span><span class="hl-6"> () </span><span class="hl-7">=&gt;</span><span class="hl-6"> {</span><br/><span class="hl-6">      </span><span class="hl-7">const</span><span class="hl-6"> </span><span class="hl-9">resp</span><span class="hl-6"> </span><span class="hl-1">=</span><span class="hl-6"> </span><span class="hl-10">await</span><span class="hl-6"> </span><span class="hl-8">fetch</span><span class="hl-6">(</span><span class="hl-11">&#39;/token-expired-endpoint&#39;</span><span class="hl-6">);</span><br/><span class="hl-6">      </span><span class="hl-7">const</span><span class="hl-6"> </span><span class="hl-9">data</span><span class="hl-6"> </span><span class="hl-1">=</span><span class="hl-6"> </span><span class="hl-10">await</span><span class="hl-6"> </span><span class="hl-0">resp</span><span class="hl-6">.</span><span class="hl-8">json</span><span class="hl-6">();</span><br/><br/><span class="hl-6">      </span><span class="hl-10">return</span><span class="hl-6"> </span><span class="hl-0">data</span><span class="hl-6">.</span><span class="hl-0">token</span><span class="hl-6">;</span><br/><span class="hl-6">    },</span><br/><span class="hl-6">    </span><span class="hl-8">onAccountProvisionRequested</span><span class="hl-0">:</span><span class="hl-6"> () </span><span class="hl-7">=&gt;</span><span class="hl-6"> {</span><br/><span class="hl-6">      </span><span class="hl-10">await</span><span class="hl-6"> </span><span class="hl-8">fetch</span><span class="hl-6">(</span><span class="hl-11">&#39;/provision-account-enpoint&#39;</span><span class="hl-6">)</span><br/><span class="hl-6">    },</span><br/><span class="hl-6">    </span><span class="hl-8">onExitRequested</span><span class="hl-0">:</span><span class="hl-6"> () </span><span class="hl-7">=&gt;</span><span class="hl-6"> {</span><br/><span class="hl-6">      </span><span class="hl-0">window</span><span class="hl-6">.</span><span class="hl-0">location</span><span class="hl-6">.</span><span class="hl-0">href</span><span class="hl-6"> </span><span class="hl-1">=</span><span class="hl-6"> </span><span class="hl-11">&quot;http://example.com/some/path&quot;</span><br/><span class="hl-6">    }</span><br/><span class="hl-6">  }</span><br/><br/><span class="hl-6">  </span><span class="hl-7">var</span><span class="hl-6"> </span><span class="hl-0">sdk</span><span class="hl-6"> </span><span class="hl-1">=</span><span class="hl-6"> </span><span class="hl-7">new</span><span class="hl-6"> </span><span class="hl-8">DreamsWebSDK</span><span class="hl-6">(</span><span class="hl-11">&#39;https://dreams.api.endpoint&#39;</span><span class="hl-6">);</span><br/><br/><span class="hl-6">  </span><span class="hl-0">sdk</span><span class="hl-6">.</span><span class="hl-8">setup</span><span class="hl-6">(</span><span class="hl-0">callbacks</span><span class="hl-6">);</span><br/><span class="hl-6">  </span><span class="hl-0">sdk</span><span class="hl-6">.</span><span class="hl-8">start</span><span class="hl-6">(</span><span class="hl-0">user_jwk_token_value</span><span class="hl-6">, </span><span class="hl-11">&#39;en&#39;</span><span class="hl-6">);</span><br/><span class="hl-2">&lt;/</span><span class="hl-3">script</span><span class="hl-2">&gt;</span>
+</code></pre>
+
+<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+  <h2>Contributing</h2>
+</a>
+
+<a href="#commit-naming" id="commit-naming" style="color: inherit; text-decoration: none;">
+  <h3>Commit naming</h3>
+</a>
+<p>We use commitlint to make sure commit messages adhere to certain rules. These are:</p>
+<ul>
+<li><a href="https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type">Anglar Contribution Rules</a></li>
+<li><a href="https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification">Conventional Commit Rules</a></li>
+<li><a href="https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum">Commitlint Rules</a></li>
+</ul>
+<p>Semantic release takes care of automatically bumping release verions provided that we name commits correctly.
+<a href="https://github.com/semantic-release/semantic-release#commit-message-format">Here</a> you can find what constitutes a patch/feature/breaking release.</p>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h2>License</h2>
+</a>
+<p><a href="LICENSE">Mozilla Public License Version 2.0</a></p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/events.html">events</a></li><li class=" tsd-kind-module"><a href="modules/main.html">main</a></li><li class=" tsd-kind-module"><a href="modules/messageHandler.html">message<wbr/>Handler</a></li><li class=" tsd-kind-module"><a href="modules/util.html">util</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
