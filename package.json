@@ -33,7 +33,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "jest",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "semantic-release-test":  "semantic-release --dry-run --debug"
   },
   "files": [
     "dist"
