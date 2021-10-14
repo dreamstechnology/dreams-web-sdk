@@ -37,3 +37,12 @@ jobs:
           ./test-reporter-0.7.0-linux-amd64 before-build
           yarn test --coverage
           ./test-reporter-0.7.0-linux-amd64 after-build
+
+      - name: Build
+        run: yarn build
+
+      - name: Test Release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: yarn semantic-release-test
