@@ -2,7 +2,11 @@
 
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
+      - '!main'
 
 jobs:
   tests:
@@ -44,5 +48,5 @@ jobs:
       - name: Test Release
         env:
           NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn semantic-release-test
