@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/getdreams/dreams-web-sdk/compare/v0.1.4...v0.1.5) (2021-10-20)
+
+
+### Bug Fixes
+
+* **deps:** bump dev dependencies ([28e6544](https://github.com/getdreams/dreams-web-sdk/commit/28e65440dded7ca4dff0d75b53ca1f55250a7bda))
+
 ## [0.1.4](https://github.com/getdreams/dreams-web-sdk/compare/v0.1.3...v0.1.4) (2021-10-20)
 
 ## [0.1.3](https://github.com/getdreams/dreams-web-sdk/compare/v0.1.2...v0.1.3) (2021-10-06)
