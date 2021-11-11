@@ -15,8 +15,9 @@ describe('#setup', () => {
     sdk.setup(callbacks, 'id');
 
     const form = div.firstChild;
-    const formInputLocale = form.firstChild;
-    const formInputToken = form.lastChild;
+    const formInputLocale = form.querySelector("input[name='locale']");
+    const formInputToken = form.querySelector("input[name='token']");
+    const formInputLocation = form.querySelector("input[name='location']");
 
     expect(form.target).toBe('dreams-web-sdk-iframe');
     expect(form.method).toBe('post');
@@ -28,6 +29,9 @@ describe('#setup', () => {
     expect(formInputToken.type).toBe('hidden');
     expect(formInputToken.name).toBe('token');
     expect(formInputToken.value).toBe('');
+    expect(formInputLocation.type).toBe('hidden');
+    expect(formInputLocation.name).toBe('location');
+    expect(formInputLocation.value).toBe('');
     expect(sdk.messageHandler).not.toBe(null);
   });
 });
@@ -48,11 +52,13 @@ describe('#start', () => {
 
     sdk.start('token', 'fr');
 
-    const formInputLocale = form.firstChild;
-    const formInputToken = form.lastChild;
+    const formInputLocale = form.querySelector("input[name='locale']");
+    const formInputToken = form.querySelector("input[name='token']");
+    const formInputLocation = form.querySelector("input[name='location']");
 
     expect(formInputLocale.value).toBe('fr');
     expect(formInputToken.value).toBe('token');
+    expect(formInputLocation.value).toBe('');
     expect(formSpy).toHaveBeenCalled();
     expect(windowSpy).toHaveBeenCalled();
   });
