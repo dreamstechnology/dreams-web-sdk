@@ -53,7 +53,7 @@ export class DreamsSDK {
    * @param token  jwk token for the user
    * @param locale determines the localisation configuration that will be applied.
    */
-  start(token: string, locale: string, location: string) {
+  start(token: string, locale: string, location?: string) {
     if (!this.iframe) throw Error('there is no iframe specified!');
     if (!this.form) throw Error('there is no form specified!');
     if (!this.messageHandler) throw Error('there is no message handler specified!');
