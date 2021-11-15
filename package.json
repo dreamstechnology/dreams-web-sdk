@@ -36,7 +36,7 @@
     "test": "jest",
     "semantic-release": "semantic-release",
     "semantic-release-test": "semantic-release --dry-run --debug",
-    "docs": "typedoc src/*"
+    "docs": "typedoc --githubPages false src/*"
   },
   "files": [
     "dist"
