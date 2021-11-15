@@ -50,7 +50,7 @@ describe('#start', () => {
                     .mockImplementation(() => {});
     const windowSpy = jest.spyOn(window, 'addEventListener');
 
-    sdk.start('token', 'fr');
+    sdk.start('token', 'fr', 'marketplace');
 
     const formInputLocale = form.querySelector("input[name='locale']");
     const formInputToken = form.querySelector("input[name='token']");
@@ -58,7 +58,7 @@ describe('#start', () => {
 
     expect(formInputLocale.value).toBe('fr');
     expect(formInputToken.value).toBe('token');
-    expect(formInputLocation.value).toBe('');
+    expect(formInputLocation.value).toBe('marketplace');
     expect(formSpy).toHaveBeenCalled();
     expect(windowSpy).toHaveBeenCalled();
   });
