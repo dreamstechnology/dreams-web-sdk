@@ -4,7 +4,7 @@
 
 To install dependencies run
 
-```
+```shell
 yarn install
 ```
 
@@ -12,7 +12,7 @@ We use [lefthook](https://github.com/evilmartians/lefthook). Refer to their gith
 
 ## Testing
 
-```
+```shell
 yarn test
 ```
 
@@ -22,7 +22,7 @@ We use [jest](https://jestjs.io/) for testing.
 
 To build distros run
 
-```
+```shell
 yarn run build
 ```
 
