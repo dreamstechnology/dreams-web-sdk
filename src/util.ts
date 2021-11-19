@@ -24,8 +24,14 @@ export const createForm = (
   formInputToken.setAttribute('name', tokenProps.name);
   formInputToken.setAttribute('value', tokenProps.value);
 
+  const formInputLocation = document.createElement('input');
+  formInputLocation.setAttribute('type', 'hidden');
+  formInputLocation.setAttribute('name', 'location');
+  formInputLocation.setAttribute('value', '');
+
   form.appendChild(formInputLocale);
   form.appendChild(formInputToken);
+  form.appendChild(formInputLocation);
 
   return form;
 };

@@ -50,10 +50,11 @@ export class DreamsSDK {
   }
 
   /**
-   * @param token  jwk token for the user
+   * @param token jwk token for the user
    * @param locale determines the localisation configuration that will be applied.
+   * @param location path to which the user will be redirected to after the token is verified
    */
-  start(token: string, locale: string) {
+  start(token: string, locale: string, location?: string) {
     if (!this.iframe) throw Error('there is no iframe specified!');
     if (!this.form) throw Error('there is no form specified!');
     if (!this.messageHandler) throw Error('there is no message handler specified!');
@@ -65,6 +66,12 @@ export class DreamsSDK {
     const localeInput: HTMLInputElement = this.form.querySelector("input[name='locale']") as unknown as HTMLInputElement;
 
     if (localeInput) localeInput.setAttribute('value', locale);
+
+    const locationInput: HTMLInputElement = (this.form.querySelector(
+      "input[name='location']",
+    ) as unknown) as HTMLInputElement;
+
+    if (location) locationInput.setAttribute('value', location);
 
     this.messageHandler.listen();
     this.form.submit();
