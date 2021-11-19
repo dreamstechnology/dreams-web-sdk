@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/getdreams/dreams-web-sdk/compare/v0.1.5...v0.2.0) (2021-11-19)
+
+
+### Features
+
+* pass location param as an input in the form ([8a0e174](https://github.com/getdreams/dreams-web-sdk/commit/8a0e174f3895a3c8110af18a8d3895b3dc639dad))
+
 ## [0.1.5](https://github.com/getdreams/dreams-web-sdk/compare/v0.1.4...v0.1.5) (2021-10-20)
 
 
