@@ -1,8 +1,9 @@
-import messages, { ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
+import messages, { ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent, InvestmentAccountProvisionRequestedEvent } from './events';
 
 export type ClientCallbacks = {
   onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
   onAccountProvisionRequested?: (event: AccountProvisionRequestedEvent) => Promise<any>;
+  onInvestmentAccountProvisionRequested?: (event: InvestmentAccountProvisionRequestedEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
   onShare: (event: ShareEvent) => Promise<any>;
 };
@@ -34,6 +35,9 @@ export class MessageHandler {
       case 'onAccountProvisionRequested':
         this.onAccountProvisionRequested(event);
         break;
+      case 'onInvestmentAccountProvisionRequested':
+        this.onInvestmentAccountProvisionRequested(event)
+        break;
       case 'onExitRequested':
         await this.callbacks.onExitRequested(event);
         break;
@@ -59,6 +63,16 @@ export class MessageHandler {
   */
   postAccountProvisionInitiated = (requestId: string) => {
     const message = this.buildMessage(messages.accountProvisioned, requestId);
+
+    this.postMessage(message);
+  }
+
+  /**
+  * You can use this method if you need to manually inform the dreams app that investment account provision has been initiated.
+  * @param requestId the param you have received together with the investmentAccountProvisionInitiated message
+  */
+   postInvetmentAccountProvisionInitiated = (requestId: string) => {
+    const message = this.buildMessage(messages.investmentAccountProvisionInitiated, requestId);
 
     this.postMessage(message);
   }
@@ -91,6 +105,17 @@ export class MessageHandler {
       this.postAccountProvisionInitiated(event.message.requestId);
     } catch(err) {
       console.error('onAccountProvisionRequested error: ', err);
+    }
+  }
+
+  private onInvestmentAccountProvisionRequested = async (event: InvestmentAccountProvisionRequestedEvent) => {
+    if (!this.callbacks.onInvestmentAccountProvisionRequested) return;
+
+    try {
+      await this.callbacks.onInvestmentAccountProvisionRequested(event);
+      this.postInvetmentAccountProvisionInitiated(event.message.requestId);
+    } catch(err) {
+      console.error('onInvestmentAccountProvisionRequested error: ', err);
     }
   }
 

@@ -67,9 +67,7 @@ export class DreamsSDK {
 
     if (localeInput) localeInput.setAttribute('value', locale);
 
-    const locationInput: HTMLInputElement = (this.form.querySelector(
-      "input[name='location']",
-    ) as unknown) as HTMLInputElement;
+    const locationInput: HTMLInputElement = this.form.querySelector("input[name='location']")as unknown as HTMLInputElement;
 
     if (location) locationInput.setAttribute('value', location);
 

@@ -3,6 +3,7 @@ enum messages {
   // when what we mean is "accountProvisionInitiated". But that's the current
   // name that is being used by the dreams backend
   accountProvisioned = 'accountProvisioned',
+  investmentAccountProvisionInitiated = 'investmentAccountProvisionInitiated',
   updateToken = 'updateToken',
   navigateTo = 'navigateTo'
 }
@@ -34,6 +35,10 @@ type AccountProvisionRequestedEvent =  Message & {
   event: 'onAccountProvisionRequested';
 }
 
+type InvestmentAccountProvisionRequestedEvent =  Message & {
+  event: 'onInvestmentAccountProvisionRequested';
+}
+
 type ShareEvent = ShareMessage & {
   event: 'onShare';
 };
@@ -44,6 +49,7 @@ type ExitRequestedEvent = {
 
 type DreamsEvent = IdTokenDidExpireEvent |
                    AccountProvisionRequestedEvent |
+                   InvestmentAccountProvisionRequestedEvent |
                    ExitRequestedEvent |
                    ShareEvent;
 
@@ -51,6 +57,7 @@ export default messages;
 export {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
+  InvestmentAccountProvisionRequestedEvent,
   ExitRequestedEvent,
   ShareEvent,
   DreamsEvent,

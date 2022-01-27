@@ -42,6 +42,7 @@ describe('#onMessage', () => {
     let postMessageSpy;
     let onIdTokenDidExpire;
     let onAccountProvisionRequested;
+    let onInvestmentAccountProvisionRequested;
     let onExitRequested;
     let onShare;
     let callbacks;
@@ -52,9 +53,10 @@ describe('#onMessage', () => {
       postMessageSpy = jest.spyOn(iframe.contentWindow, 'postMessage');
       onIdTokenDidExpire = jest.fn(() => Promise.resolve("token"));
       onAccountProvisionRequested = jest.fn(() => Promise.resolve());
+      onInvestmentAccountProvisionRequested = jest.fn(() => Promise.resolve());
       onExitRequested = jest.fn(() => Promise.resolve());
       onShare = jest.fn(() => Promise.resolve());
-      callbacks = { onAccountProvisionRequested, onIdTokenDidExpire, onExitRequested, onShare }
+      callbacks = { onAccountProvisionRequested, onIdTokenDidExpire, onExitRequested, onShare, onInvestmentAccountProvisionRequested }
     });
 
     describe("onIdTokenDidExpire", () => {
@@ -125,6 +127,33 @@ describe('#onMessage', () => {
 
           expect(onAccountProvisionRequested).toHaveBeenCalled();
           expect(spy).toHaveBeenCalledWith('onAccountProvisionRequested error: ', 'nope!');
+        });
+      });
+    });
+
+    describe("onInvestmentAccountProvisionRequested", () => {
+      describe("callback promise fulfills", () => {
+        test("behaves correctly", async () => {
+          const handler = new MessageHandler(iframe, 'http://www.example.com/123', callbacks);
+          const message = buildMessage('onInvestmentAccountProvisionRequested');
+
+          await handler.onMessage(message);
+
+          expect(postMessageSpy).toHaveBeenCalled();
+        });
+      })
+
+      describe("callback promise rejects", () => {
+        test("behaves correctly", async () => {
+          onInvestmentAccountProvisionRequested = jest.fn(() => Promise.reject("nope!"));
+          const handler = new MessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onInvestmentAccountProvisionRequested });
+          const message = buildMessage('onInvestmentAccountProvisionRequested');
+          const spy = jest.spyOn(global.console, 'error');
+
+          await handler.onMessage(message);
+
+          expect(onInvestmentAccountProvisionRequested).toHaveBeenCalled();
+          expect(spy).toHaveBeenCalledWith('onInvestmentAccountProvisionRequested error: ', 'nope!');
         });
       });
     });

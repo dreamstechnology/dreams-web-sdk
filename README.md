@@ -61,6 +61,47 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
 </script>
 ```
 
+## Manually sending a message
+
+```html
+<div id="dreams-web-sdk-container"></div>
+
+<script src="path/to/dreams/sdk/js/file">
+  var callbacks = {
+    onIdTokenDidExpire: async () => {
+      const resp = await fetch("/token-expired-endpoint");
+      const data = await resp.json();
+
+      return data.token;
+    },
+    onAccountProvisionRequested: () => {
+      await fetch("/provision-account-enpoint")
+    },
+    onExitRequested: () => {
+      window.location.href = "http://example.com/some/path"
+    }
+  }
+
+  var sdk = new DreamsWebSDK("https://dreams.api.endpoint");
+  var messageHandler = sdk.setup(callbacks);
+
+  sdk.start(user_jwk_token_value, "en");
+
+  messageHandler.navigateTo('marketplace)
+</script>
+```
+
+### message types
+
+currently we can:
+
+- `postUpdateToken` a response to `onIdTokenDidExpire` message
+- `postAccountProvisionInitiated` a response to `onAccountProvisionRequested` message
+- `postInvetmentAccountProvisionInitiated` a response to `onInvestmentAccountProvisionRequested` message
+- `navigateTo` that has no corresponidng dreams side message
+
+see the docs about their usage.
+
 ## Contributing
 
 ### Commit naming
