@@ -97,7 +97,7 @@ currently we can:
 
 - `postUpdateToken` a response to `onIdTokenDidExpire` message
 - `postAccountProvisionInitiated` a response to `onAccountProvisionRequested` message
-- `postInvetmentAccountProvisionInitiated` a response to `onInvestmentAccountProvisionRequested` message
+- `postInvestmentAccountProvisionInitiated` a response to `onInvestmentAccountProvisionRequested` message
 - `navigateTo` that has no corresponidng dreams side message
 
 see the docs about their usage.

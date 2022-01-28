@@ -71,7 +71,7 @@ export class MessageHandler {
   * You can use this method if you need to manually inform the dreams app that investment account provision has been initiated.
   * @param requestId the param you have received together with the investmentAccountProvisionInitiated message
   */
-   postInvetmentAccountProvisionInitiated = (requestId: string) => {
+   postInvestmentAccountProvisionInitiated = (requestId: string) => {
     const message = this.buildMessage(messages.investmentAccountProvisionInitiated, requestId);
 
     this.postMessage(message);
@@ -113,7 +113,7 @@ export class MessageHandler {
 
     try {
       await this.callbacks.onInvestmentAccountProvisionRequested(event);
-      this.postInvetmentAccountProvisionInitiated(event.message.requestId);
+      this.postInvestmentAccountProvisionInitiated(event.message.requestId);
     } catch(err) {
       console.error('onInvestmentAccountProvisionRequested error: ', err);
     }
