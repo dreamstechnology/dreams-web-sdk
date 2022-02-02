@@ -1,4 +1,11 @@
-import messages, { ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent, InvestmentAccountProvisionRequestedEvent } from './events';
+import messages, {
+  ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent, InvestmentAccountProvisionRequestedEvent,
+  InvestmentAccountProvisionMessage, PartnerEvent,
+  UpdateTokenEvent,
+  NavigateToEvent,
+  AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedEvent
+} from './events';
 
 export type ClientCallbacks = {
   onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
@@ -52,38 +59,54 @@ export class MessageHandler {
   /**
   * You can use this method if you need to manually update the token.
   */
-  postUpdateToken = (requestId: string, token: string) => {
-    const message = this.buildMessage(messages.updateToken, requestId, token);
+  postUpdateToken = (requestId: string, idToken: string) => {
+    const event: UpdateTokenEvent = {
+      event: messages.updateToken,
+      message: { requestId, idToken }
+    }
 
-    this.postMessage(message);
+    this.postMessage(event);
   }
 
   /**
   * You can use this method if you need to manually inform the dreams app that account provision has been initiated.
   */
   postAccountProvisionInitiated = (requestId: string) => {
-    const message = this.buildMessage(messages.accountProvisioned, requestId);
+    const event: AccountProvisionInitiatedEvent = {
+      event: messages.accountProvisionInitiated,
+      message: { requestId }
+    }
 
-    this.postMessage(message);
+    this.postMessage(event);
   }
 
   /**
   * You can use this method if you need to manually inform the dreams app that investment account provision has been initiated.
-  * @param requestId the param you have received together with the investmentAccountProvisionInitiated message
+  * @param message
   */
-   postInvestmentAccountProvisionInitiated = (requestId: string) => {
-    const message = this.buildMessage(messages.investmentAccountProvisionInitiated, requestId);
+  postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionMessage) => {
+    const event: InvestmentAccountProvisionInitiatedEvent = {
+      event: messages.investmentAccountProvisionInitiated,
+      message: {
+        requestId: message.requestId,
+        dreamId: message.dreamId,
+        accountId: message.accountId
+      }
+    }
 
-    this.postMessage(message);
+    this.postMessage(event);
   }
 
   /**
    * @param location the part of the dreams app where you want to take the user. You have to only pass the path.
    */
   navigateTo = (location: string) => {
-    const message = { event: messages.navigateTo, message: { location } };
+    const event: NavigateToEvent = {
+      event: messages.navigateTo,
+      message: { location }
+    }
 
-    this.postMessage(message);
+    this.postMessage(event);
   }
 
   private onIdTokenDidExpire = async (event: IdTokenDidExpireEvent) => {
@@ -113,7 +136,7 @@ export class MessageHandler {
 
     try {
       await this.callbacks.onInvestmentAccountProvisionRequested(event);
-      this.postInvestmentAccountProvisionInitiated(event.message.requestId);
+      this.postInvestmentAccountProvisionInitiated(event.message);
     } catch(err) {
       console.error('onInvestmentAccountProvisionRequested error: ', err);
     }
@@ -123,7 +146,7 @@ export class MessageHandler {
     if (this.callbacks.onShare) await this.callbacks.onShare(event);
   }
 
-  private postMessage = (message: any) => {
+  private postMessage = (message: PartnerEvent) => {
     console.debug('postMessage', message);
 
     if (this.iframe.contentWindow) {
