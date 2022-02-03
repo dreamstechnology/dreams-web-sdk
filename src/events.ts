@@ -58,14 +58,14 @@ type DreamsEvent = IdTokenDidExpireEvent |
                    ShareEvent;
 
 type AccountProvisionInitiatedEvent = {
-  event: 'accountProvisioned';
+  event: messages.accountProvisionInitiated;
   message: {
     requestId: string;
   }
 }
 
 type InvestmentAccountProvisionInitiatedEvent = {
-  event: 'investmentAccountProvisionInitiated';
+  event: messages.investmentAccountProvisionInitiated;
   message: {
     requestId: string;
     dreamId?: string;
@@ -79,12 +79,12 @@ type UpdateTokenMessage = {
 }
 
 type UpdateTokenEvent = {
-  event: 'updateToken';
+  event: messages.updateToken;
   message: UpdateTokenMessage
 }
 
 type NavigateToEvent = {
-  event: 'navigateTo';
+  event: messages.navigateTo;
   message: {
     location: string;
   }
