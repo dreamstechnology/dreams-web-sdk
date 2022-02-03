@@ -4,7 +4,9 @@ import messages, {
   UpdateTokenEvent,
   NavigateToEvent,
   AccountProvisionInitiatedEvent,
-  InvestmentAccountProvisionInitiatedEvent
+  InvestmentAccountProvisionInitiatedEvent,
+  Message,
+  UpdateTokenMessage
 } from './events';
 
 export type ClientCallbacks = {
@@ -29,6 +31,11 @@ export class MessageHandler {
 
   listen = () => window.addEventListener('message', this.onMessage);
 
+  /*
+  * This method handles all possible messages coming from dreams app.
+  * For each type of message an appropriate function defined in the callbacks has to be added.
+  * Check {@linkcode ClientCallbacks}.
+  */
   onMessage = async (message: any) => {
     console.debug('onMessage: ', message);
     const event = this.parseEvent(message);
@@ -59,10 +66,10 @@ export class MessageHandler {
   /**
   * You can use this method if you need to manually update the token.
   */
-  postUpdateToken = (requestId: string, idToken: string) => {
+  postUpdateToken = (message: UpdateTokenMessage) => {
     const event: UpdateTokenEvent = {
       event: messages.updateToken,
-      message: { requestId, idToken }
+      message
     }
 
     this.postMessage(event);
@@ -71,10 +78,10 @@ export class MessageHandler {
   /**
   * You can use this method if you need to manually inform the dreams app that account provision has been initiated.
   */
-  postAccountProvisionInitiated = (requestId: string) => {
+  postAccountProvisionInitiated = (message: Message) => {
     const event: AccountProvisionInitiatedEvent = {
       event: messages.accountProvisionInitiated,
-      message: { requestId }
+      message
     }
 
     this.postMessage(event);
@@ -82,24 +89,22 @@ export class MessageHandler {
 
   /**
   * You can use this method if you need to manually inform the dreams app that investment account provision has been initiated.
-  * @param message
+  * DreamId should match the one received initially with the onInvestmentAccountProvisionRequested event.
+  * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
+  * to/from an account it will use this value to refer to that account.
   */
   postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionMessage) => {
     const event: InvestmentAccountProvisionInitiatedEvent = {
       event: messages.investmentAccountProvisionInitiated,
-      message: {
-        requestId: message.requestId,
-        dreamId: message.dreamId,
-        accountId: message.accountId
-      }
+      message
     }
 
     this.postMessage(event);
   }
 
   /**
-   * @param location the part of the dreams app where you want to take the user. You have to only pass the path.
-   */
+  * @param location the part of the dreams app where you want to take the user to. You have to only pass the path.
+  */
   navigateTo = (location: string) => {
     const event: NavigateToEvent = {
       event: messages.navigateTo,
@@ -114,7 +119,8 @@ export class MessageHandler {
 
     try {
       const token: string = await this.callbacks.onIdTokenDidExpire(event);
-      this.postUpdateToken(event.message.requestId, token);
+      const msg = { requestId: event.message.requestId, idToken: token };
+      this.postUpdateToken(msg);
     } catch(err) {
       console.error('onIdTokenDidExpire error: ', err);
     }
@@ -125,7 +131,7 @@ export class MessageHandler {
 
     try {
       await this.callbacks.onAccountProvisionRequested(event);
-      this.postAccountProvisionInitiated(event.message.requestId);
+      this.postAccountProvisionInitiated(event.message);
     } catch(err) {
       console.error('onAccountProvisionRequested error: ', err);
     }
@@ -155,10 +161,6 @@ export class MessageHandler {
       console.error('iframe has no content window!', this.iframe);
     }
   }
-
-  private buildMessage = (event: messages, requestId: string, idToken?: string) => ({
-    event, message: { requestId, idToken }
-  })
 
   private parseEvent = (message: any): DreamsEvent | null => {
     try {

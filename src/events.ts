@@ -27,11 +27,6 @@ type InvestmentAccountProvisionMessage = Message & {
   dreamId: string;
 }
 
-type MessageEvent = {
-  event: messages;
-  message: Message;
-}
-
 type IdTokenDidExpireEvent = {
   event: 'onIdTokenDidExpire';
   message: TokenDidExpireMessage;
@@ -78,12 +73,14 @@ type InvestmentAccountProvisionInitiatedEvent = {
   }
 }
 
+type UpdateTokenMessage = {
+  requestId: string;
+  idToken: string;
+}
+
 type UpdateTokenEvent = {
   event: 'updateToken';
-  message: {
-    requestId: string;
-    idToken: string;
-  }
+  message: UpdateTokenMessage
 }
 
 type NavigateToEvent = {
@@ -107,10 +104,10 @@ export {
   ExitRequestedEvent,
   ShareEvent,
   DreamsEvent,
-  MessageEvent,
   Message,
   ShareMessage,
   InvestmentAccountProvisionMessage,
+  UpdateTokenMessage,
   NavigateToEvent,
   AccountProvisionInitiatedEvent,
   InvestmentAccountProvisionInitiatedEvent,
