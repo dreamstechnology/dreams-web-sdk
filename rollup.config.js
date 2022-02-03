@@ -5,28 +5,23 @@ import pkg from './package.json';
 import typescript from '@rollup/plugin-typescript';
 
 const name = 'DreamsWebSDK';
-const mainFields = ['main', 'module', 'browser']
-const extensions = ['.js', '.ts'];
+const extensions = ['.ts'];
 const babelConfig = {
-  babelHelpers: 'bundled',
   include: ['src/**/*'],
   extensions,
-  targets: "defaults",
-  sourceMaps: true,
 }
 
 export default {
   input: './src/main.ts',
   external: [],
   plugins: [
-    resolve({ extensions, mainFields }),
+    resolve({ extensions }),
     commonjs(),
     babel(babelConfig),
     typescript()
   ],
-
   output: [
-    { file: pkg.main, format: 'cjs', name },
-    { file: pkg.module, format: 'es' },
+    { file: pkg.main, format: 'cjs', name, sourcemap: true },
+    { file: pkg.module, format: 'es', sourcemap: true },
   ],
 };
