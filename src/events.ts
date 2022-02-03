@@ -1,4 +1,4 @@
-enum messages {
+enum partnerEvents {
   // It's really unfortunate that we call this event "accountProvisioned",
   // when what we mean is "accountProvisionInitiated". But that's the current
   // name that is being used by the dreams backend
@@ -58,14 +58,14 @@ type DreamsEvent = IdTokenDidExpireEvent |
                    ShareEvent;
 
 type AccountProvisionInitiatedEvent = {
-  event: messages.accountProvisionInitiated;
+  name: partnerEvents.accountProvisionInitiated;
   message: {
     requestId: string;
   }
 }
 
 type InvestmentAccountProvisionInitiatedEvent = {
-  event: messages.investmentAccountProvisionInitiated;
+  name: partnerEvents.investmentAccountProvisionInitiated;
   message: {
     requestId: string;
     dreamId?: string;
@@ -79,12 +79,12 @@ type UpdateTokenMessage = {
 }
 
 type UpdateTokenEvent = {
-  event: messages.updateToken;
+  name: partnerEvents.updateToken;
   message: UpdateTokenMessage
 }
 
 type NavigateToEvent = {
-  event: messages.navigateTo;
+  name: partnerEvents.navigateTo;
   message: {
     location: string;
   }
@@ -95,7 +95,7 @@ type PartnerEvent = NavigateToEvent |
                     InvestmentAccountProvisionInitiatedEvent |
                     UpdateTokenEvent;
 
-export default messages;
+export default partnerEvents;
 
 export {
   IdTokenDidExpireEvent,

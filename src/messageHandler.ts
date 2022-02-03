@@ -1,4 +1,4 @@
-import messages, {
+import partnerEvents, {
   ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent, InvestmentAccountProvisionRequestedEvent,
   InvestmentAccountProvisionMessage, PartnerEvent,
   UpdateTokenEvent,
@@ -68,7 +68,7 @@ export class MessageHandler {
   */
   postUpdateToken = (message: UpdateTokenMessage) => {
     const event: UpdateTokenEvent = {
-      event: messages.updateToken,
+      name: partnerEvents.updateToken,
       message
     }
 
@@ -80,7 +80,7 @@ export class MessageHandler {
   */
   postAccountProvisionInitiated = (message: Message) => {
     const event: AccountProvisionInitiatedEvent = {
-      event: messages.accountProvisionInitiated,
+      name: partnerEvents.accountProvisionInitiated,
       message
     }
 
@@ -95,7 +95,7 @@ export class MessageHandler {
   */
   postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionMessage) => {
     const event: InvestmentAccountProvisionInitiatedEvent = {
-      event: messages.investmentAccountProvisionInitiated,
+      name: partnerEvents.investmentAccountProvisionInitiated,
       message
     }
 
@@ -107,7 +107,7 @@ export class MessageHandler {
   */
   navigateTo = (location: string) => {
     const event: NavigateToEvent = {
-      event: messages.navigateTo,
+      name: partnerEvents.navigateTo,
       message: { location }
     }
 
