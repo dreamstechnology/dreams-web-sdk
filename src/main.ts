@@ -1,6 +1,22 @@
 import { MessageHandler, ClientCallbacks } from './messageHandler';
 import { createForm, createIFrame, iframeName } from './util';
-
+import {
+  IdTokenDidExpireEvent,
+  AccountProvisionRequestedEvent,
+  InvestmentAccountProvisionRequestedEvent,
+  ExitRequestedEvent,
+  ShareEvent,
+  DreamsEvent,
+  Message,
+  ShareMessage,
+  InvestmentAccountProvisionMessage,
+  UpdateTokenMessage,
+  NavigateToEvent,
+  AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedEvent,
+  UpdateTokenEvent,
+  PartnerEvent,
+} from './events'
 /**
  * DreamSDK is an utility class responsible for setting up and listening
  * to messages being exchanged between the your context and Dreams iframe.
@@ -11,7 +27,7 @@ import { createForm, createIFrame, iframeName } from './util';
  * sdk.start(jwk_token, locale);
  * ```
  */
-export class DreamsSDK {
+export default class DreamsSDK {
   apiUrl: string;
   form?: HTMLFormElement;
   iframe?: HTMLIFrameElement;
@@ -32,17 +48,17 @@ export class DreamsSDK {
     iframeClassName: string = iframeName) {
     if (!this.apiUrl) throw Error('there is no api url specified!');
 
-    const dreamDiv = document.getElementById(containerId);
+    const dreamdDiv = document.getElementById(containerId);
 
-    if (!dreamDiv) throw Error("can't find dreams web sdk container");
+    if (!dreamdDiv) throw Error("can't find dreams web sdk container");
 
     const formTargetUrl = `${this.apiUrl}/users/verify_token`;
 
     this.form = createForm(formTargetUrl);
     this.iframe = createIFrame(iframeClassName);
 
-    dreamDiv.appendChild(this.form);
-    dreamDiv.appendChild(this.iframe);
+    dreamdDiv.appendChild(this.form);
+    dreamdDiv.appendChild(this.iframe);
 
     this.messageHandler = new MessageHandler(this.iframe, this.apiUrl, callbacks);
 
@@ -51,7 +67,7 @@ export class DreamsSDK {
 
   /**
    * @param token jwk token for the user
-   * @param locale determines the localization configuration that will be applied.
+   * @param locale determines the localisation configuration that will be applied.
    * @param location path to which the user will be redirected to after the token is verified
    */
   start(token: string, locale: string, location?: string) {
@@ -67,7 +83,9 @@ export class DreamsSDK {
 
     if (localeInput) localeInput.setAttribute('value', locale);
 
-    const locationInput: HTMLInputElement = this.form.querySelector("input[name='location']")as unknown as HTMLInputElement;
+    const locationInput: HTMLInputElement = (this.form.querySelector(
+      "input[name='location']",
+    ) as unknown) as HTMLInputElement;
 
     if (location) locationInput.setAttribute('value', location);
 
@@ -76,4 +94,21 @@ export class DreamsSDK {
   }
 }
 
-export { MessageHandler };
+export {
+  MessageHandler,
+  IdTokenDidExpireEvent,
+  AccountProvisionRequestedEvent,
+  InvestmentAccountProvisionRequestedEvent,
+  ExitRequestedEvent,
+  ShareEvent,
+  DreamsEvent,
+  Message,
+  ShareMessage,
+  InvestmentAccountProvisionMessage,
+  UpdateTokenMessage,
+  NavigateToEvent,
+  AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedEvent,
+  UpdateTokenEvent,
+  PartnerEvent,
+};
