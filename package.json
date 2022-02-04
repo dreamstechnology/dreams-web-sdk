@@ -4,6 +4,7 @@
   "version": "0.0.0-development",
   "main": "dist/cjs/dreams-web-sdk.js",
   "module": "dist/esm/dreams-web-sdk.js",
+  "types": "dist/types/main.d.ts",
   "dependencies": {},
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.6",
@@ -32,7 +33,9 @@
     "typescript": "^4.4.3"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build-types": "tsc --emitDeclarationOnly",
+    "build-js": "rollup -c",
+    "build": "yarn build-types && yarn build-js",
     "dev": "rollup -c -w",
     "test": "jest",
     "semantic-release": "semantic-release",
