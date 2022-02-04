@@ -1,18 +1,13 @@
 import partnerEvents, {
   ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent, InvestmentAccountProvisionRequestedEvent,
-  InvestmentAccountProvisionMessage, PartnerEvent,
-  UpdateTokenEvent,
-  NavigateToEvent,
-  AccountProvisionInitiatedEvent,
-  InvestmentAccountProvisionInitiatedEvent,
-  Message,
-  UpdateTokenMessage
+  InvestmentAccountProvisionRequestedMessage, PartnerEvent, UpdateTokenEvent, NavigateToEvent, AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedEvent, Message, UpdateTokenMessage
 } from './events';
 
 export type ClientCallbacks = {
   onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
   onAccountProvisionRequested?: (event: AccountProvisionRequestedEvent) => Promise<any>;
-  onInvestmentAccountProvisionRequested?: (event: InvestmentAccountProvisionRequestedEvent) => Promise<InvestmentAccountProvisionMessage>;
+  onInvestmentAccountProvisionRequested?: (event: InvestmentAccountProvisionRequestedEvent) => Promise<InvestmentAccountProvisionRequestedMessage>;
   onShare?: (event: ShareEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
 };
@@ -93,7 +88,7 @@ export class MessageHandler {
   * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
   * to/from an account it will use this value to refer to that account.
   */
-  postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionMessage) => {
+  postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionRequestedMessage) => {
     const event: InvestmentAccountProvisionInitiatedEvent = {
       name: partnerEvents.investmentAccountProvisionInitiated,
       message
