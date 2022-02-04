@@ -4,7 +4,7 @@ import partnerEvents, {
   InvestmentAccountProvisionInitiatedEvent, Message, UpdateTokenMessage
 } from './events';
 
-export type ClientCallbacks = {
+type ClientCallbacks = {
   onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
   onAccountProvisionRequested?: (event: AccountProvisionRequestedEvent) => Promise<any>;
   onInvestmentAccountProvisionRequested?: (event: InvestmentAccountProvisionRequestedEvent) => Promise<InvestmentAccountProvisionRequestedMessage>;
@@ -12,7 +12,7 @@ export type ClientCallbacks = {
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
 };
 
-export class MessageHandler {
+class MessageHandler {
   iframe: HTMLIFrameElement;
   apiUrl: string;
   callbacks: ClientCallbacks;
@@ -170,3 +170,6 @@ export class MessageHandler {
     if (!apiUrl) throw Error('Invalid parameters: dreamsApiEndpoint must be specified');
   }
 }
+
+export default MessageHandler;
+export { ClientCallbacks };

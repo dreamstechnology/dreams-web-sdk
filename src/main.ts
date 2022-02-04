@@ -1,4 +1,4 @@
-import { MessageHandler, ClientCallbacks } from './messageHandler';
+import MessageHandler, { ClientCallbacks } from './messageHandler';
 import { createForm, createIFrame, iframeName } from './util';
 import {
   IdTokenDidExpireEvent,
@@ -111,4 +111,5 @@ export {
   InvestmentAccountProvisionInitiatedEvent,
   UpdateTokenEvent,
   PartnerEvent,
+  ClientCallbacks,
 };
