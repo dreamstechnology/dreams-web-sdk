@@ -1,3 +1,5 @@
+## [0.2.2](https://github.com/dreamstechnology/dreams-web-sdk/compare/v0.2.1...v0.2.2) (2022-02-04)
+
 ## [0.2.1](https://github.com/dreamstechnology/dreams-web-sdk/compare/v0.2.0...v0.2.1) (2022-01-21)
 
 # [0.2.0](https://github.com/getdreams/dreams-web-sdk/compare/v0.1.5...v0.2.0) (2021-11-19)
