@@ -67,7 +67,7 @@ export default class DreamsSDK {
 
   /**
    * @param token jwk token for the user
-   * @param locale determines the localisation configuration that will be applied.
+   * @param locale determines the localization configuration that will be applied.
    * @param location path to which the user will be redirected to after the token is verified
    */
   start(token: string, locale: string, location?: string) {

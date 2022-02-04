@@ -67,21 +67,7 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
 <div id="dreams-web-sdk-container"></div>
 
 <script src="path/to/dreams/sdk/js/file">
-  var callbacks = {
-    onIdTokenDidExpire: async () => {
-      const resp = await fetch("/token-endpoint");
-      const data = await resp.json();
-
-      return data.token;
-    },
-    onAccountProvisionRequested: () => {
-      await fetch("/provision-account-endpoint")
-    },
-    onExitRequested: () => {
-      window.location.href = "http://example.com/some/path"
-    }
-  }
-
+  var callbacks = {}
   var sdk = new DreamsWebSDK("https://dreams.api.endpoint");
   var messageHandler = sdk.setup(callbacks);
 
