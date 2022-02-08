@@ -84,7 +84,6 @@ class MessageHandler {
 
   /**
   * You can use this method if you need to manually inform the dreams app that investment account provision has been initiated.
-  * DreamId should match the one received initially with the onInvestmentAccountProvisionRequested event.
   * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
   * to/from an account it will use this value to refer to that account.
   */

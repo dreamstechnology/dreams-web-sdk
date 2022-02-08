@@ -22,9 +22,12 @@ type TokenDidExpireMessage = Message & {
   idToken: string;
 }
 
+/**
+* AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
+* to/from an account it will use this value to refer to that account.
+*/
 type InvestmentAccountProvisionRequestedMessage = Message & {
   accountId: string;
-  dreamId: string;
 }
 
 type IdTokenDidExpireEvent = {
@@ -68,8 +71,7 @@ type InvestmentAccountProvisionInitiatedEvent = {
   name: partnerEvents.investmentAccountProvisionInitiated;
   message: {
     requestId: string;
-    dreamId?: string;
-    accountId?: string;
+    accountId: string;
   }
 }
 

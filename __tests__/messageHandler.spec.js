@@ -1,4 +1,4 @@
-import { MessageHandler } from '../src/messageHandler';
+import MessageHandler from '../src/messageHandler';
 
 const buildMessage = (event, requestId = '123', idToken = undefined) => ({
   data: JSON.stringify({ event, message: { requestId, idToken } })
