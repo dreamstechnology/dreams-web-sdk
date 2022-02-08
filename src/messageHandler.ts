@@ -1,13 +1,18 @@
-import messages, { ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent } from './events';
+import partnerEvents, {
+  ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent, InvestmentAccountProvisionRequestedEvent,
+  InvestmentAccountProvisionRequestedMessage, PartnerEvent, UpdateTokenEvent, NavigateToEvent, AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedEvent, Message, UpdateTokenMessage
+} from './events';
 
-export type ClientCallbacks = {
+type ClientCallbacks = {
   onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
   onAccountProvisionRequested?: (event: AccountProvisionRequestedEvent) => Promise<any>;
+  onInvestmentAccountProvisionRequested?: (event: InvestmentAccountProvisionRequestedEvent) => Promise<InvestmentAccountProvisionRequestedMessage>;
+  onShare?: (event: ShareEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
-  onShare: (event: ShareEvent) => Promise<any>;
 };
 
-export class MessageHandler {
+class MessageHandler {
   iframe: HTMLIFrameElement;
   apiUrl: string;
   callbacks: ClientCallbacks;
@@ -21,6 +26,11 @@ export class MessageHandler {
 
   listen = () => window.addEventListener('message', this.onMessage);
 
+  /*
+  * This method handles all possible messages coming from dreams app.
+  * For each type of message an appropriate function defined in the callbacks has to be added.
+  * Check {@linkcode ClientCallbacks}.
+  */
   onMessage = async (message: any) => {
     console.debug('onMessage: ', message);
     const event = this.parseEvent(message);
@@ -33,6 +43,9 @@ export class MessageHandler {
         break;
       case 'onAccountProvisionRequested':
         this.onAccountProvisionRequested(event);
+        break;
+      case 'onInvestmentAccountProvisionRequested':
+        this.onInvestmentAccountProvisionRequested(event)
         break;
       case 'onExitRequested':
         await this.callbacks.onExitRequested(event);
@@ -48,28 +61,51 @@ export class MessageHandler {
   /**
   * You can use this method if you need to manually update the token.
   */
-  postUpdateToken = (requestId: string, token: string) => {
-    const message = this.buildMessage(messages.updateToken, requestId, token);
+  postUpdateToken = (message: UpdateTokenMessage) => {
+    const event: UpdateTokenEvent = {
+      name: partnerEvents.updateToken,
+      message
+    }
 
-    this.postMessage(message);
+    this.postMessage(event);
   }
 
   /**
   * You can use this method if you need to manually inform the dreams app that account provision has been initiated.
   */
-  postAccountProvisionInitiated = (requestId: string) => {
-    const message = this.buildMessage(messages.accountProvisioned, requestId);
+  postAccountProvisionInitiated = (message: Message) => {
+    const event: AccountProvisionInitiatedEvent = {
+      name: partnerEvents.accountProvisionInitiated,
+      message
+    }
 
-    this.postMessage(message);
+    this.postMessage(event);
   }
 
   /**
-   * @param location the part of the dreams app where you want to take the user. You have to only pass the path.
-   */
-  navigateTo = (location: string) => {
-    const message = { event: messages.navigateTo, message: { location } };
+  * You can use this method if you need to manually inform the dreams app that investment account provision has been initiated.
+  * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
+  * to/from an account it will use this value to refer to that account.
+  */
+  postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionRequestedMessage) => {
+    const event: InvestmentAccountProvisionInitiatedEvent = {
+      name: partnerEvents.investmentAccountProvisionInitiated,
+      message
+    }
 
-    this.postMessage(message);
+    this.postMessage(event);
+  }
+
+  /**
+  * @param location the part of the dreams app where you want to take the user to. You have to only pass the path.
+  */
+  navigateTo = (location: string) => {
+    const event: NavigateToEvent = {
+      name: partnerEvents.navigateTo,
+      message: { location }
+    }
+
+    this.postMessage(event);
   }
 
   private onIdTokenDidExpire = async (event: IdTokenDidExpireEvent) => {
@@ -77,7 +113,8 @@ export class MessageHandler {
 
     try {
       const token: string = await this.callbacks.onIdTokenDidExpire(event);
-      this.postUpdateToken(event.message.requestId, token);
+      const msg = { requestId: event.message.requestId, idToken: token };
+      this.postUpdateToken(msg);
     } catch(err) {
       console.error('onIdTokenDidExpire error: ', err);
     }
@@ -88,9 +125,20 @@ export class MessageHandler {
 
     try {
       await this.callbacks.onAccountProvisionRequested(event);
-      this.postAccountProvisionInitiated(event.message.requestId);
+      this.postAccountProvisionInitiated(event.message);
     } catch(err) {
       console.error('onAccountProvisionRequested error: ', err);
+    }
+  }
+
+  private onInvestmentAccountProvisionRequested = async (event: InvestmentAccountProvisionRequestedEvent) => {
+    if (!this.callbacks.onInvestmentAccountProvisionRequested) return;
+
+    try {
+      await this.callbacks.onInvestmentAccountProvisionRequested(event);
+      this.postInvestmentAccountProvisionInitiated(event.message);
+    } catch(err) {
+      console.error('onInvestmentAccountProvisionRequested error: ', err);
     }
   }
 
@@ -98,7 +146,7 @@ export class MessageHandler {
     if (this.callbacks.onShare) await this.callbacks.onShare(event);
   }
 
-  private postMessage = (message: any) => {
+  private postMessage = (message: PartnerEvent) => {
     console.debug('postMessage', message);
 
     if (this.iframe.contentWindow) {
@@ -107,10 +155,6 @@ export class MessageHandler {
       console.error('iframe has no content window!', this.iframe);
     }
   }
-
-  private buildMessage = (event: messages, requestId: string, idToken?: string) => ({
-    event, message: { requestId, idToken }
-  })
 
   private parseEvent = (message: any): DreamsEvent | null => {
     try {
@@ -125,3 +169,6 @@ export class MessageHandler {
     if (!apiUrl) throw Error('Invalid parameters: dreamsApiEndpoint must be specified');
   }
 }
+
+export default MessageHandler;
+export { ClientCallbacks };

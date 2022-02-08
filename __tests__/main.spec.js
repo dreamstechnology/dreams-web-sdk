@@ -1,4 +1,4 @@
-import { DreamsSDK } from '../src/main';
+import DreamsSDK from '../src/main';
 
 afterEach(() => {
   document.getElementsByTagName('html')[0].innerHTML = '';

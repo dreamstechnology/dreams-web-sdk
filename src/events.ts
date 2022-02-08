@@ -1,41 +1,53 @@
-enum messages {
+enum partnerEvents {
   // It's really unfortunate that we call this event "accountProvisioned",
   // when what we mean is "accountProvisionInitiated". But that's the current
   // name that is being used by the dreams backend
-  accountProvisioned = 'accountProvisioned',
+  accountProvisionInitiated = 'accountProvisioned',
+  investmentAccountProvisionInitiated = 'investmentAccountProvisionInitiated',
   updateToken = 'updateToken',
   navigateTo = 'navigateTo'
 }
 
 type Message = {
-  message: {
-    requestId: string;
-    idToken?: string;
-  };
+  requestId: string;
 }
 
-type ShareMessage = {
-  message: {
-    url: string;
-    text: string;
-    title: string;
-  };
+type ShareMessage = Message & {
+  url: string;
+  text: string;
+  title: string;
 }
 
-type MessageEvent = Message & {
-  event: messages;
+type TokenDidExpireMessage = Message & {
+  idToken: string;
 }
 
-type IdTokenDidExpireEvent =  Message & {
+/**
+* AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
+* to/from an account it will use this value to refer to that account.
+*/
+type InvestmentAccountProvisionRequestedMessage = Message & {
+  accountId: string;
+}
+
+type IdTokenDidExpireEvent = {
   event: 'onIdTokenDidExpire';
+  message: TokenDidExpireMessage;
 }
 
-type AccountProvisionRequestedEvent =  Message & {
+type AccountProvisionRequestedEvent = {
   event: 'onAccountProvisionRequested';
+  message: Message;
 }
 
-type ShareEvent = ShareMessage & {
+type InvestmentAccountProvisionRequestedEvent = {
+  event: 'onInvestmentAccountProvisionRequested';
+  message: InvestmentAccountProvisionRequestedMessage;
+}
+
+type ShareEvent = {
   event: 'onShare';
+  message: ShareMessage;
 };
 
 type ExitRequestedEvent = {
@@ -44,15 +56,63 @@ type ExitRequestedEvent = {
 
 type DreamsEvent = IdTokenDidExpireEvent |
                    AccountProvisionRequestedEvent |
+                   InvestmentAccountProvisionRequestedEvent |
                    ExitRequestedEvent |
                    ShareEvent;
 
-export default messages;
+type AccountProvisionInitiatedEvent = {
+  name: partnerEvents.accountProvisionInitiated;
+  message: {
+    requestId: string;
+  }
+}
+
+type InvestmentAccountProvisionInitiatedEvent = {
+  name: partnerEvents.investmentAccountProvisionInitiated;
+  message: {
+    requestId: string;
+    accountId: string;
+  }
+}
+
+type UpdateTokenMessage = {
+  requestId: string;
+  idToken: string;
+}
+
+type UpdateTokenEvent = {
+  name: partnerEvents.updateToken;
+  message: UpdateTokenMessage
+}
+
+type NavigateToEvent = {
+  name: partnerEvents.navigateTo;
+  message: {
+    location: string;
+  }
+}
+
+type PartnerEvent = NavigateToEvent |
+                    AccountProvisionInitiatedEvent |
+                    InvestmentAccountProvisionInitiatedEvent |
+                    UpdateTokenEvent;
+
+export default partnerEvents;
+
 export {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
+  InvestmentAccountProvisionRequestedEvent,
   ExitRequestedEvent,
   ShareEvent,
   DreamsEvent,
-  MessageEvent,
+  Message,
+  ShareMessage,
+  InvestmentAccountProvisionRequestedMessage,
+  UpdateTokenMessage,
+  NavigateToEvent,
+  AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedEvent,
+  UpdateTokenEvent,
+  PartnerEvent,
 }

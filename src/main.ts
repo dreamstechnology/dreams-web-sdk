@@ -1,6 +1,22 @@
-import { MessageHandler, ClientCallbacks } from './messageHandler';
+import MessageHandler, { ClientCallbacks } from './messageHandler';
 import { createForm, createIFrame, iframeName } from './util';
-
+import {
+  IdTokenDidExpireEvent,
+  AccountProvisionRequestedEvent,
+  InvestmentAccountProvisionRequestedEvent,
+  ExitRequestedEvent,
+  ShareEvent,
+  DreamsEvent,
+  Message,
+  ShareMessage,
+  InvestmentAccountProvisionRequestedMessage,
+  UpdateTokenMessage,
+  NavigateToEvent,
+  AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedEvent,
+  UpdateTokenEvent,
+  PartnerEvent,
+} from './events'
 /**
  * DreamSDK is an utility class responsible for setting up and listening
  * to messages being exchanged between the your context and Dreams iframe.
@@ -11,7 +27,7 @@ import { createForm, createIFrame, iframeName } from './util';
  * sdk.start(jwk_token, locale);
  * ```
  */
-export class DreamsSDK {
+export default class DreamsSDK {
   apiUrl: string;
   form?: HTMLFormElement;
   iframe?: HTMLIFrameElement;
@@ -51,7 +67,7 @@ export class DreamsSDK {
 
   /**
    * @param token jwk token for the user
-   * @param locale determines the localisation configuration that will be applied.
+   * @param locale determines the localization configuration that will be applied.
    * @param location path to which the user will be redirected to after the token is verified
    */
   start(token: string, locale: string, location?: string) {
@@ -78,4 +94,22 @@ export class DreamsSDK {
   }
 }
 
-export { MessageHandler };
+export {
+  MessageHandler,
+  IdTokenDidExpireEvent,
+  AccountProvisionRequestedEvent,
+  InvestmentAccountProvisionRequestedEvent,
+  ExitRequestedEvent,
+  ShareEvent,
+  DreamsEvent,
+  Message,
+  ShareMessage,
+  InvestmentAccountProvisionRequestedMessage,
+  UpdateTokenMessage,
+  NavigateToEvent,
+  AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedEvent,
+  UpdateTokenEvent,
+  PartnerEvent,
+  ClientCallbacks,
+};
