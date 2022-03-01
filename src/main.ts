@@ -48,17 +48,17 @@ export default class DreamsSDK {
     iframeClassName: string = iframeName) {
     if (!this.apiUrl) throw Error('there is no api url specified!');
 
-    const dreamdDiv = document.getElementById(containerId);
+    const dreamDiv = document.getElementById(containerId);
 
-    if (!dreamdDiv) throw Error("can't find dreams web sdk container");
+    if (!dreamDiv) throw Error("can't find dreams web sdk container");
 
     const formTargetUrl = `${this.apiUrl}/users/verify_token`;
 
     this.form = createForm(formTargetUrl);
     this.iframe = createIFrame(iframeClassName);
 
-    dreamdDiv.appendChild(this.form);
-    dreamdDiv.appendChild(this.iframe);
+    dreamDiv.appendChild(this.form);
+    dreamDiv.appendChild(this.iframe);
 
     this.messageHandler = new MessageHandler(this.iframe, this.apiUrl, callbacks);
 
