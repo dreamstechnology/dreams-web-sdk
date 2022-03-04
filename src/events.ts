@@ -25,9 +25,12 @@ type TokenDidExpireMessage = Message & {
 /**
 * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
 * to/from an account it will use this value to refer to that account.
+* CallbackUrl is the url that Dream will send so that after choosing investment is done the user can be redirected back
+* to appropriate part of the webapp
 */
 type InvestmentAccountProvisionRequestedMessage = Message & {
   accountId: string;
+  callbackPath: string;
 }
 
 type IdTokenDidExpireEvent = {
