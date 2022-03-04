@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/dreamstechnology/dreams-web-sdk/compare/v0.3.0...v0.3.1) (2022-03-04)
+
+
+### Bug Fixes
+
+* require redirect url in investmern provision msg ([baddc76](https://github.com/dreamstechnology/dreams-web-sdk/commit/baddc76344b6774fe29a526b3205baf78c9ec8e8))
+
 # [0.3.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v0.2.2...v0.3.0) (2022-02-08)
 
 
