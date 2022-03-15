@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v0.3.1...v1.0.0) (2022-03-15)
+
+
+### Bug Fixes
+
+* **events:** partner events ([24efafb](https://github.com/dreamstechnology/dreams-web-sdk/commit/24efafb516b2ccde40fe986f98c933d83dce1407))
+
+
+### BREAKING CHANGES
+
+* **events:** new PartnerEvent types
+
 ## [0.3.1](https://github.com/dreamstechnology/dreams-web-sdk/compare/v0.3.0...v0.3.1) (2022-03-04)
 
 
