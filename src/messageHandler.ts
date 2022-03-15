@@ -63,7 +63,7 @@ class MessageHandler {
   */
   postUpdateToken = (message: UpdateTokenMessage) => {
     const event: UpdateTokenEvent = {
-      name: partnerEvents.updateToken,
+      event: partnerEvents.updateToken,
       message
     }
 
@@ -75,7 +75,7 @@ class MessageHandler {
   */
   postAccountProvisionInitiated = (message: Message) => {
     const event: AccountProvisionInitiatedEvent = {
-      name: partnerEvents.accountProvisionInitiated,
+      event: partnerEvents.accountProvisionInitiated,
       message
     }
 
@@ -89,7 +89,7 @@ class MessageHandler {
   */
   postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionRequestedMessage) => {
     const event: InvestmentAccountProvisionInitiatedEvent = {
-      name: partnerEvents.investmentAccountProvisionInitiated,
+      event: partnerEvents.investmentAccountProvisionInitiated,
       message
     }
 
@@ -101,7 +101,7 @@ class MessageHandler {
   */
   navigateTo = (location: string) => {
     const event: NavigateToEvent = {
-      name: partnerEvents.navigateTo,
+      event: partnerEvents.navigateTo,
       message: { location }
     }
 
