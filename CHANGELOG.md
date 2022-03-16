@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.0.0...v1.1.0) (2022-03-16)
+
+
+### Features
+
+* **provisioning:** add errorUrl and cancelUrl ([768d9e4](https://github.com/dreamstechnology/dreams-web-sdk/commit/768d9e42c357d27715b7b5d0eb5738d127f2d614))
+
 # [1.0.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v0.3.1...v1.0.0) (2022-03-15)
 
 
