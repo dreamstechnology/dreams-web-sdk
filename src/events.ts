@@ -31,6 +31,8 @@ type TokenDidExpireMessage = Message & {
 type InvestmentAccountProvisionRequestedMessage = Message & {
   accountId: string;
   callbackPath: string;
+  cancelUrl: string;
+  errorUrl: string;
 }
 
 type IdTokenDidExpireEvent = {
