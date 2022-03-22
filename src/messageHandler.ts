@@ -1,6 +1,6 @@
 import partnerEvents, {
   ShareEvent, IdTokenDidExpireEvent, AccountProvisionRequestedEvent, ExitRequestedEvent, DreamsEvent, InvestmentAccountProvisionRequestedEvent,
-  InvestmentAccountProvisionRequestedMessage, PartnerEvent, UpdateTokenEvent, NavigateToEvent, AccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionRequestedMessage, InvestmentSellRequestedEvent, InvestmentSellRequestedMessage, PartnerEvent, UpdateTokenEvent, NavigateToEvent, AccountProvisionInitiatedEvent,
   InvestmentAccountProvisionInitiatedEvent, Message, UpdateTokenMessage
 } from './events';
 
@@ -8,6 +8,7 @@ type ClientCallbacks = {
   onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
   onAccountProvisionRequested?: (event: AccountProvisionRequestedEvent) => Promise<any>;
   onInvestmentAccountProvisionRequested?: (event: InvestmentAccountProvisionRequestedEvent) => Promise<InvestmentAccountProvisionRequestedMessage>;
+  onInvestmentSellRequested?: (event: InvestmentSellRequestedEvent) => Promise<InvestmentSellRequestedMessage>;
   onShare?: (event: ShareEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
 };
@@ -45,7 +46,10 @@ class MessageHandler {
         this.onAccountProvisionRequested(event);
         break;
       case 'onInvestmentAccountProvisionRequested':
-        this.onInvestmentAccountProvisionRequested(event)
+        this.onInvestmentAccountProvisionRequested(event);
+        break;
+      case 'onInvestmentSellRequested':
+        this.onInvestmentSellRequested(event);
         break;
       case 'onExitRequested':
         await this.callbacks.onExitRequested(event);
@@ -139,6 +143,16 @@ class MessageHandler {
       this.postInvestmentAccountProvisionInitiated(event.message);
     } catch(err) {
       console.error('onInvestmentAccountProvisionRequested error: ', err);
+    }
+  }
+
+  private onInvestmentSellRequested = async (event: InvestmentSellRequestedEvent) => {
+    if (!this.callbacks.onInvestmentSellRequested) return;
+
+    try {
+      await this.callbacks.onInvestmentSellRequested(event);
+    } catch(err) {
+      console.error('onInvestmentSellRequested error: ', err);
     }
   }
 

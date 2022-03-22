@@ -35,6 +35,19 @@ type InvestmentAccountProvisionRequestedMessage = Message & {
   errorUrl: string;
 }
 
+type Money = {
+  quantity: number;
+  currency: string;
+}
+
+type InvestmentSellRequestedMessage = Message & {
+  amount: Money;
+  accountId: string;
+  callbackUrl: string;
+  cancelUrl: string;
+  errorUrl: string;
+}
+
 type IdTokenDidExpireEvent = {
   event: 'onIdTokenDidExpire';
   message: TokenDidExpireMessage;
@@ -50,6 +63,11 @@ type InvestmentAccountProvisionRequestedEvent = {
   message: InvestmentAccountProvisionRequestedMessage;
 }
 
+type InvestmentSellRequestedEvent = {
+  event: 'onInvestmentSellRequested';
+  message: InvestmentSellRequestedMessage;
+}
+
 type ShareEvent = {
   event: 'onShare';
   message: ShareMessage;
@@ -62,6 +80,7 @@ type ExitRequestedEvent = {
 type DreamsEvent = IdTokenDidExpireEvent |
                    AccountProvisionRequestedEvent |
                    InvestmentAccountProvisionRequestedEvent |
+                   InvestmentSellRequestedEvent |
                    ExitRequestedEvent |
                    ShareEvent;
 
@@ -108,16 +127,19 @@ export {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
   InvestmentAccountProvisionRequestedEvent,
+  InvestmentSellRequestedEvent,
   ExitRequestedEvent,
   ShareEvent,
   DreamsEvent,
   Message,
   ShareMessage,
   InvestmentAccountProvisionRequestedMessage,
+  InvestmentSellRequestedMessage,
   UpdateTokenMessage,
   NavigateToEvent,
   AccountProvisionInitiatedEvent,
   InvestmentAccountProvisionInitiatedEvent,
   UpdateTokenEvent,
   PartnerEvent,
+  Money,
 }

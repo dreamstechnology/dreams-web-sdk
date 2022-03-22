@@ -43,6 +43,7 @@ describe('#onMessage', () => {
     let onIdTokenDidExpire;
     let onAccountProvisionRequested;
     let onInvestmentAccountProvisionRequested;
+    let onInvestmentSellRequested;
     let onExitRequested;
     let onShare;
     let callbacks;
@@ -54,9 +55,10 @@ describe('#onMessage', () => {
       onIdTokenDidExpire = jest.fn(() => Promise.resolve("token"));
       onAccountProvisionRequested = jest.fn(() => Promise.resolve());
       onInvestmentAccountProvisionRequested = jest.fn(() => Promise.resolve());
+      onInvestmentSellRequested = jest.fn(() => Promise.resolve());
       onExitRequested = jest.fn(() => Promise.resolve());
       onShare = jest.fn(() => Promise.resolve());
-      callbacks = { onAccountProvisionRequested, onIdTokenDidExpire, onExitRequested, onShare, onInvestmentAccountProvisionRequested }
+      callbacks = { onAccountProvisionRequested, onIdTokenDidExpire, onExitRequested, onShare, onInvestmentAccountProvisionRequested, onInvestmentSellRequested }
     });
 
     describe("onIdTokenDidExpire", () => {
@@ -154,6 +156,33 @@ describe('#onMessage', () => {
 
           expect(onInvestmentAccountProvisionRequested).toHaveBeenCalled();
           expect(spy).toHaveBeenCalledWith('onInvestmentAccountProvisionRequested error: ', 'nope!');
+        });
+      });
+    });
+
+    describe("onInvestmentSellRequested", () => {
+      describe("callback promise fulfills", () => {
+        test("behaves correctly", async () => {
+          const handler = new MessageHandler(iframe, 'http://www.example.com/123', callbacks);
+          const message = buildMessage('onInvestmentSellRequested');
+
+          await handler.onMessage(message);
+
+          expect(postMessageSpy).not.toHaveBeenCalled();
+        });
+      })
+
+      describe("callback promise rejects", () => {
+        test("behaves correctly", async () => {
+          onInvestmentSellRequested = jest.fn(() => Promise.reject("nope!"));
+          const handler = new MessageHandler(iframe, 'http://www.example.com/123', { ...callbacks, onInvestmentSellRequested });
+          const message = buildMessage('onInvestmentSellRequested');
+          const spy = jest.spyOn(global.console, 'error');
+
+          await handler.onMessage(message);
+
+          expect(onInvestmentSellRequested).toHaveBeenCalled();
+          expect(spy).toHaveBeenCalledWith('onInvestmentSellRequested error: ', 'nope!');
         });
       });
     });
