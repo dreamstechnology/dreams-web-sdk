@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.1.0...v1.2.0) (2022-03-28)
+
+
+### Features
+
+* **oninvestmentsellrequest:** implementation ([6827d2c](https://github.com/dreamstechnology/dreams-web-sdk/commit/6827d2cc211099579b1fad212f1cf77c05437a96))
+
 # [1.1.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.0.0...v1.1.0) (2022-03-16)
 
 
