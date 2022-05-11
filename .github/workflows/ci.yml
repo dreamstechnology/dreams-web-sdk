@@ -15,12 +15,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
+
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
+        env:
+          GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run lefthook pre-merge-commit
         run: npx lefthook run pre-merge-commit
   tests:
@@ -42,14 +47,13 @@ jobs:
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
+        env:
+          GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Code Climate test-reporter
         run: |
           wget https://codeclimate.com/downloads/test-reporter/test-reporter-0.7.0-linux-amd64
           chmod 755 ./test-reporter-0.7.0-linux-amd64
-
-      - name: Run lefthook
-        run: npx lefthook run pre-merge-commit
 
       - name: Run tests with coverage
         run: |
