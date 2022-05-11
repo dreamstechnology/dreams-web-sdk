@@ -1,3 +1,8 @@
+pre-commit:
+  commands:
+    prettier:
+      run: npm run format-write
+
 commit-msg:
   commands:
     lint-commit-msg:
@@ -5,6 +10,8 @@ commit-msg:
 
 pre-merge-commit:
   commands:
+    prettier:
+      run: npm run format-verify
     lint-commit:
       run: |
         git fetch --all

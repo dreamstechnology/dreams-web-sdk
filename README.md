@@ -1,5 +1,35 @@
 # Dreams Web SDK
 
+## Build-time Secrets and Settings
+
+Environment variables that are needed to be set in your shell to build the application are found in `.envrc`.
+
+To get started, copy `.envrc.example`
+
+```shell
+cp .envrc.example .envrc
+```
+
+and fill out the missing values.
+The purpose and location of each secret is documented in the `.envrc`-file itself.
+
+Since these environment variables need to be set in _your shell_,
+we recommend using a tool like [direnv](https://direnv.net/) to load them automatically anytime you `cd` into this project folder.
+
+Install it:
+
+```shell
+brew install direnv
+```
+
+and then make sure to also configure the shell [hook](https://direnv.net/docs/hook.html).
+
+Lastly, allow running the current `.envrc` file:
+
+```shell
+direnv allow
+```
+
 ## Dependencies
 
 To install dependencies run

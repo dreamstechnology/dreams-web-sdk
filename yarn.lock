@@ -1078,6 +1078,11 @@
   dependencies:
     chalk "^4.0.0"
 
+"@dreamstechnology/prettier-config-dreams@^2.3.0":
+  version "2.3.0"
+  resolved "https://npm.pkg.github.com/download/@dreamstechnology/prettier-config-dreams/2.3.0/34f8a07d5f212e55ccdd62ab9db59b80614f88b5ae72c726424639dbed318187#98a2af8943967f64928030120321e5bdb01717e1"
+  integrity sha512-X31kqpm+v58Jl23huvQjg938Y9N9nlzXchbk5fPG0FtPR187AcWs5GMMTD6T69a9nE7PbeHXz8KiKkWD7ZIJLw==
+
 "@endemolshinegroup/cosmiconfig-typescript-loader@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@endemolshinegroup/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-3.0.2.tgz#eea4635828dde372838b0909693ebd9aafeec22d"
@@ -5474,6 +5479,11 @@ prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
+
+prettier@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.6.2.tgz#e26d71a18a74c3d0f0597f55f01fb6c06c206032"
+  integrity sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==
 
 pretty-format@^27.3.1:
   version "27.3.1"
