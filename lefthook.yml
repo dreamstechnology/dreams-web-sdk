@@ -1,8 +1,8 @@
 pre-commit:
   commands:
     prettier:
-      run: npm run format-write
-
+      glob: '*.{ts,js,json}'
+      run: yarn prettier --write {staged_files} && git add {staged_files}
 commit-msg:
   commands:
     lint-commit-msg:

@@ -43,7 +43,6 @@
     "semantic-release": "semantic-release",
     "semantic-release-test": "semantic-release --dry-run --debug",
     "docs": "typedoc --githubPages false src/*",
-    "format-write": "prettier --write '(src|__tests__)/**/*.(js|ts)'",
     "format-verify": "prettier --list-different '(src|__tests__)/**/*.(js|ts)'"
   },
   "files": [
