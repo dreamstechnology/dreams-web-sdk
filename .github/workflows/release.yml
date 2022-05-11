@@ -16,10 +16,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Read .node-version
+        run: echo "##[set-output name=NODE_VERSION;]$(cat .node-version)"
+        id: node-version
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: "${{ steps.node-version.outputs.NODE_VERSION }}"
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
