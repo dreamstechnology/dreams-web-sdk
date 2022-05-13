@@ -1,5 +1,0 @@
-# Required by .npmrc
-# Use your own personal GitHub Token with `read:packages` and `repo` access rights.
-# GitHub has excellent guides for how to create such a token, see
-# https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line
-export GITHUB_NPM_TOKEN=

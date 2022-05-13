@@ -30,8 +30,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
-        env:
-          GITHUB_NPM_TOKEN: ${{ secrets.DREAMS_ENTERPRISE_BOT_GH_TOKEN }}
 
       - name: Run lefthook pre-merge-commit
         run: npx lefthook run pre-merge-commit
@@ -56,8 +54,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
-        env:
-          GITHUB_NPM_TOKEN: ${{ secrets.DREAMS_ENTERPRISE_BOT_GH_TOKEN }}
 
       - name: Setup Code Climate test-reporter
         run: |
@@ -69,18 +65,13 @@ jobs:
           ./test-reporter-0.7.0-linux-amd64 before-build
           yarn test --coverage
           ./test-reporter-0.7.0-linux-amd64 after-build
-        env:
-          GITHUB_NPM_TOKEN: ${{ secrets.DREAMS_ENTERPRISE_BOT_GH_TOKEN }}
 
       - name: Build
         run: yarn build
-        env:
-          GITHUB_NPM_TOKEN: ${{ secrets.DREAMS_ENTERPRISE_BOT_GH_TOKEN }}
 
       - name: Test Release
         env:
           NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
           GIT_AUTHOR_NAME: '@dreams-enterprise-bot'
           GITHUB_TOKEN: ${{ secrets.DREAMS_ENTERPRISE_BOT_GH_TOKEN }}
-          GITHUB_NPM_TOKEN: ${{ secrets.DREAMS_ENTERPRISE_BOT_GH_TOKEN }}
         run: yarn semantic-release-test
