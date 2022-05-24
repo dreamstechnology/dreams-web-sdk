@@ -1080,8 +1080,8 @@
 
 "@dreamstechnology/prettier-config-dreams@^2.3.0":
   version "2.3.0"
-  resolved "https://npm.pkg.github.com/download/@dreamstechnology/prettier-config-dreams/2.3.0/34f8a07d5f212e55ccdd62ab9db59b80614f88b5ae72c726424639dbed318187#98a2af8943967f64928030120321e5bdb01717e1"
-  integrity sha512-X31kqpm+v58Jl23huvQjg938Y9N9nlzXchbk5fPG0FtPR187AcWs5GMMTD6T69a9nE7PbeHXz8KiKkWD7ZIJLw==
+  resolved "https://registry.yarnpkg.com/@dreamstechnology/prettier-config-dreams/-/prettier-config-dreams-2.3.0.tgz#3516d98e9c1bedd27c5066c3e26991592a715ac7"
+  integrity sha512-DgwW1AN0fGhCdj7l2sn3DccRwbt+CWBkMxgyZVlMJ78Dq2tig/P9DvBioGLqU0QdXBP+VDEZ/Md2GUUn+Uqfbw==
 
 "@endemolshinegroup/cosmiconfig-typescript-loader@^3.0.2":
   version "3.0.2"
