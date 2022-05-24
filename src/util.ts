@@ -3,7 +3,7 @@ export const iframeName = 'dreams-web-sdk-iframe';
 export const createForm = (
   endpoint: string,
   tokenProps = { type: 'hidden', name: 'token', value: '' },
-  localeProps = { type: 'hidden', name: 'locale', value: 'en' }
+  localeProps = { type: 'hidden', name: 'locale', value: 'en' },
 ): HTMLFormElement => {
   const form = document.createElement('form');
 

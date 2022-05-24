@@ -18,7 +18,7 @@ import {
   InvestmentAccountProvisionInitiatedEvent,
   UpdateTokenEvent,
   PartnerEvent,
-} from './events'
+} from './events';
 /**
  * DreamSDK is an utility class responsible for setting up and listening
  * to messages being exchanged between the your context and Dreams iframe.
@@ -47,7 +47,8 @@ export default class DreamsSDK {
   setup(
     callbacks: ClientCallbacks,
     containerId: string = 'dreams-web-sdk-container',
-    iframeClassName: string = iframeName) {
+    iframeClassName: string = iframeName,
+  ) {
     if (!this.apiUrl) throw Error('there is no api url specified!');
 
     const dreamDiv = document.getElementById(containerId);
@@ -81,13 +82,15 @@ export default class DreamsSDK {
 
     if (tokenInput) tokenInput.setAttribute('value', token);
 
-    const localeInput: HTMLInputElement = this.form.querySelector("input[name='locale']") as unknown as HTMLInputElement;
+    const localeInput: HTMLInputElement = this.form.querySelector(
+      "input[name='locale']",
+    ) as unknown as HTMLInputElement;
 
     if (localeInput) localeInput.setAttribute('value', locale);
 
-    const locationInput: HTMLInputElement = (this.form.querySelector(
+    const locationInput: HTMLInputElement = this.form.querySelector(
       "input[name='location']",
-    ) as unknown) as HTMLInputElement;
+    ) as unknown as HTMLInputElement;
 
     if (location) locationInput.setAttribute('value', location);
 

@@ -46,8 +46,7 @@ describe('#start', () => {
     sdk.setup('token', 'id');
 
     const form = div.firstChild;
-    const formSpy = jest.spyOn(form, 'submit')
-                    .mockImplementation(() => {});
+    const formSpy = jest.spyOn(form, 'submit').mockImplementation(() => {});
     const windowSpy = jest.spyOn(window, 'addEventListener');
 
     sdk.start('token', 'fr', 'marketplace');
@@ -63,28 +62,27 @@ describe('#start', () => {
     expect(windowSpy).toHaveBeenCalled();
   });
 
-
   describe('prerequisites validation', () => {
     test('iframe presence', () => {
       const throwable = () => {
         const sdk = new DreamsSDK('url');
         sdk.start('token');
-      }
+      };
 
       expect(throwable).toThrow();
     });
 
     test('form presence', () => {
       const iframe = document.createElement('iframe');
-      document.body.appendChild(iframe)
+      document.body.appendChild(iframe);
 
       const throwable = () => {
         const sdk = new DreamsSDK('url');
         sdk.iframe = iframe;
         sdk.start('token');
-      }
+      };
 
       expect(throwable).toThrow();
     });
-  })
+  });
 });

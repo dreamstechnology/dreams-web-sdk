@@ -45,8 +45,6 @@ checks:
 plugins:
   eslint:
     enabled: true
-  tslint:
-    enabled: true
   fixme:
     enabled: true
 

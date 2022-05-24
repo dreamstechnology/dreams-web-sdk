@@ -9,11 +9,9 @@ on:
       - '!main'
 
 jobs:
-  tests:
-    name: Tests
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
-    env:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,9 +20,29 @@ jobs:
           persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
+          node-version-file: '.node-version'
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --non-interactive --silent
+
+      - name: Run lefthook pre-merge-commit
+        run: npx lefthook run pre-merge-commit
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    env:
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
@@ -33,9 +51,6 @@ jobs:
         run: |
           wget https://codeclimate.com/downloads/test-reporter/test-reporter-0.7.0-linux-amd64
           chmod 755 ./test-reporter-0.7.0-linux-amd64
-
-      - name: Run lefthook
-        run: npx lefthook run pre-merge-commit
 
       - name: Run tests with coverage
         run: |
