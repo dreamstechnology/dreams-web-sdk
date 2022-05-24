@@ -39,14 +39,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Read .node-version
-        run: echo "##[set-output name=NODE_VERSION;]$(cat .node-version)"
-        id: node-version
-
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: "${{ steps.node-version.outputs.NODE_VERSION }}"
+          node-version-file: '.node-version'
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
