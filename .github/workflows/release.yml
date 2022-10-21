@@ -36,5 +36,5 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
           GIT_AUTHOR_NAME: '@dreams-enterprise-bot'
-          GITHUB_TOKEN: ${{ secrets.DREAMS_ENTERPRISE_BOT_GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn semantic-release
