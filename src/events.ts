@@ -6,6 +6,8 @@ enum partnerEvents {
   investmentAccountProvisionInitiated = 'investmentAccountProvisionInitiated',
   updateToken = 'updateToken',
   navigateTo = 'navigateTo',
+  transferConsentSucceeded = 'onTransferConsentSucceeded',
+  transferConsentCancelled = 'onTransferConsentCancelled',
 }
 
 type Message = {
@@ -20,6 +22,11 @@ type ShareMessage = Message & {
 
 type TokenDidExpireMessage = Message & {
   idToken: string;
+};
+
+type TransferConsentRequestedMessage = Message & {
+  consentId: string;
+  consentRef: string;
 };
 
 /**
@@ -77,13 +84,19 @@ type ExitRequestedEvent = {
   event: 'onExitRequested';
 };
 
+type TransferConsentRequestedEvent = {
+  event: 'onTransferConsentRequested';
+  message: TransferConsentRequestedMessage;
+};
+
 type DreamsEvent =
   | IdTokenDidExpireEvent
   | AccountProvisionRequestedEvent
   | InvestmentAccountProvisionRequestedEvent
   | InvestmentSellRequestedEvent
   | ExitRequestedEvent
-  | ShareEvent;
+  | ShareEvent
+  | TransferConsentRequestedEvent;
 
 type AccountProvisionInitiatedEvent = {
   event: partnerEvents.accountProvisionInitiated;
@@ -121,7 +134,8 @@ type PartnerEvent =
   | NavigateToEvent
   | AccountProvisionInitiatedEvent
   | InvestmentAccountProvisionInitiatedEvent
-  | UpdateTokenEvent;
+  | UpdateTokenEvent
+  | TransferConsentRequestedEvent;
 
 export default partnerEvents;
 
@@ -144,4 +158,6 @@ export {
   UpdateTokenEvent,
   PartnerEvent,
   Money,
+  TransferConsentRequestedEvent,
+  TransferConsentRequestedMessage,
 };

@@ -15,6 +15,8 @@ import partnerEvents, {
   InvestmentAccountProvisionInitiatedEvent,
   Message,
   UpdateTokenMessage,
+  TransferConsentRequestedEvent,
+  TransferConsentRequestedMessage,
 } from './events';
 
 type ClientCallbacks = {
@@ -26,6 +28,7 @@ type ClientCallbacks = {
   onInvestmentSellRequested?: (event: InvestmentSellRequestedEvent) => Promise<InvestmentSellRequestedMessage>;
   onShare?: (event: ShareEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
+  onTransferConsentRequested?: (event: TransferConsentRequestedEvent) => Promise<TransferConsentRequestedMessage>;
 };
 
 class MessageHandler {
@@ -33,12 +36,7 @@ class MessageHandler {
   apiUrl: string;
   callbacks: ClientCallbacks;
 
-  constructor(
-    iframe: HTMLIFrameElement,
-    apiUrl: string,
-    callbacks: ClientCallbacks,
-    accountProvisionDelay: number = 3000,
-  ) {
+  constructor(iframe: HTMLIFrameElement, apiUrl: string, callbacks: ClientCallbacks) {
     this.validateParams(apiUrl);
     this.iframe = iframe;
     this.apiUrl = apiUrl;
@@ -77,6 +75,9 @@ class MessageHandler {
       case 'onShare':
         this.onShare(event);
         break;
+      case 'onTransferConsentRequested':
+        this.onTransferConsentRequested(event);
+        break;
       default:
         console.warn('Unknown event type:', event);
     }
@@ -114,6 +115,24 @@ class MessageHandler {
   postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionRequestedMessage) => {
     const event: InvestmentAccountProvisionInitiatedEvent = {
       event: partnerEvents.investmentAccountProvisionInitiated,
+      message,
+    };
+
+    this.postMessage(event);
+  };
+
+  private postTransferConsentRequestSucceeded = (message: TransferConsentRequestedMessage) => {
+    const event: TransferConsentRequestSucceededEvent = {
+      event: partnerEvents.transferConsentSucceeded,
+      message,
+    };
+
+    this.postMessage(event);
+  };
+
+  private postTransferConsentRequestCancelled = (message: unknown) => {
+    const event = {
+      event: partnerEvents.transferConsentCancelled,
       message,
     };
 
@@ -178,6 +197,19 @@ class MessageHandler {
 
   private onShare = async (event: ShareEvent) => {
     if (this.callbacks.onShare) await this.callbacks.onShare(event);
+  };
+
+  private onTransferConsentRequested = async (event: TransferConsentRequestedEvent) => {
+    if (!this.callbacks.onTransferConsentRequested) {
+      return;
+    }
+    try {
+      const transferConsentData = await this.callbacks.onTransferConsentRequested(event);
+      this.postTransferConsentRequestSucceeded(transferConsentData);
+    } catch (err) {
+      this.postTransferConsentRequestCancelled(err);
+      console.error('onTransferConsentRequested error', err);
+    }
   };
 
   private postMessage = (message: PartnerEvent) => {

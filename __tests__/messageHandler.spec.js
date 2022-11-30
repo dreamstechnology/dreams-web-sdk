@@ -1,7 +1,7 @@
 import MessageHandler from '../src/messageHandler';
 
-const buildMessage = (event, requestId = '123', idToken = undefined) => ({
-  data: JSON.stringify({ event, message: { requestId, idToken } }),
+const buildMessage = (event, requestId = '123', messageData = undefined) => ({
+  data: JSON.stringify({ event, message: { requestId, messageData } }),
 });
 
 describe('#constructor', () => {
@@ -47,6 +47,7 @@ describe('#onMessage', () => {
     let onExitRequested;
     let onShare;
     let callbacks;
+    let onTransferConsentRequested;
 
     beforeEach(() => {
       iframe = document.createElement('iframe');
@@ -58,6 +59,7 @@ describe('#onMessage', () => {
       onInvestmentSellRequested = jest.fn(() => Promise.resolve());
       onExitRequested = jest.fn(() => Promise.resolve());
       onShare = jest.fn(() => Promise.resolve());
+      onTransferConsentRequested = jest.fn(() => Promise.resolve());
       callbacks = {
         onAccountProvisionRequested,
         onIdTokenDidExpire,
@@ -65,6 +67,7 @@ describe('#onMessage', () => {
         onShare,
         onInvestmentAccountProvisionRequested,
         onInvestmentSellRequested,
+        onTransferConsentRequested,
       };
     });
 
@@ -231,6 +234,66 @@ describe('#onMessage', () => {
         await handler.onMessage(message);
 
         expect(onShare).toHaveBeenCalled();
+        expect(postMessageSpy).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('onTransferConsentRequested', () => {
+      test('sends onTransferRequestedSucceeds when callback resolves', async () => {
+        const consentId = 'foo';
+        const consentRef = 'bar';
+        const apiUrl = 'http://www.example.com/123';
+        onTransferConsentRequested = jest.fn(() => Promise.resolve({ consentId, consentRef }));
+        const handler = new MessageHandler(iframe, apiUrl, {
+          ...callbacks,
+          onTransferConsentRequested,
+        });
+        const message = buildMessage('onTransferConsentRequested', '123', { consentId, consentRef });
+
+        await handler.onMessage(message);
+
+        expect(onTransferConsentRequested).toHaveBeenCalled();
+        expect(postMessageSpy).toHaveBeenCalledWith(
+          JSON.stringify({
+            event: 'onTransferConsentSucceeded',
+            message: {
+              consentId: consentId,
+              consentRef: consentRef,
+            },
+          }),
+          apiUrl,
+        );
+      });
+
+      test('sends onTransferRequestedCancelled when callback rejects', async () => {
+        const consentId = 'bar';
+        const apiUrl = 'http://www.example.com/123';
+        onTransferConsentRequested = jest.fn(() => Promise.reject({ consentId }));
+        const handler = new MessageHandler(iframe, apiUrl, { onExitRequested, onTransferConsentRequested });
+        const message = buildMessage('onTransferConsentRequested');
+
+        await handler.onMessage(message);
+
+        expect(onTransferConsentRequested).toHaveBeenCalled();
+        expect(postMessageSpy).toHaveBeenCalledWith(
+          JSON.stringify({
+            event: 'onTransferConsentCancelled',
+            message: {
+              consentId: consentId,
+            },
+          }),
+          apiUrl,
+        );
+      });
+
+      test('does nothing when there is no callback', async () => {
+        const consentId = 'bar';
+        const apiUrl = 'http://www.example.com/123';
+        const handler = new MessageHandler(iframe, apiUrl, { onExitRequested });
+        const message = buildMessage('onTransferConsentRequested', '123', consentId);
+
+        await handler.onMessage(message);
+
         expect(postMessageSpy).not.toHaveBeenCalled();
       });
     });
