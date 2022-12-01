@@ -17,6 +17,10 @@ import partnerEvents, {
   UpdateTokenMessage,
   TransferConsentRequestedEvent,
   TransferConsentRequestedMessage,
+  TransferConsentRequestSucceededEvent,
+  TransferConsentRequestCancelledEvent,
+  TransferConsentRequestCancelledMessage,
+  TransferConsentRequestSuccededMessage,
 } from './events';
 
 type ClientCallbacks = {
@@ -121,7 +125,7 @@ class MessageHandler {
     this.postMessage(event);
   };
 
-  private postTransferConsentRequestSucceeded = (message: TransferConsentRequestedMessage) => {
+  private postTransferConsentRequestSucceeded = (message: TransferConsentRequestSuccededMessage) => {
     const event: TransferConsentRequestSucceededEvent = {
       event: partnerEvents.transferConsentSucceeded,
       message,
@@ -130,8 +134,8 @@ class MessageHandler {
     this.postMessage(event);
   };
 
-  private postTransferConsentRequestCancelled = (message: unknown) => {
-    const event = {
+  private postTransferConsentRequestCancelled = (message: TransferConsentRequestCancelledMessage) => {
+    const event: TransferConsentRequestCancelledEvent = {
       event: partnerEvents.transferConsentCancelled,
       message,
     };
@@ -207,7 +211,7 @@ class MessageHandler {
       const transferConsentData = await this.callbacks.onTransferConsentRequested(event);
       this.postTransferConsentRequestSucceeded(transferConsentData);
     } catch (err) {
-      this.postTransferConsentRequestCancelled(err);
+      this.postTransferConsentRequestCancelled(err as TransferConsentRequestCancelledMessage);
       console.error('onTransferConsentRequested error', err);
     }
   };

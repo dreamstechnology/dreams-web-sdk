@@ -29,6 +29,15 @@ type TransferConsentRequestedMessage = Message & {
   consentRef: string;
 };
 
+type TransferConsentRequestSuccededMessage = {
+  consentId: string;
+  consentRef: string;
+};
+
+type TransferConsentRequestCancelledMessage = {
+  consentId: string;
+};
+
 /**
  * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
  * to/from an account it will use this value to refer to that account.
@@ -130,12 +139,28 @@ type NavigateToEvent = {
   };
 };
 
+type TransferConsentRequestSucceededEvent = {
+  event: partnerEvents.transferConsentSucceeded;
+  message: {
+    consentId: string;
+    consentRef: string;
+  };
+};
+
+type TransferConsentRequestCancelledEvent = {
+  event: partnerEvents.transferConsentCancelled;
+  message: {
+    consentId: string;
+  };
+};
+
 type PartnerEvent =
   | NavigateToEvent
   | AccountProvisionInitiatedEvent
   | InvestmentAccountProvisionInitiatedEvent
   | UpdateTokenEvent
-  | TransferConsentRequestedEvent;
+  | TransferConsentRequestSucceededEvent
+  | TransferConsentRequestCancelledEvent;
 
 export default partnerEvents;
 
@@ -160,4 +185,8 @@ export {
   Money,
   TransferConsentRequestedEvent,
   TransferConsentRequestedMessage,
+  TransferConsentRequestSucceededEvent,
+  TransferConsentRequestCancelledEvent,
+  TransferConsentRequestCancelledMessage,
+  TransferConsentRequestSuccededMessage,
 };
