@@ -29,13 +29,14 @@ type TransferConsentRequestedMessage = Message & {
   consentRef: string;
 };
 
-type TransferConsentRequestSuccededMessage = {
+type TransferConsentRequestSucceededMessage = Message & {
   consentId: string;
   consentRef: string;
 };
 
-type TransferConsentRequestCancelledMessage = {
+type TransferConsentRequestCancelledMessage = Message & {
   consentId: string;
+  reason?: string;
 };
 
 /**
@@ -188,5 +189,5 @@ export {
   TransferConsentRequestSucceededEvent,
   TransferConsentRequestCancelledEvent,
   TransferConsentRequestCancelledMessage,
-  TransferConsentRequestSuccededMessage,
+  TransferConsentRequestSucceededMessage,
 };

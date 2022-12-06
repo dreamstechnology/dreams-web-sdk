@@ -20,7 +20,7 @@ import partnerEvents, {
   TransferConsentRequestSucceededEvent,
   TransferConsentRequestCancelledEvent,
   TransferConsentRequestCancelledMessage,
-  TransferConsentRequestSuccededMessage,
+  TransferConsentRequestSucceededMessage,
 } from './events';
 
 type ClientCallbacks = {
@@ -125,7 +125,7 @@ class MessageHandler {
     this.postMessage(event);
   };
 
-  private postTransferConsentRequestSucceeded = (message: TransferConsentRequestSuccededMessage) => {
+  private postTransferConsentRequestSucceeded = (message: TransferConsentRequestSucceededMessage) => {
     const event: TransferConsentRequestSucceededEvent = {
       event: partnerEvents.transferConsentSucceeded,
       message,
@@ -204,6 +204,7 @@ class MessageHandler {
   };
 
   private onTransferConsentRequested = async (event: TransferConsentRequestedEvent) => {
+    console.log('SDK onTransferConsentRequested', this.callbacks.onTransferConsentRequested);
     if (!this.callbacks.onTransferConsentRequested) {
       return;
     }
