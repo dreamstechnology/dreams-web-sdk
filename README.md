@@ -48,7 +48,8 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
     },
     onExitRequested: () => {
       window.location.href = "http://example.com/some/path"
-    }
+    }, 
+    onTransferConsentRequested: (event) => promise.resolve({consentId: event.message.consentId, requestId: event.message.requestId, consentRef: 'foo'})
   }
 
   var sdk = new DreamsWebSDK("https://dreams.api.endpoint");
