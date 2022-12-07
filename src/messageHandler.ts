@@ -204,7 +204,6 @@ class MessageHandler {
   };
 
   private onTransferConsentRequested = async (event: TransferConsentRequestedEvent) => {
-    console.log('SDK onTransferConsentRequested', this.callbacks.onTransferConsentRequested);
     if (!this.callbacks.onTransferConsentRequested) {
       return;
     }
