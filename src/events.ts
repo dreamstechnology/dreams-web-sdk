@@ -6,6 +6,8 @@ enum partnerEvents {
   investmentAccountProvisionInitiated = 'investmentAccountProvisionInitiated',
   updateToken = 'updateToken',
   navigateTo = 'navigateTo',
+  transferConsentSucceeded = 'onTransferConsentSucceeded',
+  transferConsentCancelled = 'onTransferConsentCancelled',
 }
 
 type Message = {
@@ -20,6 +22,21 @@ type ShareMessage = Message & {
 
 type TokenDidExpireMessage = Message & {
   idToken: string;
+};
+
+type TransferConsentRequestedMessage = Message & {
+  consentId: string;
+  consentRef: string;
+};
+
+type TransferConsentRequestSucceededMessage = Message & {
+  consentId: string;
+  consentRef: string;
+};
+
+type TransferConsentRequestCancelledMessage = Message & {
+  consentId: string;
+  reason?: string;
 };
 
 /**
@@ -77,13 +94,19 @@ type ExitRequestedEvent = {
   event: 'onExitRequested';
 };
 
+type TransferConsentRequestedEvent = {
+  event: 'onTransferConsentRequested';
+  message: TransferConsentRequestedMessage;
+};
+
 type DreamsEvent =
   | IdTokenDidExpireEvent
   | AccountProvisionRequestedEvent
   | InvestmentAccountProvisionRequestedEvent
   | InvestmentSellRequestedEvent
   | ExitRequestedEvent
-  | ShareEvent;
+  | ShareEvent
+  | TransferConsentRequestedEvent;
 
 type AccountProvisionInitiatedEvent = {
   event: partnerEvents.accountProvisionInitiated;
@@ -117,11 +140,28 @@ type NavigateToEvent = {
   };
 };
 
+type TransferConsentRequestSucceededEvent = {
+  event: partnerEvents.transferConsentSucceeded;
+  message: {
+    consentId: string;
+    consentRef: string;
+  };
+};
+
+type TransferConsentRequestCancelledEvent = {
+  event: partnerEvents.transferConsentCancelled;
+  message: {
+    consentId: string;
+  };
+};
+
 type PartnerEvent =
   | NavigateToEvent
   | AccountProvisionInitiatedEvent
   | InvestmentAccountProvisionInitiatedEvent
-  | UpdateTokenEvent;
+  | UpdateTokenEvent
+  | TransferConsentRequestSucceededEvent
+  | TransferConsentRequestCancelledEvent;
 
 export default partnerEvents;
 
@@ -144,4 +184,10 @@ export {
   UpdateTokenEvent,
   PartnerEvent,
   Money,
+  TransferConsentRequestedEvent,
+  TransferConsentRequestedMessage,
+  TransferConsentRequestSucceededEvent,
+  TransferConsentRequestCancelledEvent,
+  TransferConsentRequestCancelledMessage,
+  TransferConsentRequestSucceededMessage,
 };
