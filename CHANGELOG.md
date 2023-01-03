@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.2.0...v1.3.0) (2023-01-03)
+
+
+### Features
+
+* **transfer consent:** implementation ([9bbc58b](https://github.com/dreamstechnology/dreams-web-sdk/commit/9bbc58b7cc896c2f938afd8648c45baf9d32194d))
+* **transfer consent:** implementation ([d165581](https://github.com/dreamstechnology/dreams-web-sdk/commit/d16558104fd0e51670776a58a07e471aa43412d5))
+
 # [1.2.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.1.0...v1.2.0) (2022-03-28)
 
 
