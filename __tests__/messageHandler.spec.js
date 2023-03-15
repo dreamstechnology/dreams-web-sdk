@@ -309,6 +309,55 @@ describe('#onMessage', () => {
         await handler.onMessage(message);
 
         expect(onAccountRequested).toHaveBeenCalled();
+      });
+
+      test('sends onAccountRequestedFailed when callback rejects', async () => {
+        const apiUrl = 'http://www.example.com/123';
+        onAccountRequested = jest.fn(() => Promise.reject({ error: 'foo' }));
+        const handler = new MessageHandler(iframe, apiUrl, { onExitRequested, onAccountRequested });
+        const message = buildMessage('onAccountRequested');
+
+        await handler.onMessage(message);
+
+        expect(onAccountRequested).toHaveBeenCalled();
+        expect(postMessageSpy).toHaveBeenCalledWith(
+          JSON.stringify({
+            event: 'onAccountRequestedFailed',
+            message: {
+              error: 'foo',
+            },
+          }),
+          apiUrl,
+        );
+      });
+
+      test('sends onAccountRequestedSucceeded when callback fulfills', async () => {
+        const apiUrl = 'http://www.example.com/123';
+        onAccountRequested = jest.fn(() => Promise.resolve({ message: 'foo' }));
+        const handler = new MessageHandler(iframe, apiUrl, { onExitRequested, onAccountRequested });
+        const message = buildMessage('onAccountRequested');
+
+        await handler.onMessage(message);
+
+        expect(onAccountRequested).toHaveBeenCalled();
+        expect(postMessageSpy).toHaveBeenCalledWith(
+          JSON.stringify({
+            event: 'onAccountRequestedSucceeded',
+            message: {
+              message: 'foo',
+            },
+          }),
+          apiUrl,
+        );
+      });
+
+      test('does nothing when there is no callback', async () => {
+        const apiUrl = 'http://www.example.com/123';
+        const handler = new MessageHandler(iframe, apiUrl, { onExitRequested });
+        const message = buildMessage('onAccountRequested');
+
+        await handler.onMessage(message);
+
         expect(postMessageSpy).not.toHaveBeenCalled();
       });
     });

@@ -22,6 +22,10 @@ import partnerEvents, {
   TransferConsentRequestCancelledMessage,
   TransferConsentRequestSucceededMessage,
   AccountRequestedEvent,
+  AccountRequestedFailedMessage,
+  AccountRequestedFailedEvent,
+  AccountRequestedSucceededEvent,
+  AccountRequestedSucceededMessage,
 } from './events';
 
 type ClientCallbacks = {
@@ -148,6 +152,24 @@ class MessageHandler {
     this.postMessage(event);
   };
 
+  private postAccountRequestFailed = (message: AccountRequestedFailedMessage) => {
+    const event: AccountRequestedFailedEvent = {
+      event: partnerEvents.accountRequestedFailed,
+      message,
+    };
+
+    this.postMessage(event);
+  };
+
+  private postAccountRequestSucceeded = (message: AccountRequestedSucceededMessage) => {
+    const event: AccountRequestedSucceededEvent = {
+      event: partnerEvents.accountRequestedSucceeded,
+      message,
+    };
+
+    this.postMessage(event);
+  };
+
   /**
    * @param location the part of the dreams app where you want to take the user to. You have to only pass the path.
    */
@@ -226,8 +248,10 @@ class MessageHandler {
       return;
     }
     try {
-      await this.callbacks.onAccountRequested(event);
+      const accountRequestedResult = await this.callbacks.onAccountRequested(event);
+      this.postAccountRequestSucceeded(accountRequestedResult);
     } catch (err) {
+      this.postAccountRequestFailed(err as AccountRequestedFailedMessage);
       console.error('onAccountRequested error: ', err);
     }
   }

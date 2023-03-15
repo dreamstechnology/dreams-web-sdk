@@ -8,7 +8,8 @@ enum partnerEvents {
   navigateTo = 'navigateTo',
   transferConsentSucceeded = 'onTransferConsentSucceeded',
   transferConsentCancelled = 'onTransferConsentCancelled',
-  accountRequested = 'onAccountRequested',
+  accountRequestedFailed = 'onAccountRequestedFailed',
+  accountRequestedSucceeded = 'onAccountRequestedSucceeded',
 }
 
 type Message = {
@@ -60,6 +61,9 @@ type AccountRequestedMessage = Message & {
   cancelURL: string;
   errorURL: string;
 };
+
+type AccountRequestedFailedMessage = Message;
+type AccountRequestedSucceededMessage = Message;
 
 /**
  * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
@@ -183,13 +187,25 @@ type TransferConsentRequestCancelledEvent = {
   };
 };
 
+type AccountRequestedFailedEvent = {
+  event: partnerEvents.accountRequestedFailed;
+  message: AccountRequestedFailedMessage;
+};
+
+type AccountRequestedSucceededEvent = {
+  event: partnerEvents.accountRequestedSucceeded;
+  message: AccountRequestedSucceededMessage;
+};
+
 type PartnerEvent =
   | NavigateToEvent
   | AccountProvisionInitiatedEvent
   | InvestmentAccountProvisionInitiatedEvent
   | UpdateTokenEvent
   | TransferConsentRequestSucceededEvent
-  | TransferConsentRequestCancelledEvent;
+  | TransferConsentRequestCancelledEvent
+  | AccountRequestedFailedEvent
+  | AccountRequestedSucceededEvent;
 
 export default partnerEvents;
 
@@ -219,4 +235,8 @@ export {
   TransferConsentRequestCancelledMessage,
   TransferConsentRequestSucceededMessage,
   AccountRequestedEvent,
+  AccountRequestedFailedMessage,
+  AccountRequestedFailedEvent,
+  AccountRequestedSucceededMessage,
+  AccountRequestedSucceededEvent,
 };
