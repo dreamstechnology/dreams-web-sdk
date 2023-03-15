@@ -43,7 +43,7 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
 
       return data.token;
     },
-    onAccountProvisionRequested: () => {
+    onAccountProvisionRequested: async () => {
       await fetch("/provision-account-endpoint")
     },
     onExitRequested: () => {
