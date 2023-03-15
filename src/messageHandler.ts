@@ -21,6 +21,7 @@ import partnerEvents, {
   TransferConsentRequestCancelledEvent,
   TransferConsentRequestCancelledMessage,
   TransferConsentRequestSucceededMessage,
+  AccountRequestedEvent,
 } from './events';
 
 type ClientCallbacks = {
@@ -33,6 +34,7 @@ type ClientCallbacks = {
   onShare?: (event: ShareEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
   onTransferConsentRequested?: (event: TransferConsentRequestedEvent) => Promise<TransferConsentRequestedMessage>;
+  onAccountRequested?: (event: AccountRequestedEvent) => Promise<any>;
 };
 
 class MessageHandler {
@@ -81,6 +83,9 @@ class MessageHandler {
         break;
       case 'onTransferConsentRequested':
         this.onTransferConsentRequested(event);
+        break;
+      case 'onAccountRequested':
+        this.onAccountRequested(event);
         break;
       default:
         console.warn('Unknown event type:', event);
@@ -215,6 +220,17 @@ class MessageHandler {
       console.error('onTransferConsentRequested error', err);
     }
   };
+
+  private async onAccountRequested(event: AccountRequestedEvent) {
+    if (!this.callbacks.onAccountRequested) {
+      return;
+    }
+    try {
+      await this.callbacks.onAccountRequested(event);
+    } catch (err) {
+      console.error('onAccountRequested error: ', err);
+    }
+  }
 
   private postMessage = (message: PartnerEvent) => {
     console.debug('postMessage', message);

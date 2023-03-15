@@ -8,7 +8,7 @@ describe('#constructor', () => {
   test('dreams api endpoint not provided', () => {
     const iframe = document.createElement('iframe');
     const throwable = () => {
-      new MessageHandler(iframe, undefined, {}, '123');
+      new MessageHandler(iframe, undefined, {});
     };
     expect(throwable).toThrow();
   });
@@ -48,6 +48,7 @@ describe('#onMessage', () => {
     let onShare;
     let callbacks;
     let onTransferConsentRequested;
+    let onAccountRequested;
 
     beforeEach(() => {
       iframe = document.createElement('iframe');
@@ -60,6 +61,7 @@ describe('#onMessage', () => {
       onExitRequested = jest.fn(() => Promise.resolve());
       onShare = jest.fn(() => Promise.resolve());
       onTransferConsentRequested = jest.fn(() => Promise.resolve());
+      onAccountRequested = jest.fn(() => Promise.resolve());
       callbacks = {
         onAccountProvisionRequested,
         onIdTokenDidExpire,
@@ -68,6 +70,7 @@ describe('#onMessage', () => {
         onInvestmentAccountProvisionRequested,
         onInvestmentSellRequested,
         onTransferConsentRequested,
+        onAccountRequested,
       };
     });
 
@@ -294,6 +297,18 @@ describe('#onMessage', () => {
 
         await handler.onMessage(message);
 
+        expect(postMessageSpy).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('onAccountRequested', () => {
+      test('behaves correctly', async () => {
+        const handler = new MessageHandler(iframe, 'http://www.example.com/123', callbacks);
+        const message = buildMessage('onAccountRequested');
+
+        await handler.onMessage(message);
+
+        expect(onAccountRequested).toHaveBeenCalled();
         expect(postMessageSpy).not.toHaveBeenCalled();
       });
     });
