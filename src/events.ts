@@ -57,9 +57,6 @@ type AccountRequestedMessage = Message & {
       externalId: string;
     };
   };
-  successURL: string;
-  cancelURL: string;
-  errorURL: string;
 };
 
 type AccountRequestedFailedMessage = Message;
