@@ -313,7 +313,7 @@ describe('#onMessage', () => {
 
       test('sends onAccountRequestedFailed when callback rejects', async () => {
         const apiUrl = 'http://www.example.com/123';
-        onAccountRequested = jest.fn(() => Promise.reject({ error: 'foo' }));
+        onAccountRequested = jest.fn(() => Promise.reject({ reason: 'error' }));
         const handler = new MessageHandler(iframe, apiUrl, { onExitRequested, onAccountRequested });
         const message = buildMessage('onAccountRequested');
 
@@ -324,7 +324,7 @@ describe('#onMessage', () => {
           JSON.stringify({
             event: 'onAccountRequestedFailed',
             message: {
-              error: 'foo',
+              reason: 'error',
             },
           }),
           apiUrl,
