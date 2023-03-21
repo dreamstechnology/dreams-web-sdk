@@ -61,16 +61,8 @@ type AccountRequestedMessage = Message & {
 
 type AccountRequestedFailedMessage = Message & {
   reason: 'cancelled' | 'error';
-  dream: {
-    id: string;
-  };
 };
-type AccountRequestedSucceededMessage = Message & {
-  requestId: string;
-  dream: {
-    id: string;
-  };
-};
+type AccountRequestedSucceededMessage = Message;
 
 /**
  * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
