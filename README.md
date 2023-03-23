@@ -43,13 +43,14 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
 
       return data.token;
     },
-    onAccountProvisionRequested: () => {
+    onAccountProvisionRequested: async () => {
       await fetch("/provision-account-endpoint")
     },
     onExitRequested: () => {
       window.location.href = "http://example.com/some/path"
     }, 
-    onTransferConsentRequested: (event) => promise.resolve({consentId: event.message.consentId, requestId: event.message.requestId, consentRef: 'foo'})
+    onTransferConsentRequested: (event) => promise.resolve({consentId: event.message.consentId, requestId: event.message.requestId, consentRef: 'foo'}),
+    onAccountRequested: (event) => promise.resolve({requestId: event.message.requestId})
   }
 
   var sdk = new DreamsWebSDK("https://dreams.api.endpoint");

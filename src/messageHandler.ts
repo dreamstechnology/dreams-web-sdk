@@ -21,6 +21,11 @@ import partnerEvents, {
   TransferConsentRequestCancelledEvent,
   TransferConsentRequestCancelledMessage,
   TransferConsentRequestSucceededMessage,
+  AccountRequestedEvent,
+  AccountRequestedFailedMessage,
+  AccountRequestedFailedEvent,
+  AccountRequestedSucceededEvent,
+  AccountRequestedSucceededMessage,
 } from './events';
 
 type ClientCallbacks = {
@@ -33,6 +38,7 @@ type ClientCallbacks = {
   onShare?: (event: ShareEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
   onTransferConsentRequested?: (event: TransferConsentRequestedEvent) => Promise<TransferConsentRequestedMessage>;
+  onAccountRequested?: (event: AccountRequestedEvent) => Promise<any>;
 };
 
 class MessageHandler {
@@ -81,6 +87,9 @@ class MessageHandler {
         break;
       case 'onTransferConsentRequested':
         this.onTransferConsentRequested(event);
+        break;
+      case 'onAccountRequested':
+        this.onAccountRequested(event);
         break;
       default:
         console.warn('Unknown event type:', event);
@@ -137,6 +146,24 @@ class MessageHandler {
   private postTransferConsentRequestCancelled = (message: TransferConsentRequestCancelledMessage) => {
     const event: TransferConsentRequestCancelledEvent = {
       event: partnerEvents.transferConsentCancelled,
+      message,
+    };
+
+    this.postMessage(event);
+  };
+
+  private postAccountRequestFailed = (message: AccountRequestedFailedMessage) => {
+    const event: AccountRequestedFailedEvent = {
+      event: partnerEvents.accountRequestedFailed,
+      message,
+    };
+
+    this.postMessage(event);
+  };
+
+  private postAccountRequestSucceeded = (message: AccountRequestedSucceededMessage) => {
+    const event: AccountRequestedSucceededEvent = {
+      event: partnerEvents.accountRequestedSucceeded,
       message,
     };
 
@@ -215,6 +242,19 @@ class MessageHandler {
       console.error('onTransferConsentRequested error', err);
     }
   };
+
+  private async onAccountRequested(event: AccountRequestedEvent) {
+    if (!this.callbacks.onAccountRequested) {
+      return;
+    }
+    try {
+      const accountRequestedResult = await this.callbacks.onAccountRequested(event);
+      this.postAccountRequestSucceeded(accountRequestedResult);
+    } catch (err) {
+      this.postAccountRequestFailed(err as AccountRequestedFailedMessage);
+      console.error('onAccountRequested error: ', err);
+    }
+  }
 
   private postMessage = (message: PartnerEvent) => {
     console.debug('postMessage', message);

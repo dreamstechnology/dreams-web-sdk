@@ -8,6 +8,8 @@ enum partnerEvents {
   navigateTo = 'navigateTo',
   transferConsentSucceeded = 'onTransferConsentSucceeded',
   transferConsentCancelled = 'onTransferConsentCancelled',
+  accountRequestedFailed = 'onAccountRequestedFailed',
+  accountRequestedSucceeded = 'onAccountRequestedSucceeded',
 }
 
 type Message = {
@@ -38,6 +40,29 @@ type TransferConsentRequestCancelledMessage = Message & {
   consentId: string;
   reason?: string;
 };
+
+type AccountRequestedMessage = Message & {
+  dream: {
+    type: 'dream';
+    id: string;
+    name: string;
+    target_amount: {
+      cents: number;
+      currency: string;
+    };
+    target_date: string;
+    user: {
+      type: 'user';
+      id: string;
+      externalId: string;
+    };
+  };
+};
+
+type AccountRequestedFailedMessage = Message & {
+  reason: 'cancelled' | 'error';
+};
+type AccountRequestedSucceededMessage = Message;
 
 /**
  * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
@@ -99,6 +124,11 @@ type TransferConsentRequestedEvent = {
   message: TransferConsentRequestedMessage;
 };
 
+type AccountRequestedEvent = {
+  event: 'onAccountRequested';
+  message: AccountRequestedMessage;
+};
+
 type DreamsEvent =
   | IdTokenDidExpireEvent
   | AccountProvisionRequestedEvent
@@ -106,7 +136,8 @@ type DreamsEvent =
   | InvestmentSellRequestedEvent
   | ExitRequestedEvent
   | ShareEvent
-  | TransferConsentRequestedEvent;
+  | TransferConsentRequestedEvent
+  | AccountRequestedEvent;
 
 type AccountProvisionInitiatedEvent = {
   event: partnerEvents.accountProvisionInitiated;
@@ -155,13 +186,25 @@ type TransferConsentRequestCancelledEvent = {
   };
 };
 
+type AccountRequestedFailedEvent = {
+  event: partnerEvents.accountRequestedFailed;
+  message: AccountRequestedFailedMessage;
+};
+
+type AccountRequestedSucceededEvent = {
+  event: partnerEvents.accountRequestedSucceeded;
+  message: AccountRequestedSucceededMessage;
+};
+
 type PartnerEvent =
   | NavigateToEvent
   | AccountProvisionInitiatedEvent
   | InvestmentAccountProvisionInitiatedEvent
   | UpdateTokenEvent
   | TransferConsentRequestSucceededEvent
-  | TransferConsentRequestCancelledEvent;
+  | TransferConsentRequestCancelledEvent
+  | AccountRequestedFailedEvent
+  | AccountRequestedSucceededEvent;
 
 export default partnerEvents;
 
@@ -190,4 +233,9 @@ export {
   TransferConsentRequestCancelledEvent,
   TransferConsentRequestCancelledMessage,
   TransferConsentRequestSucceededMessage,
+  AccountRequestedEvent,
+  AccountRequestedFailedMessage,
+  AccountRequestedFailedEvent,
+  AccountRequestedSucceededMessage,
+  AccountRequestedSucceededEvent,
 };
