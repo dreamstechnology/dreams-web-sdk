@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.3.0...v1.4.0) (2023-03-24)
+
+
+### Features
+
+* **account requested:** implementation ([#36](https://github.com/dreamstechnology/dreams-web-sdk/issues/36)) ([40dca39](https://github.com/dreamstechnology/dreams-web-sdk/commit/40dca394f7437062ea935fb15ecd27315ec8650b))
+
 # [1.3.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.2.0...v1.3.0) (2023-01-03)
 
 
