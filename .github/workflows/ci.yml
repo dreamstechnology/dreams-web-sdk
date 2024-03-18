@@ -27,8 +27,8 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile --non-interactive --silent
 
-      - name: Run lefthook pre-merge-commit
-        run: npx lefthook run pre-merge-commit
+      - name: Prettier
+        run: yarn format-verify
 
   tests:
     name: Tests
@@ -60,10 +60,3 @@ jobs:
 
       - name: Build
         run: yarn build
-
-      - name: Test Release
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
-          GIT_AUTHOR_NAME: '@dreams-enterprise-bot'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: yarn semantic-release-test

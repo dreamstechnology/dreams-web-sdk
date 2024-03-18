@@ -3,8 +3,3 @@ pre-commit:
     prettier:
       glob: '*.{ts,js,json}'
       run: yarn prettier --write {staged_files} && git add {staged_files}
-
-pre-merge-commit:
-  commands:
-    prettier:
-      run: npm run format-verify
