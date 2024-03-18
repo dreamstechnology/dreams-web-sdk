@@ -1,6 +1,5 @@
-import type { UpdateTokenMessage } from 'dreams-web-sdk';
+import type { ClientCallbacks } from 'dreams-web-sdk';
 
-export const message: UpdateTokenMessage = {
-  idToken: 'token',
-  requestId: '123',
+export const callbacks: ClientCallbacks = {
+  onExitRequested: async () => {},
 };

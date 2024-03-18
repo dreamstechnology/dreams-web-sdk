@@ -1,98 +1,80 @@
 # Dreams Web SDK
 
-## Dependencies
+## Usage
 
-To install dependencies run
+See [examples](./examples/) for fully functional versions of the below usage scenarios:
+
+### Browser (UMD)
+
+```html
+<script src="dreams-web-sdk.min.js"></script>
+<script>
+    const sdk = new dreamsWebSdk.DreamsSDK('https://<des-uri>');
+</script>
+```
+
+### Browser (ESM)
+
+```html
+<script type="module">
+  import { DreamsSDK } from 'dreams-web-sdk/dist/esm/index.js';
+  const sdk = new DreamsSDK('https://<des-uri>');
+</script>
+```
+
+### Bundler (ESM)
+
+```sh
+npm install dreams-web-sdk
+```
+
+```javascript
+import { DreamsSDK } from 'dreams-web-sdk';
+const sdk = new DreamsSDK('https://<des-uri>');
+```
+
+### Bundler (CJS)
+
+```sh
+npm install dreams-web-sdk
+```
+
+```javascript
+const { DreamsSDK } = require('dreams-web-sdk');
+const sdk = new DreamsSDK('https://<des-uri>');
+```
+
+## Contributing
+
+### Dependencies
+
+We use the [Yarn Classic (v1)](https://classic.yarnpkg.com/en/docs) package manager.
+
+To install dependencies:
 
 ```shell
 yarn install
 ```
 
-We use [lefthook](https://github.com/evilmartians/lefthook). Refer to their github page for installation instructions.
+We use [lefthook](https://github.com/evilmartians/lefthook) for git hooks.
+Please refer to their [github page](https://github.com/evilmartians/lefthook)
+for installation instructions.
 
-## Testing
+### Testing
+
+We use [jest](https://jestjs.io/) for testing.
 
 ```shell
 yarn test
 ```
 
-We use [jest](https://jestjs.io/) for testing.
+### Building
 
-## Building
-
-To build distros run
+We use [rollup.js](https://rollupjs.org/) for building.
 
 ```shell
 yarn run build
 ```
-
-New distros are going to be created in the `dist` folder.
-
-For more info about building packages refer to [rollup webpage](https://rollupjs.org/guide/en/#overview).
-
-## Usage
-
-```html
-<div id="dreams-web-sdk-container"></div>
-
-<script src="path/to/dreams/sdk/js/file">
-  var callbacks = {
-    onIdTokenDidExpire: async () => {
-      const resp = await fetch("/token-expired-endpoint");
-      const data = await resp.json();
-
-      return data.token;
-    },
-    onAccountProvisionRequested: async () => {
-      await fetch("/provision-account-endpoint")
-    },
-    onExitRequested: () => {
-      window.location.href = "http://example.com/some/path"
-    },
-    onTransferConsentRequested: (event) => promise.resolve({consentId: event.message.consentId, requestId: event.message.requestId, consentRef: 'foo'}),
-    onAccountRequested: (event) => promise.resolve({requestId: event.message.requestId})
-  }
-
-  var sdk = new DreamsWebSDK("https://dreams.api.endpoint");
-
-  // Optional param to redirect user inside dreams app
-  var location = "marketplace";
-
-  sdk.setup(callbacks);
-  sdk.start(user_jwk_token_value, "en", location);
-</script>
-```
-
-## Manually sending a message
-
-```html
-<div id="dreams-web-sdk-container"></div>
-
-<script src="path/to/dreams/sdk/js/file">
-  var callbacks = {}
-  var sdk = new DreamsWebSDK("https://dreams.api.endpoint");
-  var messageHandler = sdk.setup(callbacks);
-
-  sdk.start(user_jwk_token_value, "en");
-
-  const new_token = await fetch("/token-endpoint");
-
-  messageHandler.postUpdateToken('request-id-string', new_token)
-</script>
-```
-
-### message types
-
-currently we can:
-
-- `postUpdateToken` a response to `onIdTokenDidExpire` message
-- `postAccountProvisionInitiated` a response to `onAccountProvisionRequested` message
-- `postInvestmentAccountProvisionInitiated` a response to `onInvestmentAccountProvisionRequested` message
-- `navigateTo` that has no corresponding dreams side message
-
-see the docs about their usage.
-
-## Contributing
 
 ### Release management
 
