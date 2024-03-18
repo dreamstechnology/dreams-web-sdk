@@ -3,6 +3,7 @@ import terser from "@rollup/plugin-terser";
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import ts from "rollup-plugin-ts";
+import del from 'rollup-plugin-delete'
 import pkg from "./package.json" assert { type: 'json' };
 
 const extensions = [".ts", ".js"]
@@ -76,12 +77,17 @@ export default [
   {
     input,
     plugins: [
+      // this generates compiled .js too (not only declarations)...
       ts(),
+      // so we clean that up at the very end
+      del({
+        targets: 'dist/types/*.js',
+        hook: 'closeBundle',
+        verbose: true,
+      })
     ],
     output: {
-      // here we get compiled .js too (not only declarations), we ignore that
-      // with .npmignore
       dir: "dist/types",
     }
-  },
+  }
 ];
