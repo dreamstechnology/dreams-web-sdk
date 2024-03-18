@@ -1,0 +1,18 @@
+{
+  "name": "dreams-web-sdk-esm-example",
+  "version": "0.0.0",
+  "description": "Example of loading ESM bundle of dreams-web-sdk",
+  "module": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "rollup": "^4.13.0"
+  },
+  "dependencies": {
+    "dreams-web-sdk": "../../"
+  }
+}

@@ -1,6 +1,6 @@
-import MessageHandler, { ClientCallbacks } from './messageHandler';
+import { MessageHandler, type ClientCallbacks } from './messageHandler';
 import { createForm, createIFrame, iframeName } from './util';
-import {
+import type {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
   InvestmentAccountProvisionRequestedEvent,
@@ -29,7 +29,7 @@ import {
  * sdk.start(jwk_token, locale);
  * ```
  */
-export default class DreamsSDK {
+export class DreamsSDK {
   apiUrl: string;
   form?: HTMLFormElement;
   iframe?: HTMLIFrameElement;
@@ -99,8 +99,9 @@ export default class DreamsSDK {
   }
 }
 
-export {
-  MessageHandler,
+export { MessageHandler };
+
+export type {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
   InvestmentAccountProvisionRequestedEvent,
