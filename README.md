@@ -48,7 +48,7 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
     },
     onExitRequested: () => {
       window.location.href = "http://example.com/some/path"
-    }, 
+    },
     onTransferConsentRequested: (event) => promise.resolve({consentId: event.message.consentId, requestId: event.message.requestId, consentRef: 'foo'}),
     onAccountRequested: (event) => promise.resolve({requestId: event.message.requestId})
   }
@@ -94,16 +94,21 @@ see the docs about their usage.
 
 ## Contributing
 
-### Commit naming
+### Release management
 
-We use commitlint to make sure commit messages adhere to certain rules. These are:
-
-- [Angular Contribution Rules](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type)
-- [Conventional Commit Rules](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#specification)
-- [Commitlint Rules](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum)
-
-Semantic release takes care of automatically bumping release versions provided that we name commits correctly.
-[Here](https://github.com/semantic-release/semantic-release#commit-message-format) you can find what constitutes a patch/feature/breaking release.
+1. Decide which PRs to include in the release, and if that results in a new
+   patch, minor or major release.
+2. Create a branch for the upcoming release named `release-<semver>`
+3. Start a new [CHANGELOG.md](./CHANGELOG.md) entry for the new version.
+4. Push the release branch.
+5. Merge all pull requests that should be included into the release branch.
+6. Use `npm version <strategy>` to bump the package version. For example `npm version premajor --preid=rc`
+7. Dry-run the release: `yarn publish --dry-run`
+8. Make a cautious release `yarn publish --tag=next` and verify the release works
+9. Push the branch and tag
+10. Merge to main and publish `latest`:
+  - `npm dist-tag add dreams-web-sdk@<semver> latest`
+  - `npm dist-tag rm dreams-web-sdk next`
 
 ## License
 
