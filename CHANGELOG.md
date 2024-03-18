@@ -14,6 +14,11 @@
 
 ### Bug Fixes
 
+- Exported missing type declarations
+  - `TransferConsentRequestedEvent`,
+  - `TransferConsentRequestedMessage`,
+  - `TransferConsentRequestCancelledMessage`,
+  - `TransferConsentRequestSucceededMessage`
 
 ## [1.4.1](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.4.0...v1.4.1) (2023-08-09)
 

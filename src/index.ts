@@ -1,24 +1,6 @@
 import { MessageHandler, type ClientCallbacks } from './messageHandler';
 import { createForm, createIFrame, iframeName } from './util';
-import type {
-  IdTokenDidExpireEvent,
-  AccountProvisionRequestedEvent,
-  InvestmentAccountProvisionRequestedEvent,
-  InvestmentSellRequestedEvent,
-  ExitRequestedEvent,
-  ShareEvent,
-  DreamsEvent,
-  Message,
-  ShareMessage,
-  InvestmentAccountProvisionRequestedMessage,
-  InvestmentSellRequestedMessage,
-  UpdateTokenMessage,
-  NavigateToEvent,
-  AccountProvisionInitiatedEvent,
-  InvestmentAccountProvisionInitiatedEvent,
-  UpdateTokenEvent,
-  PartnerEvent,
-} from './events';
+
 /**
  * DreamSDK is an utility class responsible for setting up and listening
  * to messages being exchanged between the your context and Dreams iframe.
@@ -99,8 +81,7 @@ export class DreamsSDK {
   }
 }
 
-export { MessageHandler };
-
+export { MessageHandler, type ClientCallbacks };
 export type {
   IdTokenDidExpireEvent,
   AccountProvisionRequestedEvent,
@@ -119,5 +100,8 @@ export type {
   InvestmentAccountProvisionInitiatedEvent,
   UpdateTokenEvent,
   PartnerEvent,
-  ClientCallbacks,
-};
+  TransferConsentRequestedEvent,
+  TransferConsentRequestedMessage,
+  TransferConsentRequestCancelledMessage,
+  TransferConsentRequestSucceededMessage,
+} from './events';
