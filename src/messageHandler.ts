@@ -183,6 +183,13 @@ export class MessageHandler {
     this.postMessage({ event: 'onSignOutRequested', message: {} });
   };
 
+  /**
+   * Tell DES to keep the session alive for another Partner.session_inactivity_timeout
+   */
+  sessionKeepAlive = () => {
+    this.postMessage({ event: 'sessionKeepAlive', message: {} });
+  };
+
   private onIdTokenDidExpire = async (event: OnIdTokenDidExpireEvent) => {
     if (!this.callbacks.onIdTokenDidExpire) return;
 

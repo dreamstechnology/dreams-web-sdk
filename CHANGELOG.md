@@ -21,6 +21,8 @@
 - `DreamsSDK.messageHandler.signOut()` command for signing out the current user.
   Once the current cookie-based session has been reset, DES will send back
   `onExitRequested`.
+- `DreamsSDK.messageHandler.sessionKeepAlive()` command for telling DES to keep
+  the session alive for another `session_inactivity_timeout`.
 
 ### Bug Fixes
 
