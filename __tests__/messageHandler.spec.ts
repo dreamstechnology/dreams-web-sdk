@@ -379,14 +379,38 @@ describe('#listen', () => {
   });
 });
 
-describe('#navigateTo', () => {
-  test('posts appropriate message', () => {
+describe('commands', () => {
+  let spy: jest.SpyInstance;
+  let handler: MessageHandler;
+
+  beforeEach(() => {
     const iframe = document.createElement('iframe');
     document.body.appendChild(iframe);
-    const handler = new MessageHandler(iframe, 'http://www.example.com/', callbacks);
-    const spy = jest.spyOn(iframe.contentWindow!, 'postMessage');
+    handler = new MessageHandler(iframe, 'http://www.example.com/', callbacks);
+    spy = jest.spyOn(iframe.contentWindow!, 'postMessage');
+  });
 
-    handler.navigateTo('/example-url');
-    expect(spy).toHaveBeenCalled();
+  describe('#navigateTo', () => {
+    test('posts appropriate message', () => {
+      handler.navigateTo('/example-url');
+      expect(spy).toHaveBeenCalledWith(
+        '{"event":"navigateTo","message":{"location":"/example-url"}}',
+        'http://www.example.com/',
+      );
+    });
+  });
+
+  describe('#signOut', () => {
+    test('posts appropriate message', () => {
+      handler.signOut();
+      expect(spy).toHaveBeenCalledWith('{"event":"onSignOutRequested","message":{}}', 'http://www.example.com/');
+    });
+  });
+
+  describe('#sessionKeepAlive', () => {
+    test('posts appropriate message', () => {
+      handler.sessionKeepAlive();
+      expect(spy).toHaveBeenCalledWith('{"event":"sessionKeepAlive","message":{}}', 'http://www.example.com/');
+    });
   });
 });
