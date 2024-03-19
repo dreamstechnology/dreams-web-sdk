@@ -15,7 +15,6 @@ import type {
   AccountProvisionedMessage,
   InvestmentAccountProvisionInitiatedEvent,
   InvestmentAccountProvisionInitiatedMessage,
-  NavigateToEvent,
   OnAccountRequestedFailedEvent,
   OnAccountRequestedFailedMessage,
   OnAccountRequestedSucceededEvent,
@@ -173,12 +172,15 @@ export class MessageHandler {
    * @param location the part of the dreams app where you want to take the user to. You have to only pass the path.
    */
   navigateTo = (location: string) => {
-    const event: NavigateToEvent = {
-      event: 'navigateTo',
-      message: { location },
-    };
+    this.postMessage({ event: 'navigateTo', message: { location } });
+  };
 
-    this.postMessage(event);
+  /**
+   * Sign Out the current user. Once the current cookie-based session has been
+   * reset, DES will send back `onExitRequested`.
+   */
+  signOut = () => {
+    this.postMessage({ event: 'onSignOutRequested', message: {} });
   };
 
   private onIdTokenDidExpire = async (event: OnIdTokenDidExpireEvent) => {

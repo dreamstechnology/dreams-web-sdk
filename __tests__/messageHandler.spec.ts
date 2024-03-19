@@ -387,6 +387,21 @@ describe('#navigateTo', () => {
     const spy = jest.spyOn(iframe.contentWindow!, 'postMessage');
 
     handler.navigateTo('/example-url');
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(
+      '{"event":"navigateTo","message":{"location":"/example-url"}}',
+      'http://www.example.com/',
+    );
+  });
+});
+
+describe('#signOut', () => {
+  test('posts appropriate message', () => {
+    const iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    const handler = new MessageHandler(iframe, 'http://www.example.com/', callbacks);
+    const spy = jest.spyOn(iframe.contentWindow!, 'postMessage');
+
+    handler.signOut();
+    expect(spy).toHaveBeenCalledWith('{"event":"onSignOutRequested","message":{}}', 'http://www.example.com/');
   });
 });

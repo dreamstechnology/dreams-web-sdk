@@ -18,6 +18,9 @@
 ### Features
 
 - Distributions in all of UMD, ESM and CJS module systems, as well as Typescript type definitions
+- `DreamsSDK.messageHandler.signOut()` command for signing out the current user.
+  Once the current cookie-based session has been reset, DES will send back
+  `onExitRequested`.
 
 ### Bug Fixes
 
