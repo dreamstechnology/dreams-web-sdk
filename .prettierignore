@@ -1,1 +1,3 @@
 tsconfig.json
+src/des_events.ts
+src/partner_events.ts
