@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <script src="../../dist/umd/dreams-web-sdk.min.js"></script>
+  </head>
+  <body>
+    <div id="dreams-web-sdk-container"></div>
+    <script>
+      const callbacks = {
+        onIdTokenDidExpire: async () => { return 'token' },
+      }
+      const sdk = new dreamsWebSdk.DreamsSDK("https://demo.dreams.test:3000");
+      sdk.setup(callbacks);
+      sdk.start('jwt-token', 'en');
+    </script>
+  </body>
+</html>

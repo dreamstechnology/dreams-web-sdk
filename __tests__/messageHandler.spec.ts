@@ -1,14 +1,18 @@
-import MessageHandler from '../src/messageHandler';
+import { MessageHandler } from '../src/messageHandler';
 
-const buildMessage = (event, requestId = '123', messageData = undefined) => ({
+const buildMessage = (event, requestId = '123', messageData: any = undefined) => ({
   data: JSON.stringify({ event, message: { requestId, messageData } }),
 });
+
+const callbacks = {
+  onExitRequested: async () => {},
+};
 
 describe('#constructor', () => {
   test('dreams api endpoint not provided', () => {
     const iframe = document.createElement('iframe');
     const throwable = () => {
-      new MessageHandler(iframe, undefined, {});
+      new MessageHandler(iframe, undefined as any as string, callbacks);
     };
     expect(throwable).toThrow();
   });
@@ -18,7 +22,7 @@ describe('#onMessage', () => {
   describe('when message is unreadable', () => {
     test('behaves correctly', () => {
       const iframe = document.createElement('iframe');
-      const handler = new MessageHandler(iframe, 'www.example.com/123', {});
+      const handler = new MessageHandler(iframe, 'www.example.com/123', callbacks);
       const spy = jest.spyOn(global.console, 'error');
       const message = '';
       handler.onMessage(message);
@@ -29,7 +33,7 @@ describe('#onMessage', () => {
   describe('when message is not of expected type', () => {
     test('behaves correctly', () => {
       const iframe = document.createElement('iframe');
-      const handler = new MessageHandler(iframe, 'www.example.com/123', {});
+      const handler = new MessageHandler(iframe, 'www.example.com/123', callbacks);
       const spy = jest.spyOn(global.console, 'warn');
       const message = { data: JSON.stringify({ foo: 'bar' }) };
       handler.onMessage(message);
@@ -367,7 +371,7 @@ describe('#onMessage', () => {
 describe('#listen', () => {
   test('adds proper event listener', () => {
     const iframe = document.createElement('iframe');
-    const handler = new MessageHandler(iframe, '123', {});
+    const handler = new MessageHandler(iframe, '123', callbacks);
     const spy = jest.spyOn(window, 'addEventListener');
 
     handler.listen();
@@ -379,8 +383,8 @@ describe('#navigateTo', () => {
   test('posts appropriate message', () => {
     const iframe = document.createElement('iframe');
     document.body.appendChild(iframe);
-    const handler = new MessageHandler(iframe, 'http://www.example.com/', {});
-    const spy = jest.spyOn(iframe.contentWindow, 'postMessage');
+    const handler = new MessageHandler(iframe, 'http://www.example.com/', callbacks);
+    const spy = jest.spyOn(iframe.contentWindow!, 'postMessage');
 
     handler.navigateTo('/example-url');
     expect(spy).toHaveBeenCalled();

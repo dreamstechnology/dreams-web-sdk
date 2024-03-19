@@ -1,3 +1,25 @@
+# 2.0.0
+
+### BREAKING CHANGES
+
+- No more default export of `DreamsSDK`.
+  Instead of `const DreamsSDK = require('dreams-web-sdk')` use
+  `const { DreamsSDK } = require('dreams-web-sdk')`. Please refer to new
+  examples in the [README.md](https://github.com/dreamstechnology/dreams-web-sdk/blob/v2.0.0/README.md)
+  and in the [examples](https://github.com/dreamstechnology/dreams-web-sdk/blob/v2.0.0/examples) folder.
+
+### Features
+
+- Distributions in all of UMD, ESM and CJS module systems, as well as Typescript type definitions
+
+### Bug Fixes
+
+- Exported missing type declarations
+  - `TransferConsentRequestedEvent`,
+  - `TransferConsentRequestedMessage`,
+  - `TransferConsentRequestCancelledMessage`,
+  - `TransferConsentRequestSucceededMessage`
+
 ## [1.4.1](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.4.0...v1.4.1) (2023-08-09)
 
 # [1.4.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.3.0...v1.4.0) (2023-03-24)
