@@ -1,4 +1,4 @@
-import DreamsSDK from '../src/main';
+import { DreamsSDK } from '../src/index';
 
 afterEach(() => {
   document.getElementsByTagName('html')[0].innerHTML = '';
@@ -8,16 +8,18 @@ describe('#setup', () => {
   test('creates elements', () => {
     const sdk = new DreamsSDK('http://www.example.com');
     const div = document.createElement('div');
-    const callbacks = {};
+    const callbacks = {
+      onExitRequested: async () => {},
+    };
     div.setAttribute('id', 'id');
     document.body.appendChild(div);
 
     sdk.setup(callbacks, 'id');
 
-    const form = div.firstChild;
-    const formInputLocale = form.querySelector("input[name='locale']");
-    const formInputToken = form.querySelector("input[name='token']");
-    const formInputLocation = form.querySelector("input[name='location']");
+    const form = div.firstChild as HTMLFormElement;
+    const formInputLocale = form.querySelector("input[name='locale']") as HTMLInputElement;
+    const formInputToken = form.querySelector("input[name='token']") as HTMLInputElement;
+    const formInputLocation = form.querySelector("input[name='location']") as HTMLInputElement;
 
     expect(form.target).toBe('dreams-web-sdk-iframe');
     expect(form.method).toBe('post');
@@ -41,19 +43,22 @@ describe('#start', () => {
     const sdk = new DreamsSDK('url');
     const div = document.createElement('div');
 
+    const callbacks = {
+      onExitRequested: async () => {},
+    };
     div.setAttribute('id', 'id');
     document.body.appendChild(div);
-    sdk.setup('token', 'id');
+    sdk.setup(callbacks, 'id');
 
-    const form = div.firstChild;
+    const form = div.firstChild as HTMLFormElement;
     const formSpy = jest.spyOn(form, 'submit').mockImplementation(() => {});
     const windowSpy = jest.spyOn(window, 'addEventListener');
 
     sdk.start('token', 'fr', 'marketplace');
 
-    const formInputLocale = form.querySelector("input[name='locale']");
-    const formInputToken = form.querySelector("input[name='token']");
-    const formInputLocation = form.querySelector("input[name='location']");
+    const formInputLocale = form.querySelector("input[name='locale']") as HTMLInputElement;
+    const formInputToken = form.querySelector("input[name='token']") as HTMLInputElement;
+    const formInputLocation = form.querySelector("input[name='location']") as HTMLInputElement;
 
     expect(formInputLocale.value).toBe('fr');
     expect(formInputToken.value).toBe('token');
@@ -66,7 +71,7 @@ describe('#start', () => {
     test('iframe presence', () => {
       const throwable = () => {
         const sdk = new DreamsSDK('url');
-        sdk.start('token');
+        sdk.start('token', 'locale');
       };
 
       expect(throwable).toThrow();
@@ -79,7 +84,7 @@ describe('#start', () => {
       const throwable = () => {
         const sdk = new DreamsSDK('url');
         sdk.iframe = iframe;
-        sdk.start('token');
+        sdk.start('token', 'locale');
       };
 
       expect(throwable).toThrow();
