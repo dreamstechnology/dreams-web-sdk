@@ -1,45 +1,43 @@
-import { partnerEvents } from './events';
 import type {
-  ShareEvent,
-  IdTokenDidExpireEvent,
-  AccountProvisionRequestedEvent,
-  ExitRequestedEvent,
-  DreamsEvent,
-  InvestmentAccountProvisionRequestedEvent,
-  InvestmentAccountProvisionRequestedMessage,
-  InvestmentSellRequestedEvent,
-  InvestmentSellRequestedMessage,
+  DESEvent,
+  OnAccountProvisionRequestedEvent,
+  OnAccountRequestedEvent,
+  OnExitRequestedEvent,
+  OnIdTokenDidExpireEvent,
+  OnInvestmentAccountProvisionRequestedEvent,
+  OnInvestmentSellRequestedEvent,
+  OnShareEvent,
+  OnTransferConsentRequestedEvent,
+} from './des_events';
+
+import type {
+  AccountProvisionedEvent,
+  AccountProvisionedMessage,
+  InvestmentAccountProvisionInitiatedEvent,
+  InvestmentAccountProvisionInitiatedMessage,
+  NavigateToEvent,
+  OnAccountRequestedFailedEvent,
+  OnAccountRequestedFailedMessage,
+  OnAccountRequestedSucceededEvent,
+  OnAccountRequestedSucceededMessage,
+  OnTransferConsentCancelledEvent,
+  OnTransferConsentCancelledMessage,
+  OnTransferConsentSucceededEvent,
+  OnTransferConsentSucceededMessage,
   PartnerEvent,
   UpdateTokenEvent,
-  NavigateToEvent,
-  AccountProvisionInitiatedEvent,
-  InvestmentAccountProvisionInitiatedEvent,
-  Message,
   UpdateTokenMessage,
-  TransferConsentRequestedEvent,
-  TransferConsentRequestedMessage,
-  TransferConsentRequestSucceededEvent,
-  TransferConsentRequestCancelledEvent,
-  TransferConsentRequestCancelledMessage,
-  TransferConsentRequestSucceededMessage,
-  AccountRequestedEvent,
-  AccountRequestedFailedMessage,
-  AccountRequestedFailedEvent,
-  AccountRequestedSucceededEvent,
-  AccountRequestedSucceededMessage,
-} from './events';
+} from './partner_events';
 
 export type ClientCallbacks = {
-  onIdTokenDidExpire?: (event: IdTokenDidExpireEvent) => Promise<any>;
-  onAccountProvisionRequested?: (event: AccountProvisionRequestedEvent) => Promise<any>;
-  onInvestmentAccountProvisionRequested?: (
-    event: InvestmentAccountProvisionRequestedEvent,
-  ) => Promise<InvestmentAccountProvisionRequestedMessage>;
-  onInvestmentSellRequested?: (event: InvestmentSellRequestedEvent) => Promise<InvestmentSellRequestedMessage>;
-  onShare?: (event: ShareEvent) => Promise<any>;
-  onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
-  onTransferConsentRequested?: (event: TransferConsentRequestedEvent) => Promise<TransferConsentRequestedMessage>;
-  onAccountRequested?: (event: AccountRequestedEvent) => Promise<any>;
+  onIdTokenDidExpire?: (event: OnIdTokenDidExpireEvent) => Promise<string>;
+  onAccountProvisionRequested?: (event: OnAccountProvisionRequestedEvent) => Promise<void>;
+  onInvestmentAccountProvisionRequested?: (event: OnInvestmentAccountProvisionRequestedEvent) => Promise<void>;
+  onInvestmentSellRequested?: (event: OnInvestmentSellRequestedEvent) => Promise<void>;
+  onShare?: (event: OnShareEvent) => Promise<void>;
+  onExitRequested: (event: OnExitRequestedEvent) => Promise<void>;
+  onTransferConsentRequested?: (event: OnTransferConsentRequestedEvent) => Promise<OnTransferConsentSucceededMessage>;
+  onAccountRequested?: (event: OnAccountRequestedEvent) => Promise<OnAccountRequestedSucceededMessage>;
 };
 
 export class MessageHandler {
@@ -102,7 +100,7 @@ export class MessageHandler {
    */
   postUpdateToken = (message: UpdateTokenMessage) => {
     const event: UpdateTokenEvent = {
-      event: partnerEvents.updateToken,
+      event: 'updateToken',
       message,
     };
 
@@ -112,9 +110,9 @@ export class MessageHandler {
   /**
    * You can use this method if you need to manually inform the dreams app that account provision has been initiated.
    */
-  postAccountProvisionInitiated = (message: Message) => {
-    const event: AccountProvisionInitiatedEvent = {
-      event: partnerEvents.accountProvisionInitiated,
+  postAccountProvisionInitiated = (message: AccountProvisionedMessage) => {
+    const event: AccountProvisionedEvent = {
+      event: 'accountProvisioned',
       message,
     };
 
@@ -126,45 +124,45 @@ export class MessageHandler {
    * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
    * to/from an account it will use this value to refer to that account.
    */
-  postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionRequestedMessage) => {
+  postInvestmentAccountProvisionInitiated = (message: InvestmentAccountProvisionInitiatedMessage) => {
     const event: InvestmentAccountProvisionInitiatedEvent = {
-      event: partnerEvents.investmentAccountProvisionInitiated,
+      event: 'investmentAccountProvisionInitiated',
       message,
     };
 
     this.postMessage(event);
   };
 
-  private postTransferConsentRequestSucceeded = (message: TransferConsentRequestSucceededMessage) => {
-    const event: TransferConsentRequestSucceededEvent = {
-      event: partnerEvents.transferConsentSucceeded,
+  private postTransferConsentRequestSucceeded = (message: OnTransferConsentSucceededMessage) => {
+    const event: OnTransferConsentSucceededEvent = {
+      event: 'onTransferConsentSucceeded',
       message,
     };
 
     this.postMessage(event);
   };
 
-  private postTransferConsentRequestCancelled = (message: TransferConsentRequestCancelledMessage) => {
-    const event: TransferConsentRequestCancelledEvent = {
-      event: partnerEvents.transferConsentCancelled,
+  private postTransferConsentRequestCancelled = (message: OnTransferConsentCancelledMessage) => {
+    const event: OnTransferConsentCancelledEvent = {
+      event: 'onTransferConsentCancelled',
       message,
     };
 
     this.postMessage(event);
   };
 
-  private postAccountRequestFailed = (message: AccountRequestedFailedMessage) => {
-    const event: AccountRequestedFailedEvent = {
-      event: partnerEvents.accountRequestedFailed,
+  private postAccountRequestFailed = (message: OnAccountRequestedFailedMessage) => {
+    const event: OnAccountRequestedFailedEvent = {
+      event: 'onAccountRequestedFailed',
       message,
     };
 
     this.postMessage(event);
   };
 
-  private postAccountRequestSucceeded = (message: AccountRequestedSucceededMessage) => {
-    const event: AccountRequestedSucceededEvent = {
-      event: partnerEvents.accountRequestedSucceeded,
+  private postAccountRequestSucceeded = (message: OnAccountRequestedSucceededMessage) => {
+    const event: OnAccountRequestedSucceededEvent = {
+      event: 'onAccountRequestedSucceeded',
       message,
     };
 
@@ -176,14 +174,14 @@ export class MessageHandler {
    */
   navigateTo = (location: string) => {
     const event: NavigateToEvent = {
-      event: partnerEvents.navigateTo,
+      event: 'navigateTo',
       message: { location },
     };
 
     this.postMessage(event);
   };
 
-  private onIdTokenDidExpire = async (event: IdTokenDidExpireEvent) => {
+  private onIdTokenDidExpire = async (event: OnIdTokenDidExpireEvent) => {
     if (!this.callbacks.onIdTokenDidExpire) return;
 
     try {
@@ -195,7 +193,7 @@ export class MessageHandler {
     }
   };
 
-  private onAccountProvisionRequested = async (event: AccountProvisionRequestedEvent) => {
+  private onAccountProvisionRequested = async (event: OnAccountProvisionRequestedEvent) => {
     if (!this.callbacks.onAccountProvisionRequested) return;
 
     try {
@@ -206,7 +204,7 @@ export class MessageHandler {
     }
   };
 
-  private onInvestmentAccountProvisionRequested = async (event: InvestmentAccountProvisionRequestedEvent) => {
+  private onInvestmentAccountProvisionRequested = async (event: OnInvestmentAccountProvisionRequestedEvent) => {
     if (!this.callbacks.onInvestmentAccountProvisionRequested) return;
 
     try {
@@ -217,7 +215,7 @@ export class MessageHandler {
     }
   };
 
-  private onInvestmentSellRequested = async (event: InvestmentSellRequestedEvent) => {
+  private onInvestmentSellRequested = async (event: OnInvestmentSellRequestedEvent) => {
     if (!this.callbacks.onInvestmentSellRequested) return;
 
     try {
@@ -227,11 +225,11 @@ export class MessageHandler {
     }
   };
 
-  private onShare = async (event: ShareEvent) => {
+  private onShare = async (event: OnShareEvent) => {
     if (this.callbacks.onShare) await this.callbacks.onShare(event);
   };
 
-  private onTransferConsentRequested = async (event: TransferConsentRequestedEvent) => {
+  private onTransferConsentRequested = async (event: OnTransferConsentRequestedEvent) => {
     if (!this.callbacks.onTransferConsentRequested) {
       return;
     }
@@ -239,12 +237,13 @@ export class MessageHandler {
       const transferConsentData = await this.callbacks.onTransferConsentRequested(event);
       this.postTransferConsentRequestSucceeded(transferConsentData);
     } catch (err) {
-      this.postTransferConsentRequestCancelled(err as TransferConsentRequestCancelledMessage);
+      // FIXME: inspect err and map to a proper OnTransferConsentCancelledMessage
+      this.postTransferConsentRequestCancelled(err as OnTransferConsentCancelledMessage);
       console.error('onTransferConsentRequested error', err);
     }
   };
 
-  private async onAccountRequested(event: AccountRequestedEvent) {
+  private async onAccountRequested(event: OnAccountRequestedEvent) {
     if (!this.callbacks.onAccountRequested) {
       return;
     }
@@ -252,7 +251,8 @@ export class MessageHandler {
       const accountRequestedResult = await this.callbacks.onAccountRequested(event);
       this.postAccountRequestSucceeded(accountRequestedResult);
     } catch (err) {
-      this.postAccountRequestFailed(err as AccountRequestedFailedMessage);
+      // FIXME: inspect err and map to a proper OnAccountRequestedFailedMessage
+      this.postAccountRequestFailed(err as OnAccountRequestedFailedMessage);
       console.error('onAccountRequested error: ', err);
     }
   }
@@ -267,7 +267,7 @@ export class MessageHandler {
     }
   };
 
-  private parseEvent = (message: any): DreamsEvent | null => {
+  private parseEvent = (message: any): DESEvent | null => {
     try {
       return JSON.parse(message.data);
     } catch (error) {
