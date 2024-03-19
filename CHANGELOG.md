@@ -7,6 +7,13 @@
   `const { DreamsSDK } = require('dreams-web-sdk')`. Please refer to new
   examples in the [README.md](https://github.com/dreamstechnology/dreams-web-sdk/blob/v2.0.0/README.md)
   and in the [examples](https://github.com/dreamstechnology/dreams-web-sdk/blob/v2.0.0/examples) folder.
+- Typescript type declarations for events have changed to conform better to the
+  underlying data structure.
+- Type signatures for ClientCallbacks have changed to reflect correct return
+  values. In particular:
+  - `onIdTokenDidExpire` should resolve to a token of type `string`
+  - `onTransferConsentRequested` should resolve to an `OnTransferConsentSucceededMessage`
+  - `onAccountRequested` should resolve to an `OnAccountRequestedSucceededMessage`
 
 ### Features
 
@@ -14,11 +21,7 @@
 
 ### Bug Fixes
 
-- Exported missing type declarations
-  - `TransferConsentRequestedEvent`,
-  - `TransferConsentRequestedMessage`,
-  - `TransferConsentRequestCancelledMessage`,
-  - `TransferConsentRequestSucceededMessage`
+- Exported previously missing type declarations.
 
 ## [1.4.1](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.4.0...v1.4.1) (2023-08-09)
 
