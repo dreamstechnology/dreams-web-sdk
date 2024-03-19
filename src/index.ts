@@ -82,26 +82,5 @@ export class DreamsSDK {
 }
 
 export { MessageHandler, type ClientCallbacks };
-export type {
-  IdTokenDidExpireEvent,
-  AccountProvisionRequestedEvent,
-  InvestmentAccountProvisionRequestedEvent,
-  InvestmentSellRequestedEvent,
-  ExitRequestedEvent,
-  ShareEvent,
-  DreamsEvent,
-  Message,
-  ShareMessage,
-  InvestmentAccountProvisionRequestedMessage,
-  InvestmentSellRequestedMessage,
-  UpdateTokenMessage,
-  NavigateToEvent,
-  AccountProvisionInitiatedEvent,
-  InvestmentAccountProvisionInitiatedEvent,
-  UpdateTokenEvent,
-  PartnerEvent,
-  TransferConsentRequestedEvent,
-  TransferConsentRequestedMessage,
-  TransferConsentRequestCancelledMessage,
-  TransferConsentRequestSucceededMessage,
-} from './events';
+export type * from './des_events';
+export type * from './partner_events';
