@@ -11,6 +11,9 @@ import partnerEvents, {
   PartnerEvent,
   UpdateTokenEvent,
   NavigateToEvent,
+  BackRequestedEvent,
+  SessionKeepAliveEvent,
+  SignOutRequestedEvent,
   AccountProvisionInitiatedEvent,
   InvestmentAccountProvisionInitiatedEvent,
   Message,
@@ -121,6 +124,30 @@ class MessageHandler {
   };
 
   /**
+   * You can use this method if you need to manually inform the dreams app to navigate back in history.
+   */
+  postBackRequested = () => {
+    const event: BackRequestedEvent = {
+      event: partnerEvents.backRequested,
+      message: {},
+    };
+
+    this.postMessage(event);
+  };
+
+  /**
+   * You can use this method if you need to manually inform the dreams app to sign out the current user.
+   */
+  postSignOutRequested = () => {
+    const event: SignOutRequestedEvent = {
+      event: partnerEvents.signOutRequested,
+      message: {},
+    };
+
+    this.postMessage(event);
+  };
+
+  /**
    * You can use this method if you need to manually inform the dreams app that investment account provision has been initiated.
    * AccountId is a shared id of a newly provisioned account. Whenever dreams will make a request to transfer money
    * to/from an account it will use this value to refer to that account.
@@ -177,6 +204,15 @@ class MessageHandler {
     const event: NavigateToEvent = {
       event: partnerEvents.navigateTo,
       message: { location },
+    };
+
+    this.postMessage(event);
+  };
+
+  sessionKeepAlive = () => {
+    const event: SessionKeepAliveEvent = {
+      event: partnerEvents.sessionKeepAlive,
+      message: {},
     };
 
     this.postMessage(event);
