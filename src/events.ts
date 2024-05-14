@@ -27,8 +27,10 @@ type TokenDidExpireMessage = Message & {
 };
 
 type TransferConsentRequestedMessage = Message & {
+  cancelUrl?: string;
   consentId: string;
   consentRef: string;
+  successUrl: string;
 };
 
 type TransferConsentRequestSucceededMessage = Message & {
