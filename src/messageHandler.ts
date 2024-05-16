@@ -37,7 +37,9 @@ type ClientCallbacks = {
   onInvestmentSellRequested?: (event: InvestmentSellRequestedEvent) => Promise<InvestmentSellRequestedMessage>;
   onShare?: (event: ShareEvent) => Promise<any>;
   onExitRequested: (event: ExitRequestedEvent) => Promise<any>;
-  onTransferConsentRequested?: (event: TransferConsentRequestedEvent) => Promise<TransferConsentRequestedMessage>;
+  onTransferConsentRequested?: (
+    event: TransferConsentRequestedEvent,
+  ) => Promise<TransferConsentRequestedMessage | undefined>;
   onAccountRequested?: (event: AccountRequestedEvent) => Promise<any>;
 };
 
@@ -236,7 +238,9 @@ class MessageHandler {
     }
     try {
       const transferConsentData = await this.callbacks.onTransferConsentRequested(event);
-      this.postTransferConsentRequestSucceeded(transferConsentData);
+      if (transferConsentData) {
+        this.postTransferConsentRequestSucceeded(transferConsentData);
+      }
     } catch (err) {
       this.postTransferConsentRequestCancelled(err as TransferConsentRequestCancelledMessage);
       console.error('onTransferConsentRequested error', err);
