@@ -105,6 +105,21 @@ We use commitlint to make sure commit messages adhere to certain rules. These ar
 Semantic release takes care of automatically bumping release versions provided that we name commits correctly.
 [Here](https://github.com/semantic-release/semantic-release#commit-message-format) you can find what constitutes a patch/feature/breaking release.
 
+### Manual release process
+
+It's possible to manually release a new version locally.
+Prerequisites:
+- Obtain [npm token](https://start.1password.com/open/i?a=IRGTGSWMBZEMXJFPUSWVVIKOBE&v=xfh2geajq6tugtv5d5eby3vtni&i=uely6p4tyot2hsl72bnucwyle4&h=doconomyab.1password.com) used for releasing. It needs to be put in [.npmrc](https://docs.npmjs.com/cli/v10/configuring-npm/npmrc#auth-related-configuration) file
+
+In order to leverage semantic-release modify `release.config.js` file as follows:
+- change the `branches` setting to allow current branch (or `'*'`) if different than main
+- set `ci` to `false` to allow running it locally
+- remove `@semantic-release/github` and `@semantic-release/git` plugins
+
+Then the process can be started with `yarn semantic-release`.
+
+Besides publishing the package it will generate the changelog that should be committed.
+
 ## License
 
 [Mozilla Public License Version 2.0](LICENSE)
