@@ -109,7 +109,7 @@ Semantic release takes care of automatically bumping release versions provided t
 
 It's possible to manually release a new version locally.
 Prerequisites:
-- Obtain [npm token](https://start.1password.com/open/i?a=IRGTGSWMBZEMXJFPUSWVVIKOBE&v=xfh2geajq6tugtv5d5eby3vtni&i=uely6p4tyot2hsl72bnucwyle4&h=doconomyab.1password.com) used for releasing. It needs to be put in [.npmrc](https://docs.npmjs.com/cli/v10/configuring-npm/npmrc#auth-related-configuration) file
+- Obtain npm token used for releasing. It needs to be put in [.npmrc](https://docs.npmjs.com/cli/v10/configuring-npm/npmrc#auth-related-configuration) file
 
 In order to leverage semantic-release modify `release.config.js` file as follows:
 - change the `branches` setting to allow current branch (or `'*'`) if different than main
