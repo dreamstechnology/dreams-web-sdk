@@ -1,3 +1,17 @@
+# [1.5.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.4.1...v1.5.0) (2024-05-21)
+
+
+### Features
+
+* add callback urls to transfer consent requested event ([c2cd9f1](https://github.com/dreamstechnology/dreams-web-sdk/commit/c2cd9f1d8fe4e1f3190d1996a1042fa4718a750e))
+
+# [1.5.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.4.1...v1.5.0) (2024-05-21)
+
+
+### Features
+
+* add callback urls to transfer consent requested event ([c2cd9f1](https://github.com/dreamstechnology/dreams-web-sdk/commit/c2cd9f1d8fe4e1f3190d1996a1042fa4718a750e))
+
 ## [1.4.1](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.4.0...v1.4.1) (2023-08-09)
 
 # [1.4.0](https://github.com/dreamstechnology/dreams-web-sdk/compare/v1.3.0...v1.4.0) (2023-03-24)
