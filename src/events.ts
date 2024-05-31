@@ -6,6 +6,9 @@ enum partnerEvents {
   investmentAccountProvisionInitiated = 'investmentAccountProvisionInitiated',
   updateToken = 'updateToken',
   navigateTo = 'navigateTo',
+  sessionKeepAlive = 'sessionKeepAlive',
+  backRequested = 'onBackRequested',
+  signOutRequested = 'onSignOutRequested',
   transferConsentSucceeded = 'onTransferConsentSucceeded',
   transferConsentCancelled = 'onTransferConsentCancelled',
   accountRequestedFailed = 'onAccountRequestedFailed',
@@ -173,6 +176,21 @@ type NavigateToEvent = {
   };
 };
 
+type SessionKeepAliveEvent = {
+  event: partnerEvents.sessionKeepAlive;
+  message: {};
+};
+
+type BackRequestedEvent = {
+  event: partnerEvents.backRequested;
+  message: {};
+};
+
+type SignOutRequestedEvent = {
+  event: partnerEvents.signOutRequested;
+  message: {};
+};
+
 type TransferConsentRequestSucceededEvent = {
   event: partnerEvents.transferConsentSucceeded;
   message: {
@@ -199,7 +217,10 @@ type AccountRequestedSucceededEvent = {
 };
 
 type PartnerEvent =
+  | BackRequestedEvent
   | NavigateToEvent
+  | SessionKeepAliveEvent
+  | SignOutRequestedEvent
   | AccountProvisionInitiatedEvent
   | InvestmentAccountProvisionInitiatedEvent
   | UpdateTokenEvent
@@ -224,6 +245,9 @@ export {
   InvestmentSellRequestedMessage,
   UpdateTokenMessage,
   NavigateToEvent,
+  BackRequestedEvent,
+  SessionKeepAliveEvent,
+  SignOutRequestedEvent,
   AccountProvisionInitiatedEvent,
   InvestmentAccountProvisionInitiatedEvent,
   UpdateTokenEvent,
