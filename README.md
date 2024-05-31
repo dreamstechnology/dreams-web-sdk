@@ -57,9 +57,11 @@ For more info about building packages refer to [rollup webpage](https://rollupjs
 
   // Optional param to redirect user inside dreams app
   var location = "marketplace";
+  // Optional param to set the theme (light/dark)
+  var theme = "light";
 
   sdk.setup(callbacks);
-  sdk.start(user_jwk_token_value, "en", location);
+  sdk.start(user_jwk_token_value, "en", location, theme);
 </script>
 ```
 

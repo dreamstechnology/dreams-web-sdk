@@ -73,8 +73,9 @@ export default class DreamsSDK {
    * @param token jwk token for the user
    * @param locale determines the localization configuration that will be applied.
    * @param location path to which the user will be redirected to after the token is verified
+   * @param theme determines the color theme that will be applied to the app
    */
-  start(token: string, locale: string, location?: string) {
+  start(token: string, locale: string, location?: string, theme?: string) {
     if (!this.iframe) throw Error('there is no iframe specified!');
     if (!this.form) throw Error('there is no form specified!');
     if (!this.messageHandler) throw Error('there is no message handler specified!');
@@ -92,8 +93,10 @@ export default class DreamsSDK {
     const locationInput: HTMLInputElement = this.form.querySelector(
       "input[name='location']",
     ) as unknown as HTMLInputElement;
-
     if (location) locationInput.setAttribute('value', location);
+
+    const themeInput: HTMLInputElement = this.form.querySelector("input[name='theme']") as unknown as HTMLInputElement;
+    if (theme) themeInput.setAttribute('value', theme);
 
     this.messageHandler.listen();
     this.form.submit();
