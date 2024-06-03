@@ -18,6 +18,7 @@ describe('#setup', () => {
     const formInputLocale = form.querySelector("input[name='locale']");
     const formInputToken = form.querySelector("input[name='token']");
     const formInputLocation = form.querySelector("input[name='location']");
+    const formInputTheme = form.querySelector("input[name='theme']");
 
     expect(form.target).toBe('dreams-web-sdk-iframe');
     expect(form.method).toBe('post');
@@ -32,6 +33,9 @@ describe('#setup', () => {
     expect(formInputLocation.type).toBe('hidden');
     expect(formInputLocation.name).toBe('location');
     expect(formInputLocation.value).toBe('');
+    expect(formInputTheme.type).toBe('hidden');
+    expect(formInputTheme.name).toBe('theme');
+    expect(formInputTheme.value).toBe('');
     expect(sdk.messageHandler).not.toBe(null);
   });
 });
@@ -49,15 +53,17 @@ describe('#start', () => {
     const formSpy = jest.spyOn(form, 'submit').mockImplementation(() => {});
     const windowSpy = jest.spyOn(window, 'addEventListener');
 
-    sdk.start('token', 'fr', 'marketplace');
+    sdk.start('token', 'fr', 'marketplace', 'light');
 
     const formInputLocale = form.querySelector("input[name='locale']");
     const formInputToken = form.querySelector("input[name='token']");
     const formInputLocation = form.querySelector("input[name='location']");
+    const formInputTheme = form.querySelector("input[name='theme']");
 
     expect(formInputLocale.value).toBe('fr');
     expect(formInputToken.value).toBe('token');
     expect(formInputLocation.value).toBe('marketplace');
+    expect(formInputTheme.value).toBe('light');
     expect(formSpy).toHaveBeenCalled();
     expect(windowSpy).toHaveBeenCalled();
   });

@@ -29,9 +29,15 @@ export const createForm = (
   formInputLocation.setAttribute('name', 'location');
   formInputLocation.setAttribute('value', '');
 
+  const formInputTheme = document.createElement('input');
+  formInputTheme.setAttribute('type', 'hidden');
+  formInputTheme.setAttribute('name', 'theme');
+  formInputTheme.setAttribute('value', '');
+
   form.appendChild(formInputLocale);
   form.appendChild(formInputToken);
   form.appendChild(formInputLocation);
+  form.appendChild(formInputTheme);
 
   return form;
 };
