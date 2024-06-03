@@ -35,7 +35,7 @@ describe('#setup', () => {
     expect(formInputLocation.value).toBe('');
     expect(formInputTheme.type).toBe('hidden');
     expect(formInputTheme.name).toBe('theme');
-    expect(formInputTheme.value).toBe('light');
+    expect(formInputTheme.value).toBe('');
     expect(sdk.messageHandler).not.toBe(null);
   });
 });

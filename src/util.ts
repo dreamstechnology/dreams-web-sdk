@@ -32,7 +32,7 @@ export const createForm = (
   const formInputTheme = document.createElement('input');
   formInputTheme.setAttribute('type', 'hidden');
   formInputTheme.setAttribute('name', 'theme');
-  formInputTheme.setAttribute('value', 'light');
+  formInputTheme.setAttribute('value', '');
 
   form.appendChild(formInputLocale);
   form.appendChild(formInputToken);
